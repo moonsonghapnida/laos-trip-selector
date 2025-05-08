@@ -1,14 +1,27 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  <!-- 기존 메타 태그들은 그대로 유지 -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>여행 일정 선택 (최종 통합)</title>
+
+  <!-- ① iframe-resizer contentWindow 스크립트 (반드시 head 안에) -->
+  <script src="https://unpkg.com/iframe-resizer/js/iframeResizer.contentWindow.min.js"></script>
+
+  <!-- ② 스타일: overflow:hidden 추가 + 기존 CSS -->
   <style>
-    /* 박스 사이징 및 가로 스크롤 방지 */
-    *, *::before, *::after { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; overflow-x: hidden; }
+    /* — iframe 내부 스크롤 제거 — */
+    html, body {
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      box-sizing: border-box;
+    }
+    /* — 이하 원본 CSS — */
     body {
+      margin: 0;
       font-family: 'Segoe UI', sans-serif;
       background-color: #f4f8fb;
       padding-bottom: 80px;
@@ -17,7 +30,6 @@
       max-width: 900px;
       margin: auto;
       padding: 40px 20px;
-      overflow-x: hidden;
     }
     .day-label {
       font-size: 20px;
@@ -30,7 +42,6 @@
       display: flex;
       margin-bottom: 20px;
       gap: 14px;
-      min-width: 0;
     }
     .time-button {
       flex: 0 0 100px;
@@ -46,14 +57,12 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      min-width: 0;
     }
     .option-buttons {
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: stretch;
-      min-width: 0;
     }
     .option-button {
       background: #ffffff;
@@ -70,16 +79,18 @@
       display: flex;
       gap: 10px;
       align-items: center;
-      min-width: 0;
     }
     .option-button.selected {
       background-color: #d0eaff;
       border-color: #0984e3;
       color: #0984e3;
     }
-    .option-button:last-child { margin-bottom: 0; }
+    .option-button:last-child {
+      margin-bottom: 0;
+    }
     .image-placeholder {
-      width: 60px; height: 60px;
+      width: 60px;
+      height: 60px;
       background: #dfe6e9;
       border-radius: 8px;
       display: flex;
@@ -91,7 +102,9 @@
     }
     .price-banner {
       position: fixed;
-      bottom: 0; left: 0; right: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
       background: #ffffff;
       border-top: 2px solid #74b9ff;
       padding: 12px 20px;
@@ -104,37 +117,46 @@
       z-index: 1000;
       box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
     }
-    .price-banner span { color: #0984e3; }
-
-    /* 모바일 전용 레이아웃 */
-  @media (max-width: 600px) {
-  /* 1) 컨테이너 좌우 패딩을 조금만 남기고 좁힙니다 */
-  .schedule-container {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-  }
-
-  /* 2) 시간 블록이 부모너비만큼 꽉 차지 않도록 여유를 줍니다 */
-  .time-button {
-    width: calc(100% - 32px) !important; /* 좌우 16px씩 빼고 꽉 채우기 */
-    margin: 0 16px 10px;                  /* 아래쪽 마진도 살짝 넣어서 간격 보정 */
-    box-sizing: border-box;               /* 패딩/테두리 포함해서 width 계산 */
-  }
-}
+    .price-banner span {
+      color: #0984e3;
+    }
+    @media (max-width: 600px) {
+      .schedule-row {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        margin-bottom: 20px;
+        height: auto;
+      }
+      .time-button {
+        writing-mode: horizontal-tb;
+        text-orientation: initial;
+        width: calc(100% - 32px);
+        margin: 0 16px 10px;
+        padding: 10px;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
       .option-buttons {
         display: flex;
         flex-direction: column;
         gap: 10px;
       }
-      .option-button { font-size: 15px; padding: 12px; }
+      .option-button {
+        font-size: 15px;
+        padding: 12px;
+      }
       .price-banner {
         flex-direction: row;
         justify-content: space-between;
         font-size: 15px;
         padding: 10px 20px;
       }
+      .schedule-container {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+      }
     }
-
     .day-label-block {
       background: linear-gradient(90deg, #d0eaff, #ffffff);
       padding: 20px;
@@ -144,7 +166,9 @@
       box-shadow: 0 2px 6px rgba(0, 123, 255, 0.1);
     }
     .day-number {
-      font-size: 24px; font-weight: 800; color: #0077b6;
+      font-size: 24px;
+      font-weight: 800;
+      color: #0077b6;
     }
     .cpack-intro {
       background: #f1f9ff;
@@ -156,22 +180,40 @@
       box-shadow: 0 2px 6px rgba(0,123,255,0.1);
     }
     .cpack-intro h2 {
-      font-size: 24px; color: #0077b6; margin-bottom: 16px; text-align: center;
+      font-size: 24px;
+      color: #0077b6;
+      margin-bottom: 16px;
+      text-align: center;
     }
-    .cpack-intro ul { list-style: none; padding-left: 0; }
+    .cpack-intro ul {
+      list-style: none;
+      padding-left: 0;
+    }
     .cpack-intro li {
-      font-size: 16px; margin: 12px 0; padding-left: 20px;
-      position: relative; color: #2d3436;
+      font-size: 16px;
+      margin: 12px 0;
+      padding-left: 20px;
+      position: relative;
+      color: #2d3436;
     }
     .cpack-intro li::before {
-      content: "✔"; position: absolute; left: 0; color: #00b894;
+      content: "✔";
+      position: absolute;
+      left: 0;
+      color: #00b894;
     }
     .fade-in {
       animation: fadeSlideIn 0.5s ease forwards;
     }
     @keyframes fadeSlideIn {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
