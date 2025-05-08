@@ -12,13 +12,12 @@
   <!-- ② 스타일: overflow:hidden 추가 + 기존 CSS -->
   <style>
     /* — iframe 내부 스크롤 제거 — */
-    html, body {
-      overflow: hidden;
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      box-sizing: border-box;
-    }
+  html, body {
+  overflow-x: hidden;   /* 가로 스크롤만 숨기고 */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
     /* — 이하 원본 CSS — */
     body {
       margin: 0;
