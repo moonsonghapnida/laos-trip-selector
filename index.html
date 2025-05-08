@@ -179,56 +179,6 @@
 </head>
 <body>
 
-  <div class="cpack-intro">
-    <h2>C-Pack이란?</h2>
-    <ul>
-      <li><strong>내 마음대로</strong> 일정을 구성할 수 있어요.</li>
-      <li><strong>호텔도 자유롭게</strong> 직접 선택 가능해요.</li>
-      <li><strong>정해진 식사?</strong> 없습니다. 현지 맛집에서 자유롭게 즐기세요.</li>
-      <li><strong>현지 전문가</strong>가 당신의 여행을 직접 설계합니다.</li>
-      <li><strong>프리미엄 단독 투어</strong>를 패키지 가격에 제공합니다.</li>
-      <li><strong>팁, 쇼핑, 선택관광</strong> 강요는 이제 그만!</li>
-    </ul>
-  </div>
-
-  <div class="schedule-container">
-    <!-- 1일차 ~ 5일차 일정 전체 내용을 여기에 그대로 복사 붙여넣으세요 -->
-  </div>
-
-  <div class="price-banner">
-    <div>결제하실 금액 (₩): <span id="total-krw">0</span></div>
-    <div>현장 결제하실 금액 ($): <span id="total-usd">0</span></div>
-  </div>
-
-  <script>
-    function formatKRW(v){ return new Intl.NumberFormat('ko-KR').format(v); }
-    document.addEventListener("DOMContentLoaded",()=>{
-      const buttons=document.querySelectorAll(".option-button");
-      const totalKRW=document.getElementById("total-krw");
-      const totalUSD=document.getElementById("total-usd");
-      let selected={};
-      buttons.forEach(b=>b.addEventListener("click",()=>{
-        const row=b.closest(".schedule-row");
-        const key=row?row.innerHTML.slice(0,50):Math.random();
-        if(selected[key])selected[key].classList.remove("selected");
-        selected[key]=b; b.classList.add("selected");
-        let kr=0, us=0;
-        Object.values(selected).forEach(x=>{kr+=parseInt(x.getAttribute("data-price-krw")||0);us+=parseFloat(x.getAttribute("data-price-usd")||0);});
-        totalKRW.textContent=formatKRW(kr);totalUSD.textContent=us.toFixed(2);
-      }));
-      const flights=document.querySelectorAll('.flight-option');
-      const extra=document.getElementById("day1-extra-schedule");
-      flights.forEach(f=>f.addEventListener("click",()=>{
-        flights.forEach(x=>x.classList.remove("selected"));f.classList.add("selected");
-        if(f.dataset.option==="day"){extra.style.display="block";setTimeout(()=>extra.classList.add("fade-in"),10);}else{extra.classList.remove("fade-in");setTimeout(()=>extra.style.display="none",300);}  
-      }));
-    });
-  </script>
-
-</body>
-</html>
-
-
 <div class="cpack-intro">
   <h2>C-Pack이란?</h2>
   <ul>
