@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>여행 일정 선택 (최종 통합)</title>
   <style>
+    /* 가로 스크롤 방지 */
+    html, body {
+      overflow-x: hidden;
+    }
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
@@ -105,10 +109,7 @@
     .price-banner span {
       color: #0984e3;
     }
-
-    /* ==== 변경된 모바일용 미디어쿼리 시작 ==== */
     @media (max-width: 600px) {
-      /* 1) 행 높이 제거하고 세로 스택으로 */
       .schedule-row {
         display: flex;
         flex-direction: column;
@@ -116,8 +117,6 @@
         margin-bottom: 20px;
         height: auto;
       }
-
-      /* 2) 시간 버튼을 가로로 */
       .time-button {
         writing-mode: horizontal-tb;
         text-orientation: initial;
@@ -126,21 +125,15 @@
         margin-bottom: 10px;
         font-size: 16px;
       }
-
-      /* 3) 옵션 버튼들도 세로 스택 */
       .option-buttons {
         display: flex;
         flex-direction: column;
         gap: 10px;
       }
-      
-      /* 4) 개별 옵션 버튼 크기 조정 */
       .option-button {
         font-size: 15px;
         padding: 12px;
       }
-
-      /* 5) 배너는 한 줄로 유지 */
       .price-banner {
         flex-direction: row;
         justify-content: space-between;
@@ -148,8 +141,6 @@
         padding: 10px 20px;
       }
     }
-    /* ==== 변경된 모바일용 미디어쿼리 끝 ==== */
-
     .day-label-block {
       background: linear-gradient(90deg, #d0eaff, #ffffff);
       padding: 20px;
@@ -199,18 +190,68 @@
       animation: fadeSlideIn 0.5s ease forwards;
     }
     @keyframes fadeSlideIn {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
+
+<div class="cpack-intro">
+  <h2>C-Pack이란?</h2>
+  <ul>
+    <li><strong>내 마음대로</strong> 일정을 구성할 수 있어요.</li>
+    <li><strong>호텔도 자유롭게</strong> 직접 선택 가능해요.</li>
+    <li><strong>정해진 식사?</strong> 없습니다. 현지 맛집에서 자유롭게 즐기세요.</li>
+    <li><strong>현지 전문가</strong>가 당신의 여행을 직접 설계합니다.</li>
+    <li><strong>프리미엄 단독 투어</strong>를 패키지 가격에 제공합니다.</li>
+    <li><strong>팁, 쇼핑, 선택관광</strong> 강요는 이제 그만!</li>
+  </ul>
+</div>
+
+<div class="schedule-container">
+  <!-- 1일차 ~ 5일차 일정 전체 내용을 여기에 그대로 복사 붙여넣으세요 -->
+</div>
+
+<div class="price-banner">
+  <div>결제하실 금액 (₩): <span id="total-krw">0</span></div>
+  <div>현장 결제하실 금액 ($): <span id="total-usd">0</span></div>
+</div>
+
+<script>
+  function formatKRW(value) { return new Intl.NumberFormat('ko-KR').format(value); }
+  document.addEventListener("DOMContentLoaded", function () {
+    const buttons = document.querySelectorAll(".option-button");
+    const totalKRW = document.getElementById("total-krw");
+    const totalUSD = document.getElementById("total-usd");
+    let selectedButtons = {};
+    buttons.forEach(btn => btn.addEventListener("click", function () {
+      const row = btn.closest(".schedule-row");
+      const key = row ? row.innerHTML.slice(0,50) : Math.random();
+      if(selectedButtons[key]) selectedButtons[key].classList.remove("selected");
+      selectedButtons[key] = btn;
+      btn.classList.add("selected");
+      let kr=0, us=0;
+      Object.values(selectedButtons).forEach(x=>{ kr += parseInt(x.getAttribute("data-price-krw")||0); us += parseFloat(x.getAttribute("data-price-usd")||0); });
+      totalKRW.textContent = formatKRW(kr);
+      totalUSD.textContent = us.toFixed(2);
+    }));
+    const flights = document.querySelectorAll('.flight-option');
+    const extra = document.getElementById("day1-extra-schedule");
+    flights.forEach(b=>b.addEventListener("click",()=>{
+      flights.forEach(x=>x.classList.remove("selected")); b.classList.add("selected");
+      if(b.dataset.option==="day"){
+        extra.style.display="block"; setTimeout(()=>extra.classList.add("fade-in"),10);
+      } else {
+        extra.classList.remove("fade-in"); setTimeout(()=>extra.style.display="none",300);
+      }
+    }));
+  });
+</script>
+
+</body>
+</html>
+
 
 <div class="cpack-intro">
   <h2>C-Pack이란?</h2>
