@@ -1,0 +1,33 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f8fb;
+  padding-bottom: 80px;
+}
+.schedule-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px 20px;
+}
+/* …여기에 원본 style {} 블록 전체… */
+@media (max-width: 600px) {
+  .schedule-row {
+    height: 100vh;
+    flex-direction: row;
+    align-items: stretch;
+  }
+  /* …미디어쿼리 내부 스타일… */
+}
+.fade-in {
+  animation: fadeSlideIn 0.5s ease forwards;
+}
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
