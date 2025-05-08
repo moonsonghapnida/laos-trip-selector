@@ -107,22 +107,20 @@
     .price-banner span { color: #0984e3; }
 
     /* 모바일 전용 레이아웃 */
-    @media (max-width: 600px) {
-      .schedule-container { padding: 20px 24px; }
-      .schedule-row {
-        flex-direction: column;
-        align-items: stretch;
-        margin-bottom: 20px;
-        padding: 0 8px;
-      }
-      .time-button {
-        writing-mode: horizontal-tb;
-        text-orientation: initial;
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-        font-size: 16px;
-      }
+  @media (max-width: 600px) {
+  /* 1) 컨테이너 좌우 패딩을 조금만 남기고 좁힙니다 */
+  .schedule-container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* 2) 시간 블록이 부모너비만큼 꽉 차지 않도록 여유를 줍니다 */
+  .time-button {
+    width: calc(100% - 32px) !important; /* 좌우 16px씩 빼고 꽉 채우기 */
+    margin: 0 16px 10px;                  /* 아래쪽 마진도 살짝 넣어서 간격 보정 */
+    box-sizing: border-box;               /* 패딩/테두리 포함해서 width 계산 */
+  }
+}
       .option-buttons {
         display: flex;
         flex-direction: column;
