@@ -1436,6 +1436,20 @@ document.addEventListener('DOMContentLoaded', function(){
   });
 });
 </script>
+<script>
+function sendIframeHeight() {
+  if (window.parent !== window) {
+    window.parent.postMessage(
+      { type: "iframe-resize", height: document.body.scrollHeight },
+      "*"
+    );
+  }
+}
 
+// 최초 로드, 윈도우 리사이즈, DOM 변화마다 실행
+window.addEventListener("load", sendIframeHeight);
+window.addEventListener("resize", sendIframeHeight);
+setInterval(sendIframeHeight, 500); // 0.5초마다 체크 (더 짧게/길게 가능)
+</script>
 </body>
 </html>
