@@ -1,1455 +1,478 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <title>라오스 비엔티안(1박) - 방비엥 (2박) C-Pack 빠른견적</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>라오스 일정 선택기 - 토글형</title>
+  <!-- ① EmailJS 라이브러리 반드시 head 안에 삽입 -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    // ② 여기에 본인 EmailJS User ID 넣기!
+    (function(){
+      emailjs.init('luKxEKdyyvY4hjYfo'); // 예시: 'PqQv1fg_GHTj2A6A4'
+    })();
+  </script>
   <style>
-.selector-container { align-items: stretch !important; }
-
-    /* Ensure guide-pack and hotel-pack containers expand with details */
-    .selector-container#guide-pack,
-    .selector-container#hotel-pack {
-      overflow: visible !important;
-      height: auto !important;
-    }
-    /* Ensure details sections fully expand */
-    .guide-details,
-    .hotel-details {
-      display: block !important;
-      max-height: none !important;
-      height: auto !important;
-      overflow: visible !important;
-    }
-
-
-    /* Hotel-pack additional info */
-    .hotel-details {
-      width: 100%;
-      overflow: hidden;
-      max-height: 0;
-      transition: max-height .3s ease, padding .3s ease;
-      padding: 0 10px;
-      background: #eef6ff;
-      border-left: 4px solid #74b9ff;
-      font-size: 14px;
-      line-height: 1.5;
-      margin-top: 8px;
-    }
-    .hotel-details.expanded {
-      max-height: 200px;
-      padding: 10px;
-    }
-
-
-    /* Fix guide-pack flow so details push container down */
-    .selector-container#guide-pack {
-      display: flex !important;
-      flex-direction: column !important;
-    }
-    .selector-container#guide-pack .option-buttons {
-      margin-top: 0 !important;
-    }
-    .selector-container#guide-pack .guide-details {
-      margin-top: 8px !important;
-    }
-
-
-    /* Make guide-pack container expand and show guide-details fully */
-    .selector-container#guide-pack {
-      overflow: visible !important;
-      height: auto !important;
-    }
-    .guide-details {
-      display: block !important;
-      max-height: none !important;
-      height: auto !important;
-      overflow: visible !important;
-    }
-
-
-    .guide-details {
-      width: 100%;
-      overflow: hidden;
-      max-height: 0;
-      transition: max-height .3s ease, padding .3s ease;
-      padding: 0 10px;
-      background: #eef6ff;
-      border-left: 4px solid #74b9ff;
-      font-size: 14px;
-      line-height: 1.5;
-      margin-top: 8px;
-    }
-    .guide-details.expanded {
-      max-height: none !important;
-      padding: 10px;
-    
-      max-height: none !important;
-      height: auto !important;
-    
-      max-height: none !important;
-      height: auto !important;
-      display: block !important;
-    }
-
-
-    /* Vertical layout for control UI, matching schedule UI width */
-    .selector-row {
-      flex-direction: column !important;
-      align-items: center !important;
-      max-width: 800px !important;
-      margin: 16px auto !important;
-    }
-    .selector-container {
-      width: 100% !important;
-      max-width: 800px !important;
-      margin: 8px 0 !important;
-      flex: none !important;
-    
-      overflow: visible !important;
-    
-      overflow: visible !important;
-      height: auto !important;
-    }
-
-
-    /* Extra info box for guide-pack */
-    .extra-info {
-      max-width: 800px;
-      margin: 16px auto;
-      background: #eef6ff;
-      border-left: 4px solid #74b9ff;
-      padding: 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      line-height: 1.5;
-      display: none;
-    }
-
-
-    /* Center person-input vertically while keeping title top */
-    .selector-row .selector-container:nth-child(2) {
-      justify-content: flex-start !important;
-    }
-    .selector-row .selector-container:nth-child(2) .person-input {
-      margin-top: auto !important;
-      margin-bottom: auto !important;
-    }
-
-
-    .selector-container .option-button {
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      min-height: 50px !important;
-    }
-
-
-    /* Center travel-person selector box */
-    .selector-row .selector-container:nth-child(2) {
-      justify-content: center !important;
-    }
-
-
-    /* Equal-height top-aligned selector boxes */
-    .selector-row {
-      display: flex !important;
-      gap: 16px !important;
-      margin: 16px auto !important;
-      max-width: 800px !important;
-      align-items: stretch !important;
-      justify-content: center !important;
-    }
-    .selector-container {
-      flex: 1 !important;
-      display: flex !important;
-      flex-direction: column !important;
-      justify-content: start !important;
-      align-items: center !important;
-      background: #fff !important;
-      border: 1px solid #ced6e0 !important;
-      border-radius: 10px !important;
-      padding: 14px !important;
-      min-height: 200px !important;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
-      transition: transform 0.2s !important;
-    }
-    .selector-container:hover {
-      transform: translateY(-4px) !important;
-    }
-    .selector-container h4 {
-      margin: 0 0 8px !important;
-      font-size: 16px !important;
-      text-align: center !important;
-      width: 100% !important;
-    }
-    .selector-container .date-input,
-    .selector-container .person-input,
-    .selector-container .option-buttons {
-      width: 80% !important;
-      margin: 0 auto !important;
-    }
-    .selector-container .option-buttons {
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 8px !important;
-      align-items: center !important;
-    }
-    .selector-container .option-button {
-      width: 100% !important;
-      text-align: center !important;
-    }
+    html { font-size:15px;}
+    body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; background: #f7f7fa; margin: 0; padding: 0; color: #222; font-size:1rem;}
+    .container { max-width: 480px; margin: 32px auto; padding: 24px; background: #fff; border-radius: 18px; box-shadow: 0 2px 14px rgba(70, 85, 110, 0.12);}
+    h1 { font-size: 1.15rem; font-weight: bold; text-align: center; margin-bottom: 24px; color: #14508e; letter-spacing: -1px;}
+    .section { margin-bottom: 24px;}
+    .section-label-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;}
+    .section label { font-weight: 600; font-size: 0.98rem; color: #294a6b;}
+    .person-desc { color:#b04d0c; font-size:0.85em; margin-top:5px; margin-bottom:-12px;}
+    .toggle-group { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 7px;}
+    .toggle-btn { background: #f4f7fb; border: 1.2px solid #c5d4ee; border-radius: 10px; padding: 9px 0 7px 0; font-size: 1em; flex: 1 1 0; text-align: center; cursor: pointer; margin-bottom: 6px; min-width: 42px; transition: all 0.12s; position: relative;}
+    .toggle-btn.selected { background: #296bb3; color: #fff; border-color: #14508e;}
+    .option-list { margin-top: 6px;}
+    .option-row { display: flex; align-items: center; justify-content: space-between; background:#f4f7fb; border:1px solid #d0deeb; border-radius:10px; padding: 7px 11px 6px 11px; margin-bottom: 7px; min-height:38px; font-size:0.97em;}
+    .option-row.selected { background: #296bb3; color: #fff;}
+    .option-title { font-size: 0.97em; flex:2;}
+    .option-unit { flex:1.4; font-size: 0.92em; color:#1849b9; text-align:center; transition:color .15s;}
+    .option-row.selected .option-unit { color:#fff;}
+    .option-total { flex:2.1; font-size: 0.95em; color:#d02b2b; font-weight:bold; text-align:right;}
+    .option-row.selected .option-total { color: #ffe400; }
+    .option-controls {display:flex; align-items:center; gap:7px;}
+    .option-minus-btn {background:#e9e7ff; color:#2857a3; border:1px solid #bdd2ea; font-size:0.96em; border-radius:7px; padding:3px 8px; margin-right:4px; cursor:pointer;}
+    .option-minus-btn:active {background:#c9e2ff;}
+    .option-checkbox {margin-right:10px; accent-color:#295bd1; width:17px; height:17px;}
+    .init-btn { font-size:0.92em; background:#e5eefe; border:1px solid #bdd2ea; border-radius:8px; color:#347; padding:4px 10px; cursor:pointer; margin-left:7px;}
+    .init-btn:hover {background:#d1e8ff;}
+    .result-section { margin: 20px 0 17px 0; padding: 13px 7px 8px 7px; background: #f4f6fa; border-radius: 12px; text-align: center; font-size: 1.05em; color: #14508e; font-weight: 600;}
+    .result-section span { display: block; margin: 6px 0; font-weight: 500; color: #0c3d5a; font-size: 0.97em;}
+    .contact-section { margin-bottom: 20px; background: #f9fafb; border-radius: 12px; padding: 12px 8px 7px 8px;}
+    .contact-label { display: block; margin: 10px 0 5px 2px; color: #37629d; font-size: 0.96em; font-weight: 500;}
+    .contact-input { width: 100%; padding: 8px 8px; border: 1px solid #bfd2e9; border-radius: 8px; font-size: 1em; margin-bottom: 3px; box-sizing: border-box; background: #f7fafc; font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; }
+    textarea.contact-input { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif !important; resize: vertical;}
+    .submit-btn { display: block; width: 100%; background: linear-gradient(90deg, #1466b6 88%, #25a6d1 100%); color: #fff; border: none; border-radius: 12px; padding: 13px 0; font-size: 1em; font-weight: 700; margin-top: 22px; cursor: pointer; transition: background 0.15s; letter-spacing: 0.5px; box-shadow: 0 2px 10px #4176a72c;}
+    .submit-btn:active { background: #2a8ad1;}
+    .room-single-btn {background:#fff7e0; color:#b26c18; border:1px solid #edd59c; font-size:0.92em; border-radius:7px; padding:4px 12px; margin-right:7px; cursor:pointer;}
+    .room-single-btn:active {background:#ffeec4;}
+    .date-section {margin-bottom:24px;}
+    .date-label {font-weight:600; color:#294a6b; font-size:0.97em; margin-bottom:8px; display:block;}
+    .date-input-wrap {display:flex; align-items:center; background:#f4f7fb; border-radius:10px; border:1.2px solid #c5d4ee; padding:12px 13px;}
+    .date-input {border:none; background:transparent; font-size:1em; color:#1849b9; flex:1;}
+    .date-input:focus {outline:none;}
+    .date-icon {font-size:1.2em; color:#14508e; margin-right:9px;}
     @media (max-width: 600px) {
-      .selector-row {
-        flex-direction: column !important;
-        align-items: center !important;
-      }
-      .selector-container {
-        width: 90% !important;
-        min-height: unset !important;
-      }
+      html {font-size:14px;}
+      .container { max-width: 99vw; padding: 7vw 2vw;}
+      .toggle-btn { font-size: 0.95em; min-width: 30px; padding: 8px 0 6px 0;}
+      .option-row { font-size:0.93em; flex-direction:column; align-items:flex-start; gap:4px; padding: 7px 5px;}
+      .option-unit, .option-total {text-align:left;}
+      .init-btn {margin:6px 0 0 0; width:100%; text-align:center;}
+      .room-single-btn {margin-bottom:7px;}
+      .section-label-row {flex-direction:column; align-items:flex-start;gap:6px;}
+      .date-input-wrap {padding:8px 7px;}
     }
-
-    /* apply border-box sizing */
-    *, *::before, *::after { box-sizing: border-box; }
-
-    .person-input {
-      width: 80% !important;
-      margin: 0 auto !important;
-    }
-
-
-    /* Equal-height top-aligned selector boxes */
-    .selector-row {
-      display: flex !important;
-      gap: 16px !important;
-      margin: 16px auto !important;
-      max-width: 800px !important;
-      align-items: stretch !important; /* ensure boxes equal height */
-    }
-    .selector-container {
-      flex: 1 1 0 !important;
-      display: flex !important;
-      flex-direction: column !important;
-      justify-content: space-between !important; /* title top, content bottom */
-      background: #fff !important;
-      border: 1px solid #ced6e0 !important;
-      border-radius: 10px !important;
-      padding: 14px !important;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
-      transition: transform 0.2s !important;
-    }
-    .selector-container:hover {
-      transform: translateY(-4px) !important;
-    }
-    .selector-container h4 {
-      margin: 0 0 8px !important;
-      font-size: 16px !important;
-    }
-    @media (max-width: 600px) {
-      .selector-row {
-        flex-direction: column !important;
-        align-items: stretch !important;
-      }
-      .selector-container {
-        width: 100% !important;
-      }
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #f4f8fb !important;
-    }
-    .topbar {
-      position: sticky !important;
-      top: 0 !important;
-      width: 100% !important;
-      background-color: #0077b6 !important;
-      color: white !important;
-      font-size: 16px !important;
-      font-weight: bold !important;
-      text-align: center !important;
-      padding: 12px 0 !important;
-      z-index: 1000 !important;
-    }
-    .schedule-container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 24px 16px;
-      background-color: white !important;
-    }
-    .day-label-block {
-      background: #d0eaff !important;
-      border-radius: 12px !important;
-      padding: 14px 18px !important;
-      margin: 24px 0 12px !important;
-      font-size: 18px !important;
-      font-weight: 600 !important;
-      color: #2d3436 !important;
-    }
-    .schedule-row {
-      display: flex !important;
-      flex-wrap: nowrap !important;
-      gap: 12px !important;
-      margin-bottom: 24px !important;
-      align-items: stretch !important;
-    }
-    .time-button {
-      flex: 0 0 100px !important;
-      background: #dff1ff !important;
-      border: 2px solid #74b9ff !important;
-      border-radius: 14px !important;
-      font-weight: bold !important;
-      font-size: 14px !important;
-      padding: 12px 10px !important;
-      color: #0077b6 !important;
-      display: flex !important;
-      justify-content: center !important;
-      align-items: center !important;
-      text-align: center !important;
-      min-height: 160px !important;
-      transition: all 0.3s ease;
-    }
-    .time-button.expanded {
-      min-height: 260px !important;
-    }
-    .option-buttons {
-      flex: 1 !important;
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 12px !important;
-    }
-    .option-button {
-      display: flex !important;
-      gap: 12px !important;
-      align-items: center !important;
-      background: #ffffff !important;
-      border: 1px solid #ced6e0 !important;
-      border-radius: 10px !important;
-      padding: 14px !important;
-      font-size: 15px !important;
-      font-weight: 500 !important;
-      cursor: pointer !important;
-      transition: 0.2s !important;
-    }
-    .option-button.selected {
-      background-color: #74b9ff !important;
-      color: white !important;
-    }
-    .details {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      background-color: #eef6ff !important;
-      border-left: 4px solid #74b9ff !important;
-      padding: 10px 15px !important;
-      margin-top: 5px !important;
-      max-height: 0px !important;
-      overflow: hidden !important;
-      border-radius: 8px !important;
-      font-size: 14px !important;
-      transition: max-height 0.3s ease;
-    }
-    .details.expanded {
-      max-height: 200px !important;
-    }
-    .details img {
-      width: 120px;
-      height: 80px;
-      border-radius: 8px;
-      object-fit: cover;
-    }
-    @media (max-width: 500px) {
-      .details {
-        flex-direction: column;
-      }
-      .details img {
-        width: 100%;
-      }
-    }
-  </style>
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <style>
-    
-    .selector-container { background:#fff; padding:16px; border-radius:8px; text-align:center; flex:1 1 200px; max-width:240px; }
-    .date-input { width:100%; padding:8px; border:1px solid #ccc; border-radius:4px; text-align:center; cursor:pointer; 
-      width: 80% !important;
-      margin: 0 auto !important;
-      box-sizing: border-box !important;
-    }
-    .arrival-label { margin-top:8px; font-size:0.9rem; color:#555; }
-    .person-input { display:flex; gap:8px; justify-content:center; align-items:center; }
-    .person-input button { width:32px; height:32px; border:none; border-radius:4px; background:#0077b6; color:#fff; cursor:pointer; font-size:1.2rem; }
-    .person-input input { width:40px; text-align:center; border:none; background:transparent; font-size:1rem; }
   </style>
 </head>
 <body>
-
-<div class="topbar">
-  💰 결제하실 금액: <span id="krw-total">₩0</span> / 현장 결제: <span id="usd-total">$0</span>
-</div>
-  <!-- Controls: Date, People, Guide, Hotel -->
-  <div class="selector-row">
-    <div class="selector-container">
-      <h4>출국일</h4>
-      <input id="start-date" class="date-input" placeholder="날짜 선택" readonly />
-      
-<div class="arrival-info">
-  <div>대한민국 도착일</div>
-  <div id="return-date"></div>
-  <div>(3박 5일)</div>
-</div>
-
-    </div>
-    <div class="selector-container">
-      <h4>여행 인원</h4>
-      <div class="person-input">
-        <button id="minus-btn">–</button>
-        <input id="person-count" type="text" value="1" readonly />
-        <button id="plus-btn">＋</button>
+  <div class="container">
+    <h1>라오스 비엔티안(1박) - 방비엥 (2박) C-Pack 빠른견적</h1>
+    <!-- 여행일자 선택 -->
+    <div class="date-section">
+      <label class="date-label" for="travelDate">여행일자 <span style="font-weight:400; color:#999; font-size:0.92em;">(출국일 기준, 필수)</span></label>
+      <div class="date-input-wrap">
+        <span class="date-icon">📅</span>
+        <input type="date" id="travelDate" class="date-input" required>
       </div>
     </div>
-    <div class="selector-container" id="guide-pack">
-      <h4>가이드팩</h4>
-      <div class="option-buttons">
-        <button class="option-button price" data-usd="220">한국인</button>
-        <button class="option-button price" data-usd="0">현지인</button>
+    <!-- 1. 여행인원 -->
+    <div class="section">
+      <label>여행인원 <span style="font-weight:400; color:#999; font-size:0.92em;">(2~8명, 예약금 인당 60,000원)</span></label>
+      <div class="toggle-group" id="personToggleGroup"></div>
+      <div class="person-desc">9명 이상 단체 할인 적용 가능, <b>개별 문의</b></div>
+    </div>
+    <!-- 2. 가이드팩 -->
+    <div class="section">
+      <label>가이드팩 <span style="font-weight:400; color:#999; font-size:0.92em;">(단일 선택)</span></label>
+      <div class="toggle-group" id="guideToggleGroup">
+        <div class="toggle-btn" data-guide="kr" data-price="220">한국인 가이드<br><span style="font-size:0.91em; color:#55c;">$220/팀</span></div>
+        <div class="toggle-btn" data-guide="local" data-price="0">현지인 가이드<br><span style="font-size:0.91em; color:#55c;">추가요금 없음</span></div>
       </div>
-      <div class="guide-details"></div>
     </div>
-    <div class="selector-container">
-      <h4>호텔팩</h4>
-      <div class="option-buttons">
-        <button class="option-button price" data-usd="170">5성급</button>
-        <button class="option-button price" data-usd="106">4성급</button>
-      
-        <button class="option-button price" data-usd="0">직접 예약</button></div>
+    <!-- 3. 선택관광(방비엥) -->
+    <div class="section">
+      <div class="section-label-row">
+        <label>선택관광 (방비엥)</label>
+        <button type="button" class="init-btn" onclick="resetVangvieng()">초기화</button>
+      </div>
+      <div class="option-list" id="vangviengList"></div>
     </div>
+    <!-- 4. 선택관광(케어팩) -->
+    <div class="section">
+      <div class="section-label-row">
+        <label>선택관광 (케어팩)</label>
+        <button type="button" class="init-btn" onclick="resetCare()">초기화</button>
+      </div>
+      <div class="option-list" id="careList"></div>
+    </div>
+    <!-- 5. 숙박팩 -->
+    <div class="section">
+      <div class="section-label-row">
+        <label>숙박팩</label>
+        <div>
+          <button type="button" class="room-single-btn" onclick="addSingleRoom()">싱글룸 추가</button>
+          <button type="button" class="init-btn" onclick="resetSingleRoom()">초기화</button>
+        </div>
+      </div>
+      <div class="option-list" id="roomList"></div>
+    </div>
+    <!-- 결과 견적 -->
+    <div class="result-section" id="resultSection">
+      계약금 (한국에서 입금하실 금액): <span id="contractPrice">0원</span>
+      <br>
+      잔금 (현지에서 달러 지불하실 금액): <span id="usdPrice">$0</span>
+    </div>
+    <!-- 연락처 정보 입력란 -->
+    <div class="contact-section">
+      <label class="contact-label" for="contactName">대표자 성함 <span style="color:#d02b2b;">*</span></label>
+      <input type="text" class="contact-input" id="contactName" placeholder="대표자 이름을 입력하세요" required>
+      <label class="contact-label" for="contactPhone">연락 가능한 번호 또는 카카오톡 ID <span style="color:#d02b2b;">*</span></label>
+      <input type="text" class="contact-input" id="contactPhone" placeholder="휴대폰 번호 또는 카카오톡 ID" required>
+      <label class="contact-label" for="contactNote">기타 요청 사항 (선택)</label>
+      <textarea class="contact-input" id="contactNote" rows="2" placeholder="예 ) 예약 관련 특이사항, 식단, 선택관광에 없는 추가 희망 일정 등"></textarea>
+    </div>
+    <!-- ③ 견적 메일 전송 함수가 아래에 붙습니다 -->
+    <button class="submit-btn" onclick="submitEstimate()">빠른 견적 보내기</button>
   </div>
-
-
-<div class="schedule-container">
-<div class="day-label-block">1일차</div>
-
-        <div class="schedule-row">
-          <div class="time-button">오전 A</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오전 B</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">중식</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오후 A</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오후 B</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">석식</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오후 C</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        <div class="day-label-block">2일차</div>
-
-        <div class="schedule-row">
-          <div class="time-button">오전 A</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오전 B</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">중식</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오후 A</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오후 B</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">석식</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오후 C</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        <div class="day-label-block">3일차</div>
-
-        <div class="schedule-row">
-          <div class="time-button">오전 A</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오전 B</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">중식</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오후 A</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오후 B</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">석식</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오후 C</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        <div class="day-label-block">4일차</div>
-
-        <div class="schedule-row">
-          <div class="time-button">오전 A</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오전 B</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">중식</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오후 A</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오후 B</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">석식</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오후 C</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        <div class="day-label-block">5일차</div>
-
-        <div class="schedule-row">
-          <div class="time-button">오전 A</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오전 B</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">중식</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오후 A</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오후 B</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">석식</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-        <div class="schedule-row">
-          <div class="time-button">오후 C</div>
-          <div class="option-buttons">
-            <button class="option-button price" data-krw="10000" data-usd="8" onclick="toggleDetails(this)">선택지 A - ₩10,000 / $8</button>
-            <div class="details">
-              <div>
-                <p>선택지 A에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-
-            <button class="option-button price" data-krw="12000" data-usd="10" onclick="toggleDetails(this)">선택지 B - ₩12,000 / $10</button>
-            <div class="details">
-              <div>
-                <p>선택지 B에 대한 설명입니다.</p>
-                <p>더 많은 정보가 여기에 표시됩니다.</p>
-              </div>
-              <img src="https://via.placeholder.com/120" alt="설명 이미지">
-            </div>
-          </div>
-        </div>
-        
-</div>
-<script>
-  function toggleDetails(button) {
-    const parent = button.parentElement;
-    parent.querySelectorAll(".option-button").forEach(b => b.classList.remove("selected"));
-    parent.querySelectorAll(".details").forEach(d => d.classList.remove("expanded"));
-    button.classList.add("selected");
-    const detailDiv = button.nextElementSibling;
-    detailDiv.classList.add("expanded");
+  <script>
+    // ... (기존 견적 계산 JS 코드 그대로, 생략 없음, 위 답변 참조) ...
+    // 아래 부분부터 복사해서 붙여넣으세요
+    const MAX_PERSON = 8;
+    const extraUsdByPerson = {8:95,7:105,6:118,5:137,4:165,3:211,2:305};
+    const vangviengOptions = [
+      {name: "열기구", price: 100},
+      {name: "페러모터", price: 85},
+      {name: "버기카", price: 18},
+      {name: "짚라인", price: 20},
+      {name: "롱테일보트", price: 10},
+      {name: "시크릿라군", price: 10}
+    ];
+    const careOptions = [
+      {name: "베트남식 이발관 풀코스 (90분)", price: 30},
+      {name: "라오 허벌 테라피", price: 40},
+      {name: "라오 전통 마사지 (2시간)", price: 25},
+      {name: "라오 전통 마사지 (1시간)", price: 13},
+      {name: "라오 오일 마사지 (2시간)", price: 35},
+      {name: "라오 오일 마사지 (1시간)", price: 20}
+    ];
+    const roomOptions = [
+      {name: "5성급 3박", price: 255000},
+      {name: "4성급 3박", price: 159000},
+      {name: "제가 예약할게요", price: 0}
+    ];
+    const personToggleGroup = document.getElementById("personToggleGroup");
+    let personCount = 2;
+    for(let i=2; i<=MAX_PERSON; i++) {
+      const btn = document.createElement("div");
+      btn.className = "toggle-btn" + (i===2 ? " selected" : "");
+      btn.innerText = i + "명";
+      btn.setAttribute('data-person', i);
+      btn.onclick = function() {
+        document.querySelectorAll("#personToggleGroup .toggle-btn").forEach(b=>b.classList.remove("selected"));
+        btn.classList.add("selected");
+        personCount = i;
+        vangviengPersons = vangviengPersons.map((v,idx)=>vangviengChecked[idx]?personCount:0);
+        carePersons = carePersons.map((v,idx)=>careChecked[idx]?personCount:0);
+        updateRoomList();
+        renderVangviengList();
+        renderCareList();
+        updateTotal();
+      }
+      personToggleGroup.appendChild(btn);
+    }
+    let guideType = "kr";
+    let guidePrice = 220;
+    document.querySelectorAll("#guideToggleGroup .toggle-btn").forEach(btn=>{
+      btn.onclick = function(){
+        document.querySelectorAll("#guideToggleGroup .toggle-btn").forEach(b=>b.classList.remove("selected"));
+        btn.classList.add("selected");
+        guideType = btn.getAttribute('data-guide');
+        guidePrice = Number(btn.getAttribute('data-price'));
+        updateTotal();
+      }
+    });
+    const vangviengList = document.getElementById("vangviengList");
+    let vangviengChecked = Array(vangviengOptions.length).fill(false);
+    let vangviengPersons = Array(vangviengOptions.length).fill(0);
+    function renderVangviengList() {
+      vangviengList.innerHTML = "";
+      vangviengOptions.forEach((opt, idx) => {
+        const row = document.createElement("div");
+        row.className = "option-row" + (vangviengChecked[idx] ? " selected" : "");
+        const chk = document.createElement("input");
+        chk.type = "checkbox";
+        chk.className = "option-checkbox";
+        chk.checked = vangviengChecked[idx];
+        chk.onchange = function(e){
+          vangviengChecked[idx] = chk.checked;
+          if(chk.checked) {
+            vangviengPersons[idx]=personCount;
+          } else {
+            vangviengPersons[idx]=0;
+          }
+          renderVangviengList();
+          updateTotal();
+        };
+        row.appendChild(chk);
+        const title = document.createElement("div");
+        title.className = "option-title";
+        title.innerText = opt.name;
+        row.appendChild(title);
+        const unit = document.createElement("div");
+        unit.className = "option-unit";
+        if(vangviengChecked[idx]) {
+          unit.innerText = `$${opt.price} × ${vangviengPersons[idx]}명 = $${vangviengPersons[idx]*opt.price}`;
+        } else {
+          unit.innerText = `$${opt.price}/인당`;
+        }
+        row.appendChild(unit);
+        const controls = document.createElement("div");
+        controls.className = "option-controls";
+        if(vangviengChecked[idx]) {
+          const minusBtn = document.createElement("button");
+          minusBtn.type = "button";
+          minusBtn.className = "option-minus-btn";
+          minusBtn.innerText = "-1명";
+          minusBtn.onclick = function(e){
+            vangviengPersons[idx] = Math.max(0, vangviengPersons[idx]-1);
+            if(vangviengPersons[idx]===0) {
+              vangviengChecked[idx]=false;
+              renderVangviengList();
+              updateTotal();
+            } else {
+              renderVangviengList();
+              updateTotal();
+            }
+            e.stopPropagation();
+          };
+          controls.appendChild(minusBtn);
+          const total = document.createElement("div");
+          total.className = "option-total";
+          total.id = "vvTotal"+idx;
+          total.innerText = `$${vangviengPersons[idx]*opt.price} / 총 ${vangviengPersons[idx]}명`;
+          controls.appendChild(total);
+        }
+        row.appendChild(controls);
+        vangviengList.appendChild(row);
+      });
+    }
+    window.resetVangvieng = function(){
+      vangviengChecked = vangviengChecked.map(()=>false);
+      vangviengPersons = vangviengPersons.map(()=>0);
+      renderVangviengList();
+      updateTotal();
+    }
+    const careList = document.getElementById("careList");
+    let careChecked = Array(careOptions.length).fill(false);
+    let carePersons = Array(careOptions.length).fill(0);
+    function renderCareList() {
+      careList.innerHTML = "";
+      careOptions.forEach((opt, idx) => {
+        const row = document.createElement("div");
+        row.className = "option-row" + (careChecked[idx] ? " selected" : "");
+        const chk = document.createElement("input");
+        chk.type = "checkbox";
+        chk.className = "option-checkbox";
+        chk.checked = careChecked[idx];
+        chk.onchange = function(e){
+          careChecked[idx] = chk.checked;
+          if(chk.checked) {
+            carePersons[idx]=personCount;
+          } else {
+            carePersons[idx]=0;
+          }
+          renderCareList();
+          updateTotal();
+        };
+        row.appendChild(chk);
+        const title = document.createElement("div");
+        title.className = "option-title";
+        title.innerText = opt.name;
+        row.appendChild(title);
+        const unit = document.createElement("div");
+        unit.className = "option-unit";
+        if(careChecked[idx]) {
+          unit.innerText = `$${opt.price} × ${carePersons[idx]}명 = $${carePersons[idx]*opt.price}`;
+        } else {
+          unit.innerText = `$${opt.price}/인당`;
+        }
+        row.appendChild(unit);
+        const controls = document.createElement("div");
+        controls.className = "option-controls";
+        if(careChecked[idx]) {
+          const minusBtn = document.createElement("button");
+          minusBtn.type = "button";
+          minusBtn.className = "option-minus-btn";
+          minusBtn.innerText = "-1명";
+          minusBtn.onclick = function(e){
+            carePersons[idx] = Math.max(0, carePersons[idx]-1);
+            if(carePersons[idx]===0) {
+              careChecked[idx]=false;
+              renderCareList();
+              updateTotal();
+            } else {
+              renderCareList();
+              updateTotal();
+            }
+            e.stopPropagation();
+          };
+          controls.appendChild(minusBtn);
+          const total = document.createElement("div");
+          total.className = "option-total";
+          total.id = "careTotal"+idx;
+          total.innerText = `$${carePersons[idx]*opt.price} / 총 ${carePersons[idx]}명`;
+          controls.appendChild(total);
+        }
+        row.appendChild(controls);
+        careList.appendChild(row);
+      });
+    }
+    window.resetCare = function(){
+      careChecked = careChecked.map(()=>false);
+      carePersons = carePersons.map(()=>0);
+      renderCareList();
+      updateTotal();
+    }
+    const roomList = document.getElementById("roomList");
+    let selectedRoomIdx = null;
+    let singleRoomAdd = 0;
+    function updateRoomList(){
+      roomList.innerHTML = "";
+      let baseRoomCnt = Math.ceil(personCount/2);
+      let totalRooms = baseRoomCnt + singleRoomAdd;
+      roomOptions.forEach((opt, idx) => {
+        const row = document.createElement("div");
+        row.className = "option-row";
+        row.style.cursor = "pointer";
+        if(selectedRoomIdx === idx){
+          row.style.background = "#296bb3";
+          row.style.color = "#fff";
+        } else {
+          row.style.background = "#f4f7fb";
+          row.style.color = "#222";
+        }
+        row.onclick = function(){
+          if(selectedRoomIdx === idx){
+            selectedRoomIdx = null;
+          } else {
+            selectedRoomIdx = idx;
+          }
+          updateRoomList();
+          updateTotal();
+        };
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "roomsel";
+        radio.checked = (selectedRoomIdx===idx);
+        radio.style.marginRight = "10px";
+        radio.onclick = e=>{
+          if(selectedRoomIdx === idx){
+            selectedRoomIdx = null;
+          } else {
+            selectedRoomIdx = idx;
+          }
+          updateRoomList();
+          updateTotal();
+          e.stopPropagation();
+        };
+        const title = document.createElement("div");
+        title.className = "option-title";
+        title.innerText = opt.name;
+        const unit = document.createElement("div");
+        unit.className = "option-unit";
+        if(opt.price===0){
+          unit.innerText = "0원";
+        } else {
+          unit.innerText = `${opt.price.toLocaleString()}원/객실`;
+        }
+        const total = document.createElement("div");
+        total.className = "option-total";
+        total.id = "roomTotal"+idx;
+        if(opt.price===0){
+          total.innerText = "0원";
+        } else {
+          total.innerText = `${(totalRooms*opt.price).toLocaleString()}원 / ${totalRooms}객실`;
+        }
+        row.appendChild(radio);
+        row.appendChild(title);
+        row.appendChild(unit);
+        row.appendChild(total);
+        roomList.appendChild(row);
+      });
+    }
+    window.addSingleRoom = function(){
+      singleRoomAdd += 1;
+      updateRoomList();
+      updateTotal();
+    }
+    window.resetSingleRoom = function(){
+      singleRoomAdd = 0;
+      selectedRoomIdx = null;
+      updateRoomList();
+      updateTotal();
+    }
+    function updateTotal(){
+      let contract = personCount * 60000;
+      let baseRoomCnt = Math.ceil(personCount/2);
+      let totalRooms = baseRoomCnt + singleRoomAdd;
+      let roomPrice = (selectedRoomIdx !== null) ? roomOptions[selectedRoomIdx].price : 0;
+      if(selectedRoomIdx !== null && roomPrice>0) contract += totalRooms*roomPrice;
+      let usd = 0;
+      if(guideType==="kr") usd += 220;
+      vangviengOptions.forEach((opt, idx) => { usd += vangviengPersons[idx]*opt.price; });
+      careOptions.forEach((opt, idx) => { usd += carePersons[idx]*opt.price; });
+      let extraUsd = extraUsdByPerson[personCount] ? extraUsdByPerson[personCount] * personCount : 0;
+      usd += extraUsd;
+      document.getElementById("contractPrice").innerText = contract.toLocaleString()+"원";
+      document.getElementById("usdPrice").innerText = "$"+usd.toLocaleString();
+    }
+    renderVangviengList();
+    renderCareList();
+    updateRoomList();
     updateTotal();
-  }
 
-  function updateTotal() {
-    let totalKrw = 0;
-    let totalUsd = 0;
-    document.querySelectorAll(".option-button.selected").forEach(selected => {
-      totalKrw += parseInt(selected.dataset.krw);
-      totalUsd += parseInt(selected.dataset.usd);
-    });
-    document.getElementById("krw-total").innerText = "₩" + totalKrw.toLocaleString();
-    document.getElementById("usd-total").innerText = "$" + totalUsd.toLocaleString();
-  }
+    // ★★★ EmailJS 전송
+    function submitEstimate() {
+      const travelDate = document.getElementById("travelDate").value.trim();
+      if(!travelDate) { alert("여행일자를 선택해주세요."); document.getElementById("travelDate").focus(); return;}
+      const name = document.getElementById("contactName").value.trim();
+      const phone = document.getElementById("contactPhone").value.trim();
+      const note = document.getElementById("contactNote").value.trim();
+      if(!name) { alert("대표자 성함을 입력해주세요."); document.getElementById("contactName").focus(); return;}
+      if(!phone) { alert("연락 가능한 번호 또는 카카오톡 ID를 입력해주세요."); document.getElementById("contactPhone").focus(); return;}
+      let persons = personCount + "명";
+      let guide = guideType === "kr" ? "한국인 가이드 ($220/팀)" : "현지인 가이드 (추가요금 없음)";
+      let vangStr = vangviengOptions.map((opt, i)=> vangviengPersons[i]>0? `${opt.name} (${vangviengPersons[i]}명)`:'').filter(Boolean).join(', ') || '없음';
+      let careStr = careOptions.map((opt, i)=> carePersons[i]>0? `${opt.name} (${carePersons[i]}명)`:'').filter(Boolean).join(', ') || '없음';
+      let baseRoomCnt = Math.ceil(personCount/2);
+      let totalRooms = baseRoomCnt + singleRoomAdd;
+      let roomStr = selectedRoomIdx!==null ? roomOptions[selectedRoomIdx].name : "미선택";
+      if(selectedRoomIdx!==null && roomOptions[selectedRoomIdx].price!==0) roomStr += ` (${totalRooms}객실)`;
+      let contract = document.getElementById("contractPrice").innerText;
+      let usd = document.getElementById("usdPrice").innerText;
 
-// Guide-pack extra info toggle
-var guideInfo = document.getElementById('guide-info');
-document.querySelectorAll('#guide-pack .option-button').forEach(function(btn){
-  btn.addEventListener('click', function(){
-    // Only handle guide options if that container
-    var code = btn.textContent.trim();
-    if(btn.classList.contains('selected')){
-      if(code === '한국인'){
-        guideInfo.innerHTML = '<p>한국인 가이드와 전일정 동행합니다. 여행 오시는 모임의 특성, 요청 사항에 따라 가이드님을 배정해드립니다.</p><p>가격 : $220 / 팀</p>';
-      } else if(code === '현지인'){
-        guideInfo.innerHTML = '<p>영어(또는 초급 한국어) 가능 가이드와 전일정 동행합니다.</p><p>가격 : 추가 요금 없음 (기본 제공)</p>';
-      }
-      guideInfo.style.display = 'block';
-    } else {
-      guideInfo.style.display = 'none';
-    }
-  });
-});
-
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script>
-// Initialize Flatpickr
-flatpickr("#start-date", {
-  locale: "ko",
-  dateFormat: "Y-m-d",
-  minDate: "today",
-  onChange: function(dates) {
-    if(dates.length) {
-      var dt = new Date(dates[0]); dt.setDate(dt.getDate()+5);
-            var y = dt.getFullYear();
-      var m = (dt.getMonth()+1).toString().padStart(2,'0');
-      var d = dt.getDate().toString().padStart(2,'0');
-            document.getElementById('return-date').textContent = y + '년 ' + m + '월 ' + d + '일';
-      updateTotal();
-    }
-  }
-});
-// Person count
-function changeCount(delta) {
-  var el = document.getElementById('person-count'), v = parseInt(el.value) + delta;
-  if(v<1) v=1;
-  el.value = v; updateTotal();
-}
-document.getElementById('minus-btn').addEventListener('click', function(e){ e.preventDefault(); changeCount(-1); });
-document.getElementById('plus-btn').addEventListener('click', function(e){ e.preventDefault(); changeCount(1); });
-
-// Toggle handlers
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.option-button.price').forEach(function(btn) {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      // Exclusive toggle within group
-      var group = btn.parentElement;
-      group.querySelectorAll('.option-button').forEach(function(sib){ sib.classList.remove('selected'); });
-      var select = !btn.classList.contains('selected');
-      btn.classList.toggle('selected', select);
-      // Show/hide schedule details if relevant
-      var wrapper = btn.closest('.option-wrapper');
-      if(wrapper) {
-        var det = wrapper.querySelector('.details');
-        if(det) det.style.display = select ? 'block' : 'none';
-      }
-      updateTotal();
-    });
-  });
-});
-
-// Original updateTotal from full file
-function updateTotal() {
-  var cnt = parseInt(document.getElementById('person-count').value);
-  var totalK = cnt * 60000;
-  var totalD = 0;
-  // Controls
-  document.querySelectorAll('.selector-container .option-button.price.selected').forEach(function(b){
-    totalD += parseInt(b.dataset.usd) || 0;
-  });
-  // Schedule
-  document.querySelectorAll('.schedule-container .option-button.price.selected').forEach(function(b){
-    totalD += parseInt(b.dataset.usd) || 0;
-  });
-  document.getElementById('krw-total').textContent = '₩' + totalK.toLocaleString();
-  document.getElementById('usd-total').textContent = '$' + (totalD * cnt).toLocaleString();
-}
-</script>
-
-
-<script>
-// Guide-pack extra explanation only
-document.addEventListener('DOMContentLoaded', function() {
-  var infoBox = document.getElementById('guide-info');
-  var guideBtns = document.querySelectorAll('#guide-pack .option-button');
-  guideBtns.forEach(function(btn) {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      // Toggle selected class
-      var isSelected = btn.classList.toggle('selected');
-      // Deselect other buttons
-      guideBtns.forEach(function(other) {
-        if (other !== btn) other.classList.remove('selected');
+      // EmailJS로 메일 보내기
+      emailjs.send('service_e6uns2x', 'template_hhk1zot', {
+        travel_date: travelDate,
+        name: name,
+        phone: phone,
+        persons: persons,
+        guide: guide,
+        vangvieng: vangStr,
+        care: careStr,
+        room: roomStr,
+        contract: contract,
+        usd: usd,
+        note: note
+      }).then(function(response) {
+        alert("견적이 성공적으로 전송되었습니다!");
+      }, function(error) {
+        alert("견적 전송에 실패했습니다. 잠시 후 다시 시도해주세요.");
       });
-      // Show or hide info
-      if (isSelected) {
-        if (btn.textContent.trim() === '한국인') {
-          infoBox.innerHTML = '<p>한국인 가이드와 전일정 동행합니다. 여행 오시는 모임의 특성, 요청 사항에 따라 가이드님을 배정해드립니다.</p><p>가격 : $220 / 팀</p>';
-        } else {
-          infoBox.innerHTML = '<p>영어(또는 초급 한국어) 가능 가이드와 전일정 동행합니다.</p><p>가격 : 추가 요금 없음 (기본 제공)</p>';
-        }
-        infoBox.style.display = 'block';
-      } else {
-        infoBox.style.display = 'none';
-      }
-    });
-  });
-});
-</script>
-
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  var guideContainer = document.getElementById('guide-pack');
-  var guideBtns = guideContainer.querySelectorAll('.option-button');
-  var details = guideContainer.querySelector('.guide-details');
-  guideBtns.forEach(function(btn) {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      var isSel = btn.classList.toggle('selected');
-      // deselect others
-      guideBtns.forEach(function(other) { if (other!==btn) other.classList.remove('selected'); });
-      if (isSel) {
-        if (btn.textContent.trim() === '한국인') {
-          details.innerHTML = '<p>한국인 가이드와 전일정 동행합니다. 여행 오시는 모임의 특성, 요청 사항에 따라 가이드님을 배정해드립니다.</p><p>가격 : $220 / 팀</p>';
-        } else {
-          details.innerHTML = '<p>영어(또는 초급 한국어) 가능 가이드와 전일정 동행합니다.</p><p>가격 : 추가 요금 없음 (기본 제공)</p>';
-        }
-        details.classList.add('expanded');
-      } else {
-        details.classList.remove('expanded');
-      }
-    });
-  });
-});
-</script>
-
-
-<script>
-// Hotel-pack extra info toggle
-document.addEventListener('DOMContentLoaded', function(){
-  var hotelContainer = document.getElementById('hotel-pack');
-  var hotelBtns = hotelContainer.querySelectorAll('.option-button');
-  var hotelDetails = hotelContainer.querySelector('.hotel-details');
-  hotelBtns.forEach(function(btn){
-    btn.addEventListener('click', function(e){
-      e.preventDefault();
-      var sel = btn.classList.toggle('selected');
-      hotelBtns.forEach(function(other){
-        if(other !== btn) other.classList.remove('selected');
-      });
-      if(sel){
-        var text = btn.textContent.trim();
-        hotelDetails.innerHTML = '<p>' + text + ' : 상담 시 프로모션 호텔, 단가를 제공해드리겠습니다.</p>';
-        hotelDetails.classList.add('expanded');
-      } else {
-        hotelDetails.classList.remove('expanded');
-      }
-    });
-  });
-});
-</script>
-<script>
-function sendIframeHeight() {
-  if (window.parent !== window) {
-    window.parent.postMessage(
-      { type: "iframe-resize", height: document.body.scrollHeight },
-      "*"
-    );
-  }
-}
-
-// 최초 로드, 윈도우 리사이즈, DOM 변화마다 실행
-window.addEventListener("load", sendIframeHeight);
-window.addEventListener("resize", sendIframeHeight);
-setInterval(sendIframeHeight, 500); // 0.5초마다 체크 (더 짧게/길게 가능)
-</script>
+    }
+  </script>
 </body>
 </html>
