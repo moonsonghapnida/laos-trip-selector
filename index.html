@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <title>라오스 비엔티안(1박) - 방비엥 (2박) C-Pack 빠른견적</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <!-- ① EmailJS 라이브러리 반드시 head 안에 삽입 -->
+  <!-- EmailJS 라이브러리 -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
-    // ② 여기에 본인 EmailJS User ID 넣기!
     (function(){
-      emailjs.init('luKxEKdyyvY4hjYfo'); // 예시: 'PqQv1fg_GHTj2A6A4'
+      // 👇 아래 YOUR_USER_ID를 emailjs Public Key로 변경하세요 (예: luKxEKdyyvY4hjYfo)
+      emailjs.init('luKxEKdyyvY4hjYfo');
     })();
   </script>
   <style>
@@ -134,12 +134,9 @@
       <label class="contact-label" for="contactNote">기타 요청 사항 (선택)</label>
       <textarea class="contact-input" id="contactNote" rows="2" placeholder="예 ) 예약 관련 특이사항, 식단, 선택관광에 없는 추가 희망 일정 등"></textarea>
     </div>
-    <!-- ③ 견적 메일 전송 함수가 아래에 붙습니다 -->
     <button class="submit-btn" onclick="submitEstimate()">빠른 견적 보내기</button>
   </div>
   <script>
-    // ... (기존 견적 계산 JS 코드 그대로, 생략 없음, 위 답변 참조) ...
-    // 아래 부분부터 복사해서 붙여넣으세요
     const MAX_PERSON = 8;
     const extraUsdByPerson = {8:95,7:105,6:118,5:137,4:165,3:211,2:305};
     const vangviengOptions = [
@@ -180,6 +177,7 @@
         renderVangviengList();
         renderCareList();
         updateTotal();
+        sendHeightToParent();
       }
       personToggleGroup.appendChild(btn);
     }
@@ -192,6 +190,7 @@
         guideType = btn.getAttribute('data-guide');
         guidePrice = Number(btn.getAttribute('data-price'));
         updateTotal();
+        sendHeightToParent();
       }
     });
     const vangviengList = document.getElementById("vangviengList");
@@ -215,6 +214,7 @@
           }
           renderVangviengList();
           updateTotal();
+          sendHeightToParent();
         };
         row.appendChild(chk);
         const title = document.createElement("div");
@@ -242,9 +242,11 @@
               vangviengChecked[idx]=false;
               renderVangviengList();
               updateTotal();
+              sendHeightToParent();
             } else {
               renderVangviengList();
               updateTotal();
+              sendHeightToParent();
             }
             e.stopPropagation();
           };
@@ -264,6 +266,7 @@
       vangviengPersons = vangviengPersons.map(()=>0);
       renderVangviengList();
       updateTotal();
+      sendHeightToParent();
     }
     const careList = document.getElementById("careList");
     let careChecked = Array(careOptions.length).fill(false);
@@ -286,6 +289,7 @@
           }
           renderCareList();
           updateTotal();
+          sendHeightToParent();
         };
         row.appendChild(chk);
         const title = document.createElement("div");
@@ -313,9 +317,11 @@
               careChecked[idx]=false;
               renderCareList();
               updateTotal();
+              sendHeightToParent();
             } else {
               renderCareList();
               updateTotal();
+              sendHeightToParent();
             }
             e.stopPropagation();
           };
@@ -335,6 +341,7 @@
       carePersons = carePersons.map(()=>0);
       renderCareList();
       updateTotal();
+      sendHeightToParent();
     }
     const roomList = document.getElementById("roomList");
     let selectedRoomIdx = null;
@@ -362,6 +369,7 @@
           }
           updateRoomList();
           updateTotal();
+          sendHeightToParent();
         };
         const radio = document.createElement("input");
         radio.type = "radio";
@@ -376,6 +384,7 @@
           }
           updateRoomList();
           updateTotal();
+          sendHeightToParent();
           e.stopPropagation();
         };
         const title = document.createElement("div");
@@ -407,12 +416,14 @@
       singleRoomAdd += 1;
       updateRoomList();
       updateTotal();
+      sendHeightToParent();
     }
     window.resetSingleRoom = function(){
       singleRoomAdd = 0;
       selectedRoomIdx = null;
       updateRoomList();
       updateTotal();
+      sendHeightToParent();
     }
     function updateTotal(){
       let contract = personCount * 60000;
@@ -433,8 +444,7 @@
     renderCareList();
     updateRoomList();
     updateTotal();
-
-    // ★★★ EmailJS 전송
+    // EmailJS 전송
     function submitEstimate() {
       const travelDate = document.getElementById("travelDate").value.trim();
       if(!travelDate) { alert("여행일자를 선택해주세요."); document.getElementById("travelDate").focus(); return;}
@@ -453,8 +463,6 @@
       if(selectedRoomIdx!==null && roomOptions[selectedRoomIdx].price!==0) roomStr += ` (${totalRooms}객실)`;
       let contract = document.getElementById("contractPrice").innerText;
       let usd = document.getElementById("usdPrice").innerText;
-
-      // EmailJS로 메일 보내기
       emailjs.send('service_e6uns2x', 'template_hhk1zot', {
         travel_date: travelDate,
         name: name,
@@ -474,22 +482,19 @@
       });
     }
 
-  function sendHeightToParent() {
-    if (window.parent !== window) {
-      window.parent.postMessage({
-        type: "iframe-resize",
-        height: document.body.scrollHeight
-      }, "*");
+    // 자동 높이 parent에 전달 (iframe용)
+    function sendHeightToParent() {
+      if (window.parent !== window) {
+        window.parent.postMessage({
+          type: "iframe-resize",
+          height: document.body.scrollHeight
+        }, "*");
+      }
     }
-  }
-
-  // 페이지 최초 로드, 윈도우 크기 변경, 폼 토글 등 주요 시점마다 호출
-  window.addEventListener("load", sendHeightToParent);
-  window.addEventListener("resize", sendHeightToParent);
-
-  // 견적 폼에서 UI가 변경될 때마다 호출(예: 버튼 클릭, 토글, 견적 갱신 등)
-  const observer = new MutationObserver(sendHeightToParent);
-  observer.observe(document.body, { childList: true, subtree: true, attributes: true });
-</script>
+    window.addEventListener("load", sendHeightToParent);
+    window.addEventListener("resize", sendHeightToParent);
+    const observer = new MutationObserver(sendHeightToParent);
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+  </script>
 </body>
 </html>
