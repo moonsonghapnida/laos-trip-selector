@@ -473,6 +473,23 @@
         alert("견적 전송에 실패했습니다. 잠시 후 다시 시도해주세요.");
       });
     }
-  </script>
+
+  function sendHeightToParent() {
+    if (window.parent !== window) {
+      window.parent.postMessage({
+        type: "iframe-resize",
+        height: document.body.scrollHeight
+      }, "*");
+    }
+  }
+
+  // 페이지 최초 로드, 윈도우 크기 변경, 폼 토글 등 주요 시점마다 호출
+  window.addEventListener("load", sendHeightToParent);
+  window.addEventListener("resize", sendHeightToParent);
+
+  // 견적 폼에서 UI가 변경될 때마다 호출(예: 버튼 클릭, 토글, 견적 갱신 등)
+  const observer = new MutationObserver(sendHeightToParent);
+  observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+</script>
 </body>
 </html>
