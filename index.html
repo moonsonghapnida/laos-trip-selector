@@ -521,8 +521,12 @@ let lastSentHeight = 0;
 let lastSentTime = 0;
 function sendHeightToParent() {
   const height = document.body.scrollHeight;
-  // 100ms 이내 중복 방지
-  if (window.parent !== window && (lastSentHeight !== height || Date.now() - lastSentTime > 1000)) {
+  // 높이가 정말 다를 때만 전송 (100px 이상 차이날 때만, 또는 1초 이상 지난 경우)
+  if (
+    window.parent !== window &&
+    Math.abs(lastSentHeight - height) > 10 && // 10px 미만 변화는 무시
+    (Date.now() - lastSentTime > 300)
+  ) {
     window.parent.postMessage({
       type: "iframe-resize",
       height: height
@@ -532,13 +536,14 @@ function sendHeightToParent() {
     console.log("[iframe] Sent height to parent:", height);
   }
 }
+
 window.addEventListener("load", sendHeightToParent);
 window.addEventListener("resize", sendHeightToParent);
 
 const observer = new MutationObserver(() => {
-  setTimeout(sendHeightToParent, 120); // 바로가 아니라 약간의 지연(레이아웃 변화 반영 후)
+  setTimeout(sendHeightToParent, 100);
 });
-observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+observer.observe(document.body, { childList: true, subtree: true }); // <-- attributes: true 제거!
   </script>
 </body>
 </html>
