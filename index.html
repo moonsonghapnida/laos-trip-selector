@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>라오스 비엔티안(1박) - 방비엥 (2박) C-Pack 빠른견적</title>
   <meta name="viewport" content="width=480,user-scalable=no">
-  <!-- EmailJS 라이브러리 -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
     (function(){ emailjs.init('luKxEKdyyvY4hjYfo'); })();
@@ -12,9 +11,41 @@
   <style>
     html { font-size:15px;}
     body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; background: #f7f7fa; margin: 0; padding: 0; color: #222; font-size:1rem;}
-    .container { max-width: 480px; margin:32px auto; padding: 24px; background: #fff; border-radius: 18px; box-shadow: 0 2px 14px rgba(70, 85, 110, 0.12);}
+    .container { max-width: 880px; margin:32px auto; padding: 24px; background: #fff; border-radius: 18px; box-shadow: 0 2px 14px rgba(70, 85, 110, 0.12); }
+
+    /* 2단 컬럼 (PC) */
+    .form-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+    }
+    .form-col {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .form-col.left {
+      min-width: 300px; /* 필요시 조정 */
+      flex-basis: 48%;
+    }
+    .form-col.right {
+      min-width: 300px;
+      flex-basis: 48%;
+    }
+
+    /* 폼 구성요소 margin 조정 */
+    .section, .date-section, .result-section, .contact-section { margin-bottom: 24px; }
     h1 { font-size: 1.18rem; font-weight: bold; text-align: center; margin-bottom: 24px; color: #14508e; letter-spacing: -1px;}
-    .section { margin-bottom: 24px;}
+
+    /* 모바일에서 1단으로 변경 */
+    @media (max-width: 900px) {
+      .container { max-width: 99vw; padding: 7vw 2vw;}
+      .form-grid { flex-direction: column; gap: 0;}
+      .form-col.left, .form-col.right { flex-basis: 100%; min-width: 0;}
+    }
+    /* 이하 기존 스타일 */
     .section-label-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;}
     .section label { font-weight: 600; font-size: 0.98rem; color: #294a6b;}
     .person-desc { color:#b04d0c; font-size:0.85em; margin-top:5px; margin-bottom:-12px;}
@@ -117,76 +148,81 @@
 <!-- =================== 견적 폼 본문 =================== -->
 <div class="container" id="cpack-quickform">
   <h1>라오스 비엔티안(1박) - 방비엥 (2박) C-Pack 빠른견적</h1>
-  <!-- 여행일자 -->
-  <div class="date-section">
-    <label class="date-label" for="travelDate">여행일자 <span style="font-weight:400; color:#999; font-size:0.92em;">(출국일 기준, 필수)</span></label>
-    <div class="date-input-wrap">
-      <span class="date-icon">📅</span>
-      <input type="
-
-<input type="date" id="travelDate" class="date-input" required>
-    </div>
-  </div>
-  <!-- 여행인원 -->
-  <div class="section">
-    <label>여행인원 <span style="font-weight:400; color:#999; font-size:0.92em;">(2~8명, 예약금 인당 60,000원)</span></label>
-    <div class="toggle-group" id="personToggleGroup"></div>
-    <div class="person-desc">9명 이상 단체 할인 적용 가능, <b>개별 문의</b></div>
-  </div>
-  <!-- 가이드팩 -->
-  <div class="section">
-    <label>가이드팩 <span style="font-weight:400; color:#999; font-size:0.92em;">(단일 선택)</span></label>
-    <div class="toggle-group" id="guideToggleGroup">
-      <div class="toggle-btn selected" data-guide="kr" data-price="220">한국인 가이드<br><span style="font-size:0.91em; color:#bbe6fa;">$220/팀</span></div>
-      <div class="toggle-btn" data-guide="local" data-price="0">현지인 가이드<br><span style="font-size:0.91em; color:#55c;">추가요금 없음</span></div>
-    </div>
-  </div>
-  <!-- 선택관광(방비엥) -->
-  <div class="section">
-    <div class="section-label-row">
-      <label>선택관광 (방비엥)</label>
-      <button type="button" class="init-btn" onclick="resetVangvieng()">초기화</button>
-    </div>
-    <div class="option-list" id="vangviengList"></div>
-  </div>
-  <!-- 선택관광(케어팩) -->
-  <div class="section">
-    <div class="section-label-row">
-      <label>선택관광 (케어팩)</label>
-      <button type="button" class="init-btn" onclick="resetCare()">초기화</button>
-    </div>
-    <div class="option-list" id="careList"></div>
-  </div>
-  <!-- 숙박팩 -->
-  <div class="section">
-    <div class="section-label-row">
-      <label>숙박팩</label>
-      <div>
-        <button type="button" class="room-single-btn" onclick="addSingleRoom()">싱글룸 추가</button>
-        <button type="button" class="init-btn" onclick="resetSingleRoom()">초기화</button>
+  <div class="form-grid">
+    <!-- 왼쪽 컬럼: 날짜, 인원, 가이드, 방비엥, 케어팩 -->
+    <div class="form-col left">
+      <!-- 여행일자 -->
+      <div class="date-section">
+        <label class="date-label" for="travelDate">여행일자 <span style="font-weight:400; color:#999; font-size:0.92em;">(출국일 기준, 필수)</span></label>
+        <div class="date-input-wrap">
+          <span class="date-icon">📅</span>
+          <input type="date" id="travelDate" class="date-input" required>
+        </div>
+      </div>
+      <!-- 여행인원 -->
+      <div class="section">
+        <label>여행인원 <span style="font-weight:400; color:#999; font-size:0.92em;">(2~8명, 예약금 인당 60,000원)</span></label>
+        <div class="toggle-group" id="personToggleGroup"></div>
+        <div class="person-desc">9명 이상 단체 할인 적용 가능, <b>개별 문의</b></div>
+      </div>
+      <!-- 가이드팩 -->
+      <div class="section">
+        <label>가이드팩 <span style="font-weight:400; color:#999; font-size:0.92em;">(단일 선택)</span></label>
+        <div class="toggle-group" id="guideToggleGroup">
+          <div class="toggle-btn selected" data-guide="kr" data-price="220">한국인 가이드<br><span style="font-size:0.91em; color:#bbe6fa;">$220/팀</span></div>
+          <div class="toggle-btn" data-guide="local" data-price="0">현지인 가이드<br><span style="font-size:0.91em; color:#55c;">추가요금 없음</span></div>
+        </div>
+      </div>
+      <!-- 선택관광(방비엥) -->
+      <div class="section">
+        <div class="section-label-row">
+          <label>선택관광 (방비엥)</label>
+          <button type="button" class="init-btn" onclick="resetVangvieng()">초기화</button>
+        </div>
+        <div class="option-list" id="vangviengList"></div>
+      </div>
+      <!-- 선택관광(케어팩) -->
+      <div class="section">
+        <div class="section-label-row">
+          <label>선택관광 (케어팩)</label>
+          <button type="button" class="init-btn" onclick="resetCare()">초기화</button>
+        </div>
+        <div class="option-list" id="careList"></div>
       </div>
     </div>
-    <div class="option-list" id="roomList"></div>
+    <!-- 오른쪽 컬럼: 숙박, 결과, 연락처, 제출 -->
+    <div class="form-col right">
+      <!-- 숙박팩 -->
+      <div class="section">
+        <div class="section-label-row">
+          <label>숙박팩</label>
+          <div>
+            <button type="button" class="room-single-btn" onclick="addSingleRoom()">싱글룸 추가</button>
+            <button type="button" class="init-btn" onclick="resetSingleRoom()">초기화</button>
+          </div>
+        </div>
+        <div class="option-list" id="roomList"></div>
+      </div>
+      <!-- 결과 견적 -->
+      <div class="result-section" id="resultSection">
+        계약금 (한국에서 입금하실 금액): <span id="contractPrice">0원</span><br>
+        잔금 (현지에서 달러 지불하실 금액): <span id="usdPrice">$0</span>
+      </div>
+      <!-- 연락처 정보 -->
+      <div class="contact-section">
+        <label class="contact-label" for="contactName">대표자 성함 <span style="color:#d02b2b;">*</span></label>
+        <input type="text" class="contact-input" id="contactName" placeholder="대표자 이름을 입력하세요" required>
+        <label class="contact-label" for="contactPhone">연락 가능한 번호 또는 카카오톡 ID <span style="color:#d02b2b;">*</span></label>
+        <input type="text" class="contact-input" id="contactPhone" placeholder="휴대폰 번호 또는 카카오톡 ID" required>
+        <label class="contact-label" for="contactNote">기타 요청 사항 (선택)</label>
+        <textarea class="contact-input" id="contactNote" rows="2" placeholder="예 ) 예약 관련 특이사항, 식단, 선택관광에 없는 추가 희망 일정 등"></textarea>
+      </div>
+      <button class="submit-btn" onclick="submitEstimate()">빠른 견적 보내기</button>
+    </div>
   </div>
-  <!-- 결과 견적 -->
-  <div class="result-section" id="resultSection">
-    계약금 (한국에서 입금하실 금액): <span id="contractPrice">0원</span><br>
-    잔금 (현지에서 달러 지불하실 금액): <span id="usdPrice">$0</span>
-  </div>
-  <!-- 연락처 정보 -->
-  <div class="contact-section">
-    <label class="contact-label" for="contactName">대표자 성함 <span style="color:#d02b2b;">*</span></label>
-    <input type="text" class="contact-input" id="contactName" placeholder="대표자 이름을 입력하세요" required>
-    <label class="contact-label" for="contactPhone">연락 가능한 번호 또는 카카오톡 ID <span style="color:#d02b2b;">*</span></label>
-    <input type="text" class="contact-input" id="contactPhone" placeholder="휴대폰 번호 또는 카카오톡 ID" required>
-    <label class="contact-label" for="contactNote">기타 요청 사항 (선택)</label>
-    <textarea class="contact-input" id="contactNote" rows="2" placeholder="예 ) 예약 관련 특이사항, 식단, 선택관광에 없는 추가 희망 일정 등"></textarea>
-  </div>
-  <button class="submit-btn" onclick="submitEstimate()">빠른 견적 보내기</button>
 </div>
-
 <script>
-// 옵션 데이터
+// 옵션 데이터 (기존과 동일)
 const MAX_PERSON = 8;
 const extraUsdByPerson = {8:95,7:105,6:118,5:137,4:165,3:211,2:305};
 const vangviengOptions = [
