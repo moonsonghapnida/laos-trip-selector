@@ -517,6 +517,20 @@
         alert("견적 전송에 실패했습니다. 잠시 후 다시 시도해주세요.");
       });
     }
+        function sendHeightToParent() {
+      if (window.parent !== window) {
+        // 콘솔로 height 보내는지 확인용 로그 (디버깅시)
+        console.log("sending height to parent:", document.body.scrollHeight);
+        window.parent.postMessage({
+          type: "iframe-resize",
+          height: document.body.scrollHeight
+        }, "*");
+      }
+    }
+    window.addEventListener("load", sendHeightToParent);
+    window.addEventListener("resize", sendHeightToParent);
+    const observer = new MutationObserver(sendHeightToParent);
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
   </script>
 </body>
 </html>
