@@ -58,7 +58,7 @@
     .toggle-btn { background: #f4f7fb; border: 1.2px solid #c5d4ee; border-radius: 10px; padding: 9px 0 7px 0; font-size: 1em; flex: 1 1 0; text-align: center; cursor: pointer; margin-bottom: 6px; min-width: 42px; transition: all 0.12s;}
     .toggle-btn.selected { background: #296bb3; color: #fff; border-color: #14508e;}
     .option-list { margin-top: 6px;}
-    .option-row { display: flex; align-items: center; justify-content: space-between; background:#f4f7fb; border:1px solid #d0deeb; border-radius:10px; padding: 7px 11px 6px 11px; margin-bottom: 7px; min-height:38px; font-size:0.97em;}
+    .option-row { display: flex; align-items: center; justify-content: space-between; background:#f4f7fb; border:1px solid #d0deeb; border-radius:10px; padding: 7px 11px 6px 11px; margin-bottom: 7px; min-:38px; font-size:0.97em;}
     .option-row.selected { background: #296bb3; color: #fff;}
     .option-title { font-size: 0.97em; flex:2;}
     .option-unit { flex:1.4; font-size: 0.92em; color:#1849b9; text-align:center; transition:color .15s;}
@@ -517,21 +517,28 @@
         alert("견적 전송에 실패했습니다. 잠시 후 다시 시도해주세요.");
       });
     }
-         let lastSentHeight = 0;
-  function sendHeightToParent() {
-    const height = document.body.scrollHeight;
-    if (window.parent !== window && lastSentHeight !== height) {
-      window.parent.postMessage({
-    type: "iframe-resize",
-    height: document.body.scrollHeight
-      }, "*");
-      lastSentHeight = height;
-    }
+let lastSentHeight = 0;
+let lastSentTime = 0;
+function sendHeightToParent() {
+  const height = document.body.scrollHeight;
+  // 100ms 이내 중복 방지
+  if (window.parent !== window && (lastSentHeight !== height || Date.now() - lastSentTime > 1000)) {
+    window.parent.postMessage({
+      type: "iframe-resize",
+      height: height
+    }, "*");
+    lastSentHeight = height;
+    lastSentTime = Date.now();
+    console.log("[iframe] Sent height to parent:", height);
   }
-  window.addEventListener("load", sendHeightToParent);
-  window.addEventListener("resize", sendHeightToParent);
-  const observer = new MutationObserver(sendHeightToParent);
-  observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+}
+window.addEventListener("load", sendHeightToParent);
+window.addEventListener("resize", sendHeightToParent);
+
+const observer = new MutationObserver(() => {
+  setTimeout(sendHeightToParent, 120); // 바로가 아니라 약간의 지연(레이아웃 변화 반영 후)
+});
+observer.observe(document.body, { childList: true, subtree: true, attributes: true });
   </script>
 </body>
 </html>
