@@ -3,12 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <title>라오스 비엔티안(1박) - 방비엥 (2박) C-Pack 빠른견적</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=480,user-scalable=no">
+  <!-- EmailJS 라이브러리 -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function(){ emailjs.init('luKxEKdyyvY4hjYfo'); })();
+  </script>
   <style>
     html { font-size:15px;}
     body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; background: #f7f7fa; margin: 0; padding: 0; color: #222; font-size:1rem;}
-    .container { max-width: 480px; margin: 32px auto; padding: 24px; background: #fff; border-radius: 18px; box-shadow: 0 2px 14px rgba(70, 85, 110, 0.12);}
-    h1 { font-size: 1.15rem; font-weight: bold; text-align: center; margin-bottom: 24px; color: #14508e; letter-spacing: -1px;}
+    .container { max-width: 480px; margin:32px auto; padding: 24px; background: #fff; border-radius: 18px; box-shadow: 0 2px 14px rgba(70, 85, 110, 0.12);}
+    h1 { font-size: 1.18rem; font-weight: bold; text-align: center; margin-bottom: 24px; color: #14508e; letter-spacing: -1px;}
     .section { margin-bottom: 24px;}
     .section-label-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;}
     .section label { font-weight: 600; font-size: 0.98rem; color: #294a6b;}
@@ -17,12 +22,12 @@
     .toggle-btn { background: #f4f7fb; border: 1.2px solid #c5d4ee; border-radius: 10px; padding: 9px 0 7px 0; font-size: 1em; flex: 1 1 0; text-align: center; cursor: pointer; margin-bottom: 6px; min-width: 42px; transition: all 0.12s; position: relative;}
     .toggle-btn.selected { background: #296bb3; color: #fff; border-color: #14508e;}
     .option-list { margin-top: 6px;}
-    .option-row { display: flex; align-items: center; justify-content: space-between; background:#f4f7fb; border:1px solid #d0deeb; border-radius:10px; padding: 7px 11px 6px 11px; margin-bottom: 7px; min-height:38px; font-size:0.97em; cursor:pointer; }
-    .option-row.selected { background: #296bb3; color: #fff;}
-    .option-title { font-size: 0.97em; flex:2;}
-    .option-unit { flex:1.4; font-size: 0.92em; color:#1849b9; text-align:center; transition:color .15s;}
+    .option-row { display: flex; align-items: center; justify-content: space-between; background:#f4f7fb; border:1px solid #d0deeb; border-radius:10px; padding: 11px 14px 11px 14px; margin-bottom: 7px; min-height:38px; font-size:1em; cursor:pointer; transition:background .18s, color .18s;}
+    .option-row.selected { background: #296bb3; color: #fff; border-color: #14508e;}
+    .option-title { font-size: 1.01em; flex:2;}
+    .option-unit { flex:1.4; font-size: 0.96em; color:#1849b9; text-align:center; transition:color .15s;}
     .option-row.selected .option-unit { color:#fff;}
-    .option-total { flex:2.1; font-size: 0.95em; color:#d02b2b; font-weight:bold; text-align:right;}
+    .option-total { flex:2.1; font-size: 0.97em; color:#d02b2b; font-weight:bold; text-align:right;}
     .option-row.selected .option-total { color: #ffe400; }
     .option-controls {display:flex; align-items:center; gap:7px;}
     .option-minus-btn {background:#e9e7ff; color:#2857a3; border:1px solid #bdd2ea; font-size:0.96em; border-radius:7px; padding:3px 8px; margin-right:4px; cursor:pointer;}
@@ -39,8 +44,8 @@
     .submit-btn:active { background: #2a8ad1;}
     .room-single-btn {background:#fff7e0; color:#b26c18; border:1px solid #edd59c; font-size:0.92em; border-radius:7px; padding:4px 12px; margin-right:7px; cursor:pointer;}
     .room-single-btn:active {background:#ffeec4;}
-    .date-section {margin-bottom:24px;}
-    .date-label {font-weight:600; color:#294a6b; font-size:0.97em; margin-bottom:8px; display:block;}
+    .date-section {margin-bottom:22px;}
+    .date-label {font-weight:700; color:#294a6b; font-size:1.05em; margin-bottom:10px; display:block;}
     .date-input-wrap {display:flex; align-items:center; background:#f4f7fb; border-radius:10px; border:1.2px solid #c5d4ee; padding:12px 13px;}
     .date-input {border:none; background:transparent; font-size:1em; color:#1849b9; flex:1;}
     .date-input:focus {outline:none;}
@@ -59,385 +64,453 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>라오스 비엔티안(1박) - 방비엥 (2박) C-Pack 빠른견적</h1>
-    <!-- 여행일자 선택 -->
-    <div class="date-section">
-      <label class="date-label" for="travelDate">여행일자 <span style="font-weight:400; color:#999; font-size:0.92em;">(출국일 기준, 필수)</span></label>
-      <div class="date-input-wrap">
-        <span class="date-icon">📅</span>
-        <input type="date" id="travelDate" class="date-input" required>
-      </div>
+<!-- ======== 플로팅 버튼 ======== -->
+<div id="quick-btn-wrap" style="display:none;">
+  <button id="quick-estimate-btn-global" type="button" style="display:none;">
+    <span class="circle-icon" style="display:none;">📝</span>
+    <span class="btn-text">즉시 견적</span>
+    <span class="small-label" style="display:none;">견적</span>
+  </button>
+  <button id="kakao-btn-global" type="button">
+    <span class="btn-text">카카오 채널 즉시 상담</span>
+  </button>
+</div>
+<script>
+(function(){
+  function updateBtnDisplay() {
+    var wrap = document.getElementById('quick-btn-wrap');
+    var quickBtn = document.getElementById('quick-estimate-btn-global');
+    var kakaoBtn = document.getElementById('kakao-btn-global');
+    var isMobile = window.innerWidth <= 700;
+    var showEstimate = !!document.getElementById('cpack-quickform');
+    wrap.style.display = (showEstimate || !isMobile) ? "flex" : "none";
+    if (isMobile) {
+      quickBtn.style.display = showEstimate ? "flex" : "none";
+      kakaoBtn.style.display = "none";
+      quickBtn.querySelector('.circle-icon').style.display = "block";
+      quickBtn.querySelector('.btn-text').style.display = "none";
+      quickBtn.querySelector('.small-label').style.display = "block";
+    } else {
+      quickBtn.style.display = showEstimate ? "flex" : "none";
+      kakaoBtn.style.display = "flex";
+      quickBtn.querySelector('.circle-icon').style.display = "none";
+      quickBtn.querySelector('.btn-text').style.display = "block";
+      quickBtn.querySelector('.small-label').style.display = "none";
+    }
+  }
+  document.addEventListener("DOMContentLoaded", updateBtnDisplay);
+  window.addEventListener("resize", updateBtnDisplay);
+  setTimeout(updateBtnDisplay, 600);
+  setInterval(updateBtnDisplay, 1500);
+  document.getElementById('quick-estimate-btn-global').onclick = function(){
+    var form = document.getElementById('cpack-quickform');
+    if(form){
+      form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+  document.getElementById('kakao-btn-global').onclick = function(){
+    window.open('http://pf.kakao.com/_xoExmxfn', '_blank');
+  };
+})();
+</script>
+
+<!-- =================== 견적 폼 본문 =================== -->
+<div class="container" id="cpack-quickform">
+  <h1>라오스 비엔티안(1박) - 방비엥 (2박) C-Pack 빠른견적</h1>
+  <!-- 여행일자 -->
+  <div class="date-section">
+    <label class="date-label" for="travelDate">여행일자 <span style="font-weight:400; color:#999; font-size:0.92em;">(출국일 기준, 필수)</span></label>
+    <div class="date-input-wrap">
+      <span class="date-icon">📅</span>
+      <input type="
+
+<input type="date" id="travelDate" class="date-input" required>
     </div>
-    <!-- 여행인원 -->
-    <div class="section">
-      <label>여행인원 <span style="font-weight:400; color:#999; font-size:0.92em;">(2~8명, 예약금 인당 60,000원)</span></label>
-      <div class="toggle-group" id="personToggleGroup"></div>
-      <div class="person-desc">9명 이상 단체 할인 적용 가능, <b>개별 문의</b></div>
-    </div>
-    <!-- 가이드팩 -->
-    <div class="section">
-      <label>가이드팩 <span style="font-weight:400; color:#999; font-size:0.92em;">(단일 선택)</span></label>
-      <div class="toggle-group" id="guideToggleGroup">
-        <div class="toggle-btn" data-guide="kr" data-price="220">한국인 가이드<br><span style="font-size:0.91em; color:#e3f;">$220/팀</span></div>
-        <div class="toggle-btn" data-guide="local" data-price="0">현지인 가이드<br><span style="font-size:0.91em; color:#87e;">추가요금 없음</span></div>
-      </div>
-    </div>
-    <!-- 선택관광(방비엥) -->
-    <div class="section">
-      <div class="section-label-row">
-        <label>선택관광 (방비엥)</label>
-        <button type="button" class="init-btn" onclick="resetVangvieng()">초기화</button>
-      </div>
-      <div class="option-list" id="vangviengList"></div>
-    </div>
-    <!-- 선택관광(케어팩) -->
-    <div class="section">
-      <div class="section-label-row">
-        <label>선택관광 (케어팩)</label>
-        <button type="button" class="init-btn" onclick="resetCare()">초기화</button>
-      </div>
-      <div class="option-list" id="careList"></div>
-    </div>
-    <!-- 숙박팩 -->
-    <div class="section">
-      <div class="section-label-row">
-        <label>숙박팩</label>
-        <div>
-          <button type="button" class="room-single-btn" onclick="addSingleRoom()">싱글룸 추가</button>
-          <button type="button" class="init-btn" onclick="resetSingleRoom()">초기화</button>
-        </div>
-      </div>
-      <div class="option-list" id="roomList"></div>
-    </div>
-    <!-- 결과 견적 -->
-    <div class="result-section" id="resultSection">
-      계약금 (한국에서 입금하실 금액): <span id="contractPrice">0원</span>
-      <br>
-      잔금 (현지에서 달러 지불하실 금액): <span id="usdPrice">$0</span>
-    </div>
-    <!-- 연락처 정보 입력란 -->
-    <div class="contact-section">
-      <label class="contact-label" for="contactName">대표자 성함 <span style="color:#d02b2b;">*</span></label>
-      <input type="text" class="contact-input" id="contactName" placeholder="대표자 이름을 입력하세요" required>
-      <label class="contact-label" for="contactPhone">연락 가능한 번호 또는 카카오톡 ID <span style="color:#d02b2b;">*</span></label>
-      <input type="text" class="contact-input" id="contactPhone" placeholder="휴대폰 번호 또는 카카오톡 ID" required>
-      <label class="contact-label" for="contactNote">기타 요청 사항 (선택)</label>
-      <textarea class="contact-input" id="contactNote" rows="2" placeholder="예 ) 예약 관련 특이사항, 식단, 선택관광에 없는 추가 희망 일정 등"></textarea>
-    </div>
-    <button class="submit-btn" onclick="submitEstimate()">빠른 견적 보내기</button>
   </div>
-  <script>
-    // 옵션/버튼/상태 정의
-    const MAX_PERSON = 8;
-    const extraUsdByPerson = {8:95,7:105,6:118,5:137,4:165,3:211,2:305};
-    const vangviengOptions = [
-      {name: "열기구", price: 100},
-      {name: "페러모터", price: 85},
-      {name: "버기카", price: 18},
-      {name: "짚라인", price: 20},
-      {name: "롱테일보트", price: 10},
-      {name: "시크릿라군", price: 10}
-    ];
-    const careOptions = [
-      {name: "베트남식 이발관 풀코스 (90분)", price: 30},
-      {name: "라오 허벌 테라피", price: 40},
-      {name: "라오 전통 마사지 (2시간)", price: 25},
-      {name: "라오 전통 마사지 (1시간)", price: 13},
-      {name: "라오 오일 마사지 (2시간)", price: 35},
-      {name: "라오 오일 마사지 (1시간)", price: 20}
-    ];
-    const roomOptions = [
-      {name: "5성급 3박", price: 255000},
-      {name: "4성급 3박", price: 159000},
-      {name: "제가 예약할게요", price: 0}
-    ];
-    // 인원수 토글
-    const personToggleGroup = document.getElementById("personToggleGroup");
-    let personCount = 2;
-    for(let i=2; i<=MAX_PERSON; i++) {
-      const btn = document.createElement("div");
-      btn.className = "toggle-btn" + (i===2 ? " selected" : "");
-      btn.innerText = i + "명";
-      btn.setAttribute('data-person', i);
-      btn.onclick = function() {
-        document.querySelectorAll("#personToggleGroup .toggle-btn").forEach(b=>b.classList.remove("selected"));
-        btn.classList.add("selected");
-        personCount = i;
-        vangviengPersons = vangviengPersons.map((v,idx)=>vangviengChecked[idx]?personCount:0);
-        carePersons = carePersons.map((v,idx)=>careChecked[idx]?personCount:0);
-        updateRoomList();
+  <!-- 여행인원 -->
+  <div class="section">
+    <label>여행인원 <span style="font-weight:400; color:#999; font-size:0.92em;">(2~8명, 예약금 인당 60,000원)</span></label>
+    <div class="toggle-group" id="personToggleGroup"></div>
+    <div class="person-desc">9명 이상 단체 할인 적용 가능, <b>개별 문의</b></div>
+  </div>
+  <!-- 가이드팩 -->
+  <div class="section">
+    <label>가이드팩 <span style="font-weight:400; color:#999; font-size:0.92em;">(단일 선택)</span></label>
+    <div class="toggle-group" id="guideToggleGroup">
+      <div class="toggle-btn selected" data-guide="kr" data-price="220">한국인 가이드<br><span style="font-size:0.91em; color:#bbe6fa;">$220/팀</span></div>
+      <div class="toggle-btn" data-guide="local" data-price="0">현지인 가이드<br><span style="font-size:0.91em; color:#55c;">추가요금 없음</span></div>
+    </div>
+  </div>
+  <!-- 선택관광(방비엥) -->
+  <div class="section">
+    <div class="section-label-row">
+      <label>선택관광 (방비엥)</label>
+      <button type="button" class="init-btn" onclick="resetVangvieng()">초기화</button>
+    </div>
+    <div class="option-list" id="vangviengList"></div>
+  </div>
+  <!-- 선택관광(케어팩) -->
+  <div class="section">
+    <div class="section-label-row">
+      <label>선택관광 (케어팩)</label>
+      <button type="button" class="init-btn" onclick="resetCare()">초기화</button>
+    </div>
+    <div class="option-list" id="careList"></div>
+  </div>
+  <!-- 숙박팩 -->
+  <div class="section">
+    <div class="section-label-row">
+      <label>숙박팩</label>
+      <div>
+        <button type="button" class="room-single-btn" onclick="addSingleRoom()">싱글룸 추가</button>
+        <button type="button" class="init-btn" onclick="resetSingleRoom()">초기화</button>
+      </div>
+    </div>
+    <div class="option-list" id="roomList"></div>
+  </div>
+  <!-- 결과 견적 -->
+  <div class="result-section" id="resultSection">
+    계약금 (한국에서 입금하실 금액): <span id="contractPrice">0원</span><br>
+    잔금 (현지에서 달러 지불하실 금액): <span id="usdPrice">$0</span>
+  </div>
+  <!-- 연락처 정보 -->
+  <div class="contact-section">
+    <label class="contact-label" for="contactName">대표자 성함 <span style="color:#d02b2b;">*</span></label>
+    <input type="text" class="contact-input" id="contactName" placeholder="대표자 이름을 입력하세요" required>
+    <label class="contact-label" for="contactPhone">연락 가능한 번호 또는 카카오톡 ID <span style="color:#d02b2b;">*</span></label>
+    <input type="text" class="contact-input" id="contactPhone" placeholder="휴대폰 번호 또는 카카오톡 ID" required>
+    <label class="contact-label" for="contactNote">기타 요청 사항 (선택)</label>
+    <textarea class="contact-input" id="contactNote" rows="2" placeholder="예 ) 예약 관련 특이사항, 식단, 선택관광에 없는 추가 희망 일정 등"></textarea>
+  </div>
+  <button class="submit-btn" onclick="submitEstimate()">빠른 견적 보내기</button>
+</div>
+
+<script>
+// 옵션 데이터
+const MAX_PERSON = 8;
+const extraUsdByPerson = {8:95,7:105,6:118,5:137,4:165,3:211,2:305};
+const vangviengOptions = [
+  {name: "열기구", price: 100},
+  {name: "페러모터", price: 85},
+  {name: "버기카", price: 18},
+  {name: "짚라인", price: 20},
+  {name: "롱테일보트", price: 10},
+  {name: "시크릿라군", price: 10}
+];
+const careOptions = [
+  {name: "베트남식 이발관 풀코스 (90분)", price: 30},
+  {name: "라오 허벌 테라피", price: 40},
+  {name: "라오 전통 마사지 (2시간)", price: 25},
+  {name: "라오 전통 마사지 (1시간)", price: 13},
+  {name: "라오 오일 마사지 (2시간)", price: 35},
+  {name: "라오 오일 마사지 (1시간)", price: 20}
+];
+const roomOptions = [
+  {name: "5성급 3박", price: 255000},
+  {name: "4성급 3박", price: 159000},
+  {name: "제가 예약할게요", price: 0}
+];
+
+// 여행인원
+const personToggleGroup = document.getElementById("personToggleGroup");
+let personCount = 2;
+for(let i=2; i<=MAX_PERSON; i++) {
+  const btn = document.createElement("div");
+  btn.className = "toggle-btn" + (i===2 ? " selected" : "");
+  btn.innerText = i + "명";
+  btn.setAttribute('data-person', i);
+  btn.onclick = function() {
+    document.querySelectorAll("#personToggleGroup .toggle-btn").forEach(b=>b.classList.remove("selected"));
+    btn.classList.add("selected");
+    personCount = i;
+    vangviengPersons = vangviengPersons.map((v,idx)=>vangviengChecked[idx]?personCount:0);
+    carePersons = carePersons.map((v,idx)=>careChecked[idx]?personCount:0);
+    updateRoomList();
+    renderVangviengList();
+    renderCareList();
+    updateTotal();
+    sendHeightToParent();
+  }
+  personToggleGroup.appendChild(btn);
+}
+
+// 가이드팩
+let guideType = "kr";
+let guidePrice = 220;
+document.querySelectorAll("#guideToggleGroup .toggle-btn").forEach(btn=>{
+  btn.onclick = function(){
+    document.querySelectorAll("#guideToggleGroup .toggle-btn").forEach(b=>b.classList.remove("selected"));
+    btn.classList.add("selected");
+    guideType = btn.getAttribute('data-guide');
+    guidePrice = Number(btn.getAttribute('data-price'));
+    updateTotal();
+    sendHeightToParent();
+  }
+});
+
+// 선택관광(방비엥) 버튼화
+const vangviengList = document.getElementById("vangviengList");
+let vangviengChecked = Array(vangviengOptions.length).fill(false);
+let vangviengPersons = Array(vangviengOptions.length).fill(0);
+function renderVangviengList() {
+  vangviengList.innerHTML = "";
+  vangviengOptions.forEach((opt, idx) => {
+    const row = document.createElement("div");
+    row.className = "option-row" + (vangviengChecked[idx] ? " selected" : "");
+    row.style.cursor = "pointer";
+    row.onclick = function(){
+      vangviengChecked[idx] = !vangviengChecked[idx];
+      vangviengPersons[idx] = vangviengChecked[idx] ? personCount : 0;
+      renderVangviengList();
+      updateTotal();
+      sendHeightToParent();
+    };
+    const title = document.createElement("div");
+    title.className = "option-title";
+    title.innerText = opt.name;
+    row.appendChild(title);
+    const unit = document.createElement("div");
+    unit.className = "option-unit";
+    if(vangviengChecked[idx]) {
+      unit.innerText = `$${opt.price} × ${vangviengPersons[idx]}명 = $${vangviengPersons[idx]*opt.price}`;
+    } else {
+      unit.innerText = `$${opt.price}/인당`;
+    }
+    row.appendChild(unit);
+    const controls = document.createElement("div");
+    controls.className = "option-controls";
+    if(vangviengChecked[idx]) {
+      const minusBtn = document.createElement("button");
+      minusBtn.type = "button";
+      minusBtn.className = "option-minus-btn";
+      minusBtn.innerText = "-1명";
+      minusBtn.onclick = function(e){
+        vangviengPersons[idx] = Math.max(0, vangviengPersons[idx]-1);
+        if(vangviengPersons[idx]===0) {
+          vangviengChecked[idx]=false;
+        }
         renderVangviengList();
+        updateTotal();
+        sendHeightToParent();
+        e.stopPropagation(); // row 클릭 이벤트 방지
+      };
+      controls.appendChild(minusBtn);
+      const total = document.createElement("div");
+      total.className = "option-total";
+      total.id = "vvTotal"+idx;
+      total.innerText = `$${vangviengPersons[idx]*opt.price} / 총 ${vangviengPersons[idx]}명`;
+      controls.appendChild(total);
+    }
+    row.appendChild(controls);
+    vangviengList.appendChild(row);
+  });
+}
+window.resetVangvieng = function(){
+  vangviengChecked = vangviengChecked.map(()=>false);
+  vangviengPersons = vangviengPersons.map(()=>0);
+  renderVangviengList();
+  updateTotal();
+  sendHeightToParent();
+}
+
+// 선택관광(케어팩) 버튼화
+const careList = document.getElementById("careList");
+let careChecked = Array(careOptions.length).fill(false);
+let carePersons = Array(careOptions.length).fill(0);
+function renderCareList() {
+  careList.innerHTML = "";
+  careOptions.forEach((opt, idx) => {
+    const row = document.createElement("div");
+    row.className = "option-row" + (careChecked[idx] ? " selected" : "");
+    row.style.cursor = "pointer";
+    row.onclick = function(){
+      careChecked[idx] = !careChecked[idx];
+      carePersons[idx] = careChecked[idx] ? personCount : 0;
+      renderCareList();
+      updateTotal();
+      sendHeightToParent();
+    };
+    const title = document.createElement("div");
+    title.className = "option-title";
+    title.innerText = opt.name;
+    row.appendChild(title);
+    const unit = document.createElement("div");
+    unit.className = "option-unit";
+    if(careChecked[idx]) {
+      unit.innerText = `$${opt.price} × ${carePersons[idx]}명 = $${carePersons[idx]*opt.price}`;
+    } else {
+      unit.innerText = `$${opt.price}/인당`;
+    }
+    row.appendChild(unit);
+    const controls = document.createElement("div");
+    controls.className = "option-controls";
+    if(careChecked[idx]) {
+      const minusBtn = document.createElement("button");
+      minusBtn.type = "button";
+      minusBtn.className = "option-minus-btn";
+      minusBtn.innerText = "-1명";
+      minusBtn.onclick = function(e){
+        carePersons[idx] = Math.max(0, carePersons[idx]-1);
+        if(carePersons[idx]===0) {
+          careChecked[idx]=false;
+        }
         renderCareList();
         updateTotal();
         sendHeightToParent();
+        e.stopPropagation();
+      };
+      controls.appendChild(minusBtn);
+      const total = document.createElement("div");
+      total.className = "option-total";
+      total.id = "careTotal"+idx;
+      total.innerText = `$${carePersons[idx]*opt.price} / 총 ${carePersons[idx]}명`;
+      controls.appendChild(total);
+    }
+    row.appendChild(controls);
+    careList.appendChild(row);
+  });
+}
+window.resetCare = function(){
+  careChecked = careChecked.map(()=>false);
+  carePersons = carePersons.map(()=>0);
+  renderCareList();
+  updateTotal();
+  sendHeightToParent();
+}
+
+// 숙박팩(버튼화, 단일선택)
+const roomList = document.getElementById("roomList");
+let selectedRoomIdx = null;
+let singleRoomAdd = 0;
+function updateRoomList(){
+  roomList.innerHTML = "";
+  let baseRoomCnt = Math.ceil(personCount/2);
+  let totalRooms = baseRoomCnt + singleRoomAdd;
+  roomOptions.forEach((opt, idx) => {
+    const row = document.createElement("div");
+    row.className = "option-row" + (selectedRoomIdx === idx ? " selected" : "");
+    row.style.cursor = "pointer";
+    row.onclick = function(){
+      if(selectedRoomIdx === idx){
+        selectedRoomIdx = null;
+      } else {
+        selectedRoomIdx = idx;
       }
-      personToggleGroup.appendChild(btn);
-    }
-    // 가이드 선택
-    let guideType = "kr";
-    let guidePrice = 220;
-    document.querySelectorAll("#guideToggleGroup .toggle-btn").forEach(btn=>{
-      btn.onclick = function(){
-        document.querySelectorAll("#guideToggleGroup .toggle-btn").forEach(b=>b.classList.remove("selected"));
-        btn.classList.add("selected");
-        guideType = btn.getAttribute('data-guide');
-        guidePrice = Number(btn.getAttribute('data-price'));
-        updateTotal();
-        sendHeightToParent();
-      }
-    });
-    // 선택관광(방비엥) 버튼화
-    const vangviengList = document.getElementById("vangviengList");
-    let vangviengChecked = Array(vangviengOptions.length).fill(false);
-    let vangviengPersons = Array(vangviengOptions.length).fill(0);
-    function renderVangviengList() {
-      vangviengList.innerHTML = "";
-      vangviengOptions.forEach((opt, idx) => {
-        const row = document.createElement("div");
-        row.className = "option-row" + (vangviengChecked[idx] ? " selected" : "");
-        row.onclick = function(){
-          vangviengChecked[idx] = !vangviengChecked[idx];
-          vangviengPersons[idx] = vangviengChecked[idx] ? personCount : 0;
-          renderVangviengList(); updateTotal(); sendHeightToParent();
-        };
-        const title = document.createElement("div");
-        title.className = "option-title";
-        title.innerText = opt.name;
-        row.appendChild(title);
-        const unit = document.createElement("div");
-        unit.className = "option-unit";
-        unit.innerText = vangviengChecked[idx] ? `$${opt.price} × ${vangviengPersons[idx]}명 = $${vangviengPersons[idx]*opt.price}` : `$${opt.price}/인당`;
-        row.appendChild(unit);
-        const controls = document.createElement("div");
-        controls.className = "option-controls";
-        if(vangviengChecked[idx]) {
-          const minusBtn = document.createElement("button");
-          minusBtn.type = "button";
-          minusBtn.className = "option-minus-btn";
-          minusBtn.innerText = "-1명";
-          minusBtn.onclick = function(e){
-            vangviengPersons[idx] = Math.max(0, vangviengPersons[idx]-1);
-            if(vangviengPersons[idx]===0) vangviengChecked[idx]=false;
-            renderVangviengList(); updateTotal(); sendHeightToParent();
-            e.stopPropagation();
-          };
-          controls.appendChild(minusBtn);
-          const total = document.createElement("div");
-          total.className = "option-total";
-          total.id = "vvTotal"+idx;
-          total.innerText = `$${vangviengPersons[idx]*opt.price} / 총 ${vangviengPersons[idx]}명`;
-          controls.appendChild(total);
-        }
-        row.appendChild(controls);
-        vangviengList.appendChild(row);
-      });
-    }
-    window.resetVangvieng = function(){
-      vangviengChecked = vangviengChecked.map(()=>false);
-      vangviengPersons = vangviengPersons.map(()=>0);
-      renderVangviengList(); updateTotal(); sendHeightToParent();
-    }
-    // 선택관광(케어팩) 버튼화
-    const careList = document.getElementById("careList");
-    let careChecked = Array(careOptions.length).fill(false);
-    let carePersons = Array(careOptions.length).fill(0);
-    function renderCareList() {
-      careList.innerHTML = "";
-      careOptions.forEach((opt, idx) => {
-        const row = document.createElement("div");
-        row.className = "option-row" + (careChecked[idx] ? " selected" : "");
-        row.onclick = function(){
-          careChecked[idx] = !careChecked[idx];
-          carePersons[idx] = careChecked[idx] ? personCount : 0;
-          renderCareList(); updateTotal(); sendHeightToParent();
-        };
-        const title = document.createElement("div");
-        title.className = "option-title";
-        title.innerText = opt.name;
-        row.appendChild(title);
-        const unit = document.createElement("div");
-        unit.className = "option-unit";
-        unit.innerText = careChecked[idx] ? `$${opt.price} × ${carePersons[idx]}명 = $${carePersons[idx]*opt.price}` : `$${opt.price}/인당`;
-        row.appendChild(unit);
-        const controls = document.createElement("div");
-        controls.className = "option-controls";
-        if(careChecked[idx]) {
-          const minusBtn = document.createElement("button");
-          minusBtn.type = "button";
-          minusBtn.className = "option-minus-btn";
-          minusBtn.innerText = "-1명";
-          minusBtn.onclick = function(e){
-            carePersons[idx] = Math.max(0, carePersons[idx]-1);
-            if(carePersons[idx]===0) careChecked[idx]=false;
-            renderCareList(); updateTotal(); sendHeightToParent();
-            e.stopPropagation();
-          };
-          controls.appendChild(minusBtn);
-          const total = document.createElement("div");
-          total.className = "option-total";
-          total.id = "careTotal"+idx;
-          total.innerText = `$${carePersons[idx]*opt.price} / 총 ${carePersons[idx]}명`;
-          controls.appendChild(total);
-        }
-        row.appendChild(controls);
-        careList.appendChild(row);
-      });
-    }
-    window.resetCare = function(){
-      careChecked = careChecked.map(()=>false);
-      carePersons = carePersons.map(()=>0);
-      renderCareList(); updateTotal(); sendHeightToParent();
-    }
-    // 숙박팩
-    const roomList = document.getElementById("roomList");
-    let selectedRoomIdx = null;
-    let singleRoomAdd = 0;
-    function updateRoomList(){
-      roomList.innerHTML = "";
-      let baseRoomCnt = Math.ceil(personCount/2);
-      let totalRooms = baseRoomCnt + singleRoomAdd;
-      roomOptions.forEach((opt, idx) => {
-        const row = document.createElement("div");
-        row.className = "option-row";
-        row.style.cursor = "pointer";
-        if(selectedRoomIdx === idx){
-          row.style.background = "#296bb3";
-          row.style.color = "#fff";
-        } else {
-          row.style.background = "#f4f7fb";
-          row.style.color = "#222";
-        }
-        row.onclick = function(){
-          if(selectedRoomIdx === idx){
-            selectedRoomIdx = null;
-          } else {
-            selectedRoomIdx = idx;
-          }
-          updateRoomList();
-          updateTotal();
-          sendHeightToParent();
-        };
-        const radio = document.createElement("input");
-        radio.type = "radio";
-        radio.name = "roomsel";
-        radio.checked = (selectedRoomIdx===idx);
-        radio.style.marginRight = "10px";
-        radio.onclick = e=>{
-          if(selectedRoomIdx === idx){
-            selectedRoomIdx = null;
-          } else {
-            selectedRoomIdx = idx;
-          }
-          updateRoomList();
-          updateTotal();
-          sendHeightToParent();
-          e.stopPropagation();
-        };
-        const title = document.createElement("div");
-        title.className = "option-title";
-        title.innerText = opt.name;
-        const unit = document.createElement("div");
-        unit.className = "option-unit";
-        if(opt.price===0){
-          unit.innerText = "0원";
-        } else {
-          unit.innerText = `${opt.price.toLocaleString()}원/객실`;
-        }
-        const total = document.createElement("div");
-        total.className = "option-total";
-        total.id = "roomTotal"+idx;
-        if(opt.price===0){
-          total.innerText = "0원";
-        } else {
-          total.innerText = `${(totalRooms*opt.price).toLocaleString()}원 / ${totalRooms}객실`;
-        }
-        row.appendChild(radio);
-        row.appendChild(title);
-        row.appendChild(unit);
-        row.appendChild(total);
-        roomList.appendChild(row);
-      });
-    }
-    window.addSingleRoom = function(){
-      singleRoomAdd += 1;
       updateRoomList();
       updateTotal();
       sendHeightToParent();
+    };
+    const title = document.createElement("div");
+    title.className = "option-title";
+    title.innerText = opt.name;
+    const unit = document.createElement("div");
+    unit.className = "option-unit";
+    if(opt.price===0){
+      unit.innerText = "0원";
+    } else {
+      unit.innerText = `${opt.price.toLocaleString()}원/객실`;
     }
-    window.resetSingleRoom = function(){
-      singleRoomAdd = 0;
-      selectedRoomIdx = null;
-      updateRoomList();
-      updateTotal();
-      sendHeightToParent();
+    const total = document.createElement("div");
+    total.className = "option-total";
+    total.id = "roomTotal"+idx;
+    if(opt.price===0){
+      total.innerText = "0원";
+    } else {
+      total.innerText = `${(totalRooms*opt.price).toLocaleString()}원 / ${totalRooms}객실`;
     }
-    function updateTotal(){
-      let contract = personCount * 60000;
-      let baseRoomCnt = Math.ceil(personCount/2);
-      let totalRooms = baseRoomCnt + singleRoomAdd;
-      let roomPrice = (selectedRoomIdx !== null) ? roomOptions[selectedRoomIdx].price : 0;
-      if(selectedRoomIdx !== null && roomPrice>0) contract += totalRooms*roomPrice;
-      let usd = 0;
-      if(guideType==="kr") usd += 220;
-      vangviengOptions.forEach((opt, idx) => { usd += vangviengPersons[idx]*opt.price; });
-      careOptions.forEach((opt, idx) => { usd += carePersons[idx]*opt.price; });
-      let extraUsd = extraUsdByPerson[personCount] ? extraUsdByPerson[personCount] * personCount : 0;
-      usd += extraUsd;
-      document.getElementById("contractPrice").innerText = contract.toLocaleString()+"원";
-      document.getElementById("usdPrice").innerText = "$"+usd.toLocaleString();
-    }
-    renderVangviengList();
-    renderCareList();
-    updateRoomList();
-    updateTotal();
-    // EmailJS 전송 (생략 - 이전과 동일하게 사용)
-    function submitEstimate() {
-      const travelDate = document.getElementById("travelDate").value.trim();
-      if(!travelDate) { alert("여행일자를 선택해주세요."); document.getElementById("travelDate").focus(); return;}
-      const name = document.getElementById("contactName").value.trim();
-      const phone = document.getElementById("contactPhone").value.trim();
-      const note = document.getElementById("contactNote").value.trim();
-      if(!name) { alert("대표자 성함을 입력해주세요."); document.getElementById("contactName").focus(); return;}
-      if(!phone) { alert("연락 가능한 번호 또는 카카오톡 ID를 입력해주세요."); document.getElementById("contactPhone").focus(); return;}
-      let persons = personCount + "명";
-      let guide = guideType === "kr" ? "한국인 가이드 ($220/팀)" : "현지인 가이드 (추가요금 없음)";
-      let vangStr = vangviengOptions.map((opt, i)=> vangviengPersons[i]>0? `${opt.name} (${vangviengPersons[i]}명)`:'').filter(Boolean).join(', ') || '없음';
-      let careStr = careOptions.map((opt, i)=> carePersons[i]>0? `${opt.name} (${carePersons[i]}명)`:'').filter(Boolean).join(', ') || '없음';
-      let baseRoomCnt = Math.ceil(personCount/2);
-      let totalRooms = baseRoomCnt + singleRoomAdd;
-      let roomStr = selectedRoomIdx!==null ? roomOptions[selectedRoomIdx].name : "미선택";
-      if(selectedRoomIdx!==null && roomOptions[selectedRoomIdx].price!==0) roomStr += ` (${totalRooms}객실)`;
-      let contract = document.getElementById("contractPrice").innerText;
-      let usd = document.getElementById("usdPrice").innerText;
-      alert(
-        "[미리보기]\n여행일자: " + travelDate +
-        "\n대표자: " + name +
-        "\n연락처: " + phone +
-        "\n여행인원: " + persons +
-        "\n가이드: " + guide +
-        "\n선택관광(방비엥): " + vangStr +
-        "\n선택관광(케어팩): " + careStr +
-        "\n숙박팩: " + roomStr +
-        "\n계약금: " + contract +
-        "\n잔금: " + usd +
-        (note ? "\n기타: " + note : "")
-      );
-      // 실제 전송 구현은 EmailJS(이전과 동일)
-    }
-    // 자동 높이 parent에 전달 (iframe용)
-    function sendHeightToParent() {
-      if (window.parent !== window) {
-        window.parent.postMessage({
-          type: "iframe-resize",
-          height: document.body.scrollHeight
-        }, "*");
-      }
-    }
-    window.addEventListener("load", sendHeightToParent);
-    window.addEventListener("resize", sendHeightToParent);
-    const observer = new MutationObserver(sendHeightToParent);
-    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
-  </script>
+    row.appendChild(title);
+    row.appendChild(unit);
+    row.appendChild(total);
+    roomList.appendChild(row);
+  });
+}
+window.addSingleRoom = function(){
+  singleRoomAdd += 1;
+  updateRoomList();
+  updateTotal();
+  sendHeightToParent();
+}
+window.resetSingleRoom = function(){
+  singleRoomAdd = 0;
+  selectedRoomIdx = null;
+  updateRoomList();
+  updateTotal();
+  sendHeightToParent();
+}
+
+// 견적 계산
+function updateTotal(){
+  let contract = personCount * 60000;
+  let baseRoomCnt = Math.ceil(personCount/2);
+  let totalRooms = baseRoomCnt + singleRoomAdd;
+  let roomPrice = (selectedRoomIdx !== null) ? roomOptions[selectedRoomIdx].price : 0;
+  if(selectedRoomIdx !== null && roomPrice>0) contract += totalRooms*roomPrice;
+  let usd = 0;
+  if(guideType==="kr") usd += 220;
+  vangviengOptions.forEach((opt, idx) => { usd += vangviengPersons[idx]*opt.price; });
+  careOptions.forEach((opt, idx) => { usd += carePersons[idx]*opt.price; });
+  let extraUsd = extraUsdByPerson[personCount] ? extraUsdByPerson[personCount] * personCount : 0;
+  usd += extraUsd;
+  document.getElementById("contractPrice").innerText = contract.toLocaleString()+"원";
+  document.getElementById("usdPrice").innerText = "$"+usd.toLocaleString();
+}
+renderVangviengList();
+renderCareList();
+updateRoomList();
+updateTotal();
+
+// EmailJS 견적 전송
+function submitEstimate() {
+  const travelDate = document.getElementById("travelDate").value.trim();
+  if(!travelDate) { alert("여행일자를 선택해주세요."); document.getElementById("travelDate").focus(); return;}
+  const name = document.getElementById("contactName").value.trim();
+  const phone = document.getElementById("contactPhone").value.trim();
+  const note = document.getElementById("contactNote").value.trim();
+  if(!name) { alert("대표자 성함을 입력해주세요."); document.getElementById("contactName").focus(); return;}
+  if(!phone) { alert("연락 가능한 번호 또는 카카오톡 ID를 입력해주세요."); document.getElementById("contactPhone").focus(); return;}
+  let persons = personCount + "명";
+  let guide = guideType === "kr" ? "한국인 가이드 ($220/팀)" : "현지인 가이드 (추가요금 없음)";
+  let vangStr = vangviengOptions.map((opt, i)=> vangviengPersons[i]>0? `${opt.name} (${vangviengPersons[i]}명)`:'').filter(Boolean).join(', ') || '없음';
+  let careStr = careOptions.map((opt, i)=> carePersons[i]>0? `${opt.name} (${carePersons[i]}명)`:'').filter(Boolean).join(', ') || '없음';
+  let baseRoomCnt = Math.ceil(personCount/2);
+  let totalRooms = baseRoomCnt + singleRoomAdd;
+  let roomStr = selectedRoomIdx!==null ? roomOptions[selectedRoomIdx].name : "미선택";
+  if(selectedRoomIdx!==null && roomOptions[selectedRoomIdx].price!==0) roomStr += ` (${totalRooms}객실)`;
+  let contract = document.getElementById("contractPrice").innerText;
+  let usd = document.getElementById("usdPrice").innerText;
+  // emailjs 전송
+  emailjs.send('service_e6uns2x', 'template_8pyzye5', {
+    travel_date: travelDate,
+    name: name,
+    phone: phone,
+    persons: persons,
+    guide: guide,
+    vangvieng: vangStr,
+    care: careStr,
+    room: roomStr,
+    contract: contract,
+    usd: usd,
+    note: note
+  }).then(function(response) {
+    alert("견적이 성공적으로 전송되었습니다!");
+  }, function(error) {
+    alert("견적 전송에 실패했습니다. 잠시 후 다시 시도해주세요.");
+  });
+}
+
+// iframe 자동 높이 parent로 전달
+function sendHeightToParent() {
+  if (window.parent !== window) {
+    window.parent.postMessage({
+      type: "iframe-resize",
+      height: document.body.scrollHeight
+    }, "*");
+  }
+}
+window.addEventListener("load", sendHeightToParent);
+window.addEventListener("resize", sendHeightToParent);
+const observer = new MutationObserver(sendHeightToParent);
+observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+</script>
 </body>
 </html>
