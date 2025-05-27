@@ -522,8 +522,8 @@
     const height = document.body.scrollHeight;
     if (window.parent !== window && lastSentHeight !== height) {
       window.parent.postMessage({
-        type: "iframe-resize",
-        height: height
+    type: "iframe-resize",
+    height: document.body.scrollHeight
       }, "*");
       lastSentHeight = height;
     }
