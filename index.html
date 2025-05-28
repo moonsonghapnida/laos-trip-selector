@@ -12,103 +12,116 @@
     html { font-size:15px;}
     body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; background: #f7f7fa; margin: 0; padding: 0; color: #222; font-size:1rem;}
     .container { max-width: 880px; margin:32px auto; padding: 24px; background: #fff; border-radius: 18px; box-shadow: 0 2px 14px rgba(70, 85, 110, 0.12); }
-    .form-grid { display: flex; flex-wrap: wrap; gap: 32px;}
-    .form-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 0;}
-    .form-col.left, .form-col.right { min-width: 300px; flex-basis: 48%;}
 
-    /* ===== 기본 스타일 ===== */
+    /* 2단 컬럼 (PC) */
+    .form-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+    }
+    .form-col {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .form-col.left {
+      min-width: 300px; /* 필요시 조정 */
+      flex-basis: 48%;
+    }
+    .form-col.right {
+      min-width: 300px;
+      flex-basis: 48%;
+    }
+
     .section, .date-section, .result-section, .contact-section { margin-bottom: 24px; }
     h1 { font-size: 1.18rem; font-weight: bold; text-align: center; margin-bottom: 24px; color: #14508e; letter-spacing: -1px;}
+
+    /* 견적 금액 박스 타이틀/설명/금액 크게 */
+    .result-section .result-title {
+      font-size: 1.21em;
+      font-weight: bold;
+      color: #17508e;
+      margin-bottom: 2px;
+    }
+    .result-section .result-desc {
+      font-size: 0.95em;
+      color: #989898;
+      margin-bottom: 10px;
+    }
+    .result-section .result-big {
+      font-size: 1.5em;   /* 2pt ↑ */
+      font-weight: 700;
+      color: #d02b2b;
+      margin-left: 3px;
+    }
+
+    /* 옵션(선택관광/숙박) 스타일 */
     .section-label-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;}
-    .section label, .date-label { font-weight: 700; font-size: 1.06rem; color: #294a6b;}
-    .person-desc { color:#b04d0c; font-size:0.92em; margin-top:5px; margin-bottom:-12px; font-weight:600;}
+    .section label { font-weight: 700; font-size: 1.06rem; color: #294a6b;}
+    .person-desc { color:#b04d0c; font-size:0.89em; margin-top:5px; margin-bottom:-12px; font-weight:600;}
     .toggle-group { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 7px;}
-    .toggle-btn { background: #f4f7fb; border: 1.2px solid #c5d4ee; border-radius: 10px; padding: 9px 0 7px 0; font-size: 1em; flex: 1 1 0; text-align: center; cursor: pointer; margin-bottom: 6px; min-width: 42px; transition: all 0.12s; position: relative; font-weight:700;}
+    .toggle-btn { background: #f4f7fb; border: 1.2px solid #c5d4ee; border-radius: 10px; padding: 9px 0 7px 0; font-size: 1.01em; flex: 1 1 0; text-align: center; cursor: pointer; margin-bottom: 6px; min-width: 42px; transition: all 0.12s; position: relative; font-weight:800;}
     .toggle-btn.selected { background: #296bb3; color: #fff; border-color: #14508e;}
     .option-list { margin-top: 6px;}
-    .option-row { display: flex; align-items: center; justify-content: space-between; background:#f4f7fb; border:1px solid #d0deeb; border-radius:10px; padding: 11px 14px 11px 14px; margin-bottom: 7px; min-height:38px; font-size:1em; cursor:pointer; transition:background .18s, color .18s; position:relative; font-weight:700;}
+    .option-row { display: flex; align-items: center; justify-content: space-between; background:#f4f7fb; border:1px solid #d0deeb; border-radius:10px; padding: 11px 14px 11px 14px; margin-bottom: 7px; min-height:38px; font-size:1.01em; cursor:pointer; transition:background .18s, color .18s; font-weight:800;}
     .option-row.selected { background: #296bb3; color: #fff; border-color: #14508e;}
-    .option-title { font-size: 1.01em; flex:2;}
-    .option-unit { flex:1.4; font-size: 0.96em; color:#1849b9; text-align:center; transition:color .15s;}
+    .option-title { font-size: 1.04em; flex:2; font-weight:800;}
+    .option-unit { flex:1.4; font-size: 1.02em; color:#1849b9; text-align:center; transition:color .15s; font-weight:800;}
     .option-row.selected .option-unit { color:#fff;}
-    .option-controls {display:flex; align-items:center; gap:7px; position:relative;}
-    .option-minus-btn {background:#e9e7ff; color:#2857a3; border:1px solid #bdd2ea; font-size:1.06em; border-radius:7px; padding:3px 8px; margin-right:4px; cursor:pointer; font-weight:700; transition: background 0.12s;}
-    .option-minus-btn:active {background:#c9e2ff;}
-    .option-total { flex:2.1; font-size: 1.13em; color:#ffe400; font-weight:bold; text-align:right;}
+    .option-total { flex:2.1; font-size: 1.07em; color:#ffe400; font-weight:bold; text-align:right; margin-left:12px;}
     .option-row.selected .option-total { color: #ffe400; }
-    .init-btn, .room-single-btn { font-size:1.07em; font-weight:700; border-radius:10px;}
-    .init-btn { background:#e5eefe; border:1px solid #bdd2ea; color:#347; padding:4px 13px; cursor:pointer; margin-left:7px; }
+    .option-controls {display:flex; align-items:center; gap:7px;}
+    .option-minus-btn {background:#e9e7ff; color:#2857a3; border:1px solid #bdd2ea; font-size:1.08em; font-weight:800; border-radius:7px; padding:5px 13px; margin-right:4px; cursor:pointer;}
+    .option-minus-btn:active {background:#c9e2ff;}
+    .init-btn { font-size:1em; background:#e5eefe; border:1px solid #bdd2ea; border-radius:8px; color:#347; padding:4px 16px; cursor:pointer; margin-left:7px; font-weight:800;}
     .init-btn:hover {background:#d1e8ff;}
-    .room-single-btn {background:#fff7e0; color:#b26c18; border:1px solid #edd59c; padding:4px 14px; margin-right:7px; cursor:pointer;}
+    .room-single-btn {background:#fff7e0; color:#b26c18; border:1px solid #edd59c; font-size:1em; border-radius:7px; padding:4px 16px; margin-right:7px; cursor:pointer; font-weight:800;}
     .room-single-btn:active {background:#ffeec4;}
+
+    .date-section {margin-bottom:22px;}
+    .date-label {font-weight:700; color:#294a6b; font-size:1.13em; margin-bottom:10px; display:block;}
     .date-input-wrap {display:flex; align-items:center; background:#f4f7fb; border-radius:10px; border:1.2px solid #c5d4ee; padding:12px 13px;}
     .date-input {border:none; background:transparent; font-size:1em; color:#1849b9; flex:1;}
     .date-input:focus {outline:none;}
     .date-icon {font-size:1.2em; color:#14508e; margin-right:9px;}
-    .contact-label { display: block; margin: 10px 0 5px 2px; color: #37629d; font-size: 1.08em; font-weight: 700;}
-    .contact-input { width: 100%; padding: 8px 8px; border: 1px solid #bfd2e9; border-radius: 8px; font-size: 1.09em; margin-bottom: 3px; box-sizing: border-box; background: #f7fafc; font-weight:700;}
-    textarea.contact-input { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif !important; resize: vertical;}
-    .submit-btn { display: block; width: 100%; background: linear-gradient(90deg, #1466b6 88%, #25a6d1 100%); color: #fff; border: none; border-radius: 12px; padding: 13px 0; font-size: 1.09em; font-weight: 700; margin-top: 22px; cursor: pointer; transition: background 0.15s; letter-spacing: 0.5px; box-shadow: 0 2px 10px #4176a72c;}
-    .submit-btn:active { background: #2a8ad1;}
 
-    /* ===== 결과 견적 섹션 ===== */
-    .result-section { margin: 20px 0 17px 0; padding: 13px 7px 8px 7px; background: #f4f6fa; border-radius: 12px; text-align: center; font-size: 1.13em; color: #14508e; font-weight: 700;}
-    .result-section .result-title {
-      font-size: 1.33em; font-weight: bold; color: #17508e; margin-bottom: 2px; letter-spacing:-1px;
-    }
-    .result-section .result-desc {
-      font-size: 1em; color: #989898; margin-bottom: 13px; font-weight:500;
-    }
-    .result-section .result-big {
-      font-size: 1.6em; font-weight: 700; color: #d02b2b; margin-left: 3px;
-    }
+    /* 강조 컬러 (모바일, 데스크탑 공통) */
+    .option-unit.price-blue { color: #1559d4 !important; font-weight:800; }
+    .room-price-red { color:#e44237 !important; font-weight:800;}
+    .option-total.yellow { color:#ffe400 !important; font-weight:900;}
 
-    /* ===== 모바일 스타일 ===== */
+    /* 모바일 스타일 */
     @media (max-width: 900px) {
       .container { max-width: 99vw; padding: 7vw 2vw;}
       .form-grid { flex-direction: column; gap: 0;}
       .form-col.left, .form-col.right { flex-basis: 100%; min-width: 0;}
-      h1 { font-size: 1.21rem;}
     }
     @media (max-width: 700px) {
-      html {font-size:14.3px;}
-      h1 { font-size: 1.17rem; }
-      .section label, .date-label { font-size: 1.24rem;}
-      .result-section .result-title { font-size: 1.5em;}
-      .result-section .result-desc { font-size: 1.19em;}
-      .result-section .result-big { font-size: 2.1em;}
-      .option-row { font-size:1.13em; min-height:58px; flex-direction:column; align-items:flex-start; gap:4px; padding: 10px 7px 15px 7px;}
-      .option-title { font-size: 1.12em; margin-bottom:0; font-weight:700;}
-      .option-unit { font-size: 1.05em; color:#b1e0f7; margin-top:0;}
-      .option-row.selected .option-unit { color: #fff;}
-      .option-controls { width: 100%; }
-      .option-minus-btn {
-        font-size: 1.19em !important;
-        padding: 1px 11px !important;
-        border-radius: 8px !important;
-        position: absolute;
-        top: 6px; right: 11px;
-        z-index: 2;
-      }
-      .option-total {
-        font-size: 1.22em !important;
-        position: absolute;
-        right: 14px;
-        bottom: 7px;
-        text-align: right;
-        color: #ffe400;
-        background: transparent;
-        font-weight: 800;
-      }
-      .option-row.selected .option-total { color: #ffe400; }
-      .section-label-row {flex-direction:row; align-items:center;gap:0;}
-      .init-btn, .room-single-btn { font-size: 1.09em; border-radius: 10px; margin-left:9px;}
-      .init-btn, .room-single-btn {margin-top:0;}
-      .room-single-btn {padding:4px 14px;}
+      h1 { font-size: 1.25rem;}
+      .section label, .date-label, .section-label-row label { font-size: 1.17rem !important;}
+      .result-section .result-title { font-size: 1.35em;}
+      .result-section .result-desc { font-size: 1.08em;}
+      .result-section .result-big { font-size: 1.8em;}
+      .toggle-btn { font-size: 1.06em; }
+      .option-row { font-size:1.08em; flex-direction:column; align-items:flex-start; gap:7px; padding: 10px 9px;}
+      .option-unit, .option-total {text-align:left;}
+      .option-unit { font-size: 1.12em;}
+      .option-total { font-size: 1.19em;}
+      .option-row.selected .option-unit { color:#fff;}
+      .option-controls {flex-direction:column; align-items:flex-end; width:100%; gap:0; min-height:40px;}
+      .option-minus-btn { margin-bottom: 6px; margin-top:0; font-size: 1.12em; padding:6px 16px;}
+      .init-btn, .room-single-btn {margin:0 0 0 8px; font-size:1.12em; padding:6px 18px;}
+      .section-label-row { flex-direction:row; align-items:center; gap:0;}
+    }
+    @media (max-width: 600px) {
+      html {font-size:14px;}
     }
   </style>
 </head>
 <body>
+
 <!-- =================== 견적 폼 본문 =================== -->
 <div class="container" id="cpack-quickform">
   <h1>라오스 비엔티안(1박) - 방비엥 (2박) C-Pack 빠른견적</h1>
@@ -170,12 +183,12 @@
       <!-- 결과 견적 -->
       <div class="result-section" id="resultSection">
          <div class="result-title">빠른 견적 금액</div>
-         <div class="result-desc">(실제 견적과 상이할 수 있습니다.)</div>
+          <div class="result-desc">(실제 견적과 상이할 수 있습니다.)</div>
          계약금 (한국에서 입금하실 금액): 
-         <span id="contractPrice" class="result-big"></span><br>
-         잔금 (현지에서 달러 지불하실 금액): 
-         <span id="usdPrice" class="result-big"></span>
-      </div>
+    <span id="contractPrice" class="result-big"></span><br>
+  잔금 (현지에서 달러 지불하실 금액): 
+    <span id="usdPrice" class="result-big"></span>
+</div>
       <!-- 연락처 정보 -->
       <div class="contact-section">
         <label class="contact-label" for="contactName">대표자 성함 <span style="color:#d02b2b;">*</span></label>
@@ -190,6 +203,7 @@
   </div>
 </div>
 <script>
+// 옵션 데이터
 const MAX_PERSON = 8;
 const extraUsdByPerson = {8:95,7:105,6:118,5:137,4:165,3:211,2:305};
 const vangviengOptions = [
@@ -213,6 +227,7 @@ const roomOptions = [
   {name: "4성급 3박", price: 159000},
   {name: "제가 예약할게요", price: 0}
 ];
+
 // 여행인원
 const personToggleGroup = document.getElementById("personToggleGroup");
 let personCount = 2;
@@ -235,6 +250,7 @@ for(let i=2; i<=MAX_PERSON; i++) {
   }
   personToggleGroup.appendChild(btn);
 }
+
 // 가이드팩
 let guideType = "kr";
 let guidePrice = 220;
@@ -248,7 +264,8 @@ document.querySelectorAll("#guideToggleGroup .toggle-btn").forEach(btn=>{
     sendHeightToParent();
   }
 });
-// 선택관광(방비엥) 버튼화
+
+// 선택관광(방비엥)
 const vangviengList = document.getElementById("vangviengList");
 let vangviengChecked = Array(vangviengOptions.length).fill(false);
 let vangviengPersons = Array(vangviengOptions.length).fill(0);
@@ -269,11 +286,13 @@ function renderVangviengList() {
     title.className = "option-title";
     title.innerText = opt.name;
     row.appendChild(title);
+
     const unit = document.createElement("div");
     unit.className = "option-unit";
     if(vangviengChecked[idx]) {
       unit.innerHTML = `$${opt.price} × ${vangviengPersons[idx]}명<br>$${vangviengPersons[idx]*opt.price}`;
     } else {
+      unit.classList.add("price-blue");
       unit.innerText = `$${opt.price}/인당`;
     }
     row.appendChild(unit);
@@ -281,28 +300,26 @@ function renderVangviengList() {
     const controls = document.createElement("div");
     controls.className = "option-controls";
     if(vangviengChecked[idx]) {
-      // -1명 버튼 (모바일에서 우상단)
+      // 총 가격(노란)
+      const total = document.createElement("div");
+      total.className = "option-total yellow";
+      total.id = "vvTotal"+idx;
+      total.innerHTML = `$${vangviengPersons[idx]*opt.price} / 총 ${vangviengPersons[idx]}명`;
+      controls.appendChild(total);
+      // -1명 버튼
       const minusBtn = document.createElement("button");
       minusBtn.type = "button";
       minusBtn.className = "option-minus-btn";
       minusBtn.innerText = "-1명";
       minusBtn.onclick = function(e){
         vangviengPersons[idx] = Math.max(0, vangviengPersons[idx]-1);
-        if(vangviengPersons[idx]===0) {
-          vangviengChecked[idx]=false;
-        }
+        if(vangviengPersons[idx]===0) vangviengChecked[idx]=false;
         renderVangviengList();
         updateTotal();
         sendHeightToParent();
         e.stopPropagation();
       };
       controls.appendChild(minusBtn);
-      // 총 가격 (모바일에서는 우측 하단에 위치)
-      const total = document.createElement("div");
-      total.className = "option-total";
-      total.id = "vvTotal"+idx;
-      total.innerHTML = `$${vangviengPersons[idx]*opt.price} / 총 ${vangviengPersons[idx]}명`;
-      controls.appendChild(total);
     }
     row.appendChild(controls);
     vangviengList.appendChild(row);
@@ -315,7 +332,8 @@ window.resetVangvieng = function(){
   updateTotal();
   sendHeightToParent();
 }
-// 선택관광(케어팩) 버튼화
+
+// 선택관광(케어팩)
 const careList = document.getElementById("careList");
 let careChecked = Array(careOptions.length).fill(false);
 let carePersons = Array(careOptions.length).fill(0);
@@ -336,11 +354,13 @@ function renderCareList() {
     title.className = "option-title";
     title.innerText = opt.name;
     row.appendChild(title);
+
     const unit = document.createElement("div");
     unit.className = "option-unit";
     if(careChecked[idx]) {
       unit.innerHTML = `$${opt.price} × ${carePersons[idx]}명<br>$${carePersons[idx]*opt.price}`;
     } else {
+      unit.classList.add("price-blue");
       unit.innerText = `$${opt.price}/인당`;
     }
     row.appendChild(unit);
@@ -348,26 +368,24 @@ function renderCareList() {
     const controls = document.createElement("div");
     controls.className = "option-controls";
     if(careChecked[idx]) {
+      const total = document.createElement("div");
+      total.className = "option-total yellow";
+      total.id = "careTotal"+idx;
+      total.innerHTML = `$${carePersons[idx]*opt.price} / 총 ${carePersons[idx]}명`;
+      controls.appendChild(total);
       const minusBtn = document.createElement("button");
       minusBtn.type = "button";
       minusBtn.className = "option-minus-btn";
       minusBtn.innerText = "-1명";
       minusBtn.onclick = function(e){
         carePersons[idx] = Math.max(0, carePersons[idx]-1);
-        if(carePersons[idx]===0) {
-          careChecked[idx]=false;
-        }
+        if(carePersons[idx]===0) careChecked[idx]=false;
         renderCareList();
         updateTotal();
         sendHeightToParent();
         e.stopPropagation();
       };
       controls.appendChild(minusBtn);
-      const total = document.createElement("div");
-      total.className = "option-total";
-      total.id = "careTotal"+idx;
-      total.innerHTML = `$${carePersons[idx]*opt.price} / 총 ${carePersons[idx]}명`;
-      controls.appendChild(total);
     }
     row.appendChild(controls);
     careList.appendChild(row);
@@ -380,6 +398,7 @@ window.resetCare = function(){
   updateTotal();
   sendHeightToParent();
 }
+
 // 숙박팩(버튼화, 단일선택)
 const roomList = document.getElementById("roomList");
 let selectedRoomIdx = null;
@@ -407,10 +426,11 @@ function updateRoomList(){
     title.innerText = opt.name;
     const unit = document.createElement("div");
     unit.className = "option-unit";
-    if(opt.price===0){
-      unit.innerText = "0원";
+    if(selectedRoomIdx === idx) {
+      unit.innerText = opt.price === 0 ? "0원" : `${opt.price.toLocaleString()}원/객실`;
     } else {
-      unit.innerText = `${opt.price.toLocaleString()}원/객실`;
+      unit.classList.add("room-price-red");
+      unit.innerText = opt.price === 0 ? "0원" : `${opt.price.toLocaleString()}원/객실`;
     }
     const total = document.createElement("div");
     total.className = "option-total";
@@ -439,6 +459,7 @@ window.resetSingleRoom = function(){
   updateTotal();
   sendHeightToParent();
 }
+
 // 견적 계산
 function updateTotal(){
   let contract = personCount * 60000;
@@ -459,6 +480,7 @@ renderVangviengList();
 renderCareList();
 updateRoomList();
 updateTotal();
+
 // EmailJS 견적 전송
 function submitEstimate() {
   const travelDate = document.getElementById("travelDate").value.trim();
@@ -478,7 +500,6 @@ function submitEstimate() {
   if(selectedRoomIdx!==null && roomOptions[selectedRoomIdx].price!==0) roomStr += ` (${totalRooms}객실)`;
   let contract = document.getElementById("contractPrice").innerText;
   let usd = document.getElementById("usdPrice").innerText;
-  // emailjs 전송
   emailjs.send('service_e6uns2x', 'template_hhk1zot', {
     travel_date: travelDate,
     name: name,
@@ -497,6 +518,7 @@ function submitEstimate() {
     alert("견적 전송에 실패했습니다. 잠시 후 다시 시도해주세요.");
   });
 }
+
 // iframe 자동 높이 parent로 전달
 function sendHeightToParent() {
   if (window.parent !== window) {
