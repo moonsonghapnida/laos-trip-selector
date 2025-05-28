@@ -30,31 +30,23 @@
     .toggle-group { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 7px;}
     .toggle-btn { background: #f4f7fb; border: 1.2px solid #c5d4ee; border-radius: 10px; padding: 10px 0 8px 0; font-size: 1.06em; flex: 1 1 0; text-align: center; cursor: pointer; margin-bottom: 6px; min-width: 42px; transition: all 0.12s; position: relative; font-weight:700;}
     .toggle-btn.selected { background: #296bb3; color: #fff; border-color: #14508e;}
+    .toggle-btn[data-guide="kr"] span { color: #d02b2b !important; font-weight:700;}
+    .toggle-btn.selected[data-guide="kr"] span { color: #fff !important; font-weight:700;}
     .option-list { margin-top: 6px;}
     .option-row { display: flex; align-items: center; justify-content: space-between; background:#f4f7fb; border:1px solid #d0deeb; border-radius:10px; padding: 11px 14px; margin-bottom: 7px; min-height:38px; font-size:1.07em; cursor:pointer; transition:background .18s, color .18s; font-weight:700; position:relative;}
     .option-row.selected { background: #296bb3; color: #fff; border-color: #14508e;}
     .option-title { font-size: 1.09em; flex:2;}
-    .option-unit { flex:1.9; font-size: 1.04em; color:#17508e; text-align:right; transition:color .15s; font-weight:700; }
+    .option-unit { flex:2; font-size: 1.04em; text-align:right; transition:color .15s; font-weight:700; display: flex; align-items: center; justify-content: flex-end; }
     .option-row.selected .option-unit { color:#fff;}
-    .option-minus-btn {background:#e9e7ff; color:#2857a3; border:1px solid #bdd2ea; font-size:1em; font-weight:700; border-radius:8px; padding:4px 12px; cursor:pointer; box-shadow: 0 1px 5px #b9cbe833;}
-    .option-minus-btn:active {background:#c9e2ff;}
-    /* 선택시 -1명 버튼, 총 가격 한줄 (같은 줄) */
-    .option-unit .option-minus-btn { margin-left:14px; margin-right:0; vertical-align:middle;}
-    /* 선택관광 미선택시 인당 파란색 진하게 */
     .option-row:not(.selected) .option-unit span { color: #17508e !important; font-weight:700;}
-    /* 숙박팩 미선택시 파란색, 선택시 빨간색/노란색 */
-    .option-row:not(.selected) .option-unit span { color:#17508e !important; }
-    .option-row.selected .option-unit span { color: #d02b2b !important; }
-    /* 숙박팩 객실당 가격은 파란색, 총액은 빨간색 */
+    .option-row.selected .option-unit span { color: #fff !important; }
+    .option-minus-btn {background:#e9e7ff; color:#2857a3; border:1px solid #bdd2ea; font-size:1em; font-weight:700; border-radius:8px; padding:4px 18px; margin-left:10px; cursor:pointer; box-shadow: 0 1px 5px #b9cbe833;}
+    .option-row.selected .option-minus-btn { margin-left: 18px; }
+    .option-minus-btn:active {background:#c9e2ff;}
     .room-total { margin-left:8px; color:#d02b2b; font-size:1em;}
-    /* 케어팩, 선택관광 총액도 노란색 */
     .total-label { color: #ffe400; margin-left:8px; font-size:1em;}
     .section .init-btn, .section .room-single-btn { font-weight:700;}
-    /* 블록 정렬 */
-    .option-unit, .option-title { display:inline-block;}
-    /* section label row 버튼 정렬 */
     .section-label-row { gap:10px;}
-    /* 숙박팩 버튼(싱글룸 추가, 초기화) */
     .room-single-btn {background:#fff7e0; color:#b26c18; border:1px solid #edd59c; font-size:1em; border-radius:7px; padding:6px 16px; margin-right:7px; cursor:pointer;}
     .room-single-btn:active {background:#ffeec4;}
     .init-btn { font-size:1em; background:#e5eefe; border:1px solid #bdd2ea; border-radius:8px; color:#347; padding:6px 15px; cursor:pointer; margin-left:0;}
@@ -73,7 +65,6 @@
     .date-input:focus {outline:none;}
     .date-icon {font-size:1.26em; color:#14508e; margin-right:9px;}
 
-    /* 모바일 (폰트+UI 2pt up, 버튼/총액 위치) */
     @media (max-width: 900px) {
       .container { max-width: 99vw; padding: 7vw 2vw;}
       .form-grid { flex-direction: column; gap: 0;}
@@ -87,11 +78,10 @@
       .option-row { font-size:1.16em; min-height:34px;}
       .contact-input { font-size:1.13em;}
     }
-    /* 모바일에서 선택관광 -1명 버튼 위치 & 총액 우측하단 */
     @media (max-width: 700px) {
       .option-row.selected .option-unit {display:flex;align-items:center;justify-content:flex-end;}
       .option-row.selected .option-minus-btn {
-        position: absolute; right: 14px; top: 10px; font-size:1.14em; padding:5px 13px;
+        position: static; font-size:1.1em; padding:5px 18px;
         z-index:2;
       }
       .option-row.selected .option-unit span {
@@ -101,13 +91,10 @@
   </style>
 </head>
 <body>
-<!-- =================== 견적 폼 본문 =================== -->
 <div class="container" id="cpack-quickform">
   <h1>라오스 비엔티안(1박) - 방비엥 (2박) C-Pack 빠른견적</h1>
   <div class="form-grid">
-    <!-- 왼쪽 컬럼: 날짜, 인원, 가이드, 방비엥, 케어팩 -->
     <div class="form-col left">
-      <!-- 여행일자 -->
       <div class="date-section">
         <label class="date-label" for="travelDate">여행일자 <span style="font-weight:400; color:#999; font-size:0.92em;">(출국일 기준, 필수)</span></label>
         <div class="date-input-wrap">
@@ -115,21 +102,18 @@
           <input type="date" id="travelDate" class="date-input" required>
         </div>
       </div>
-      <!-- 여행인원 -->
       <div class="section">
         <label>여행인원 <span style="font-weight:400; color:#999; font-size:0.92em;">(2~8명, 예약금 인당 60,000원)</span></label>
         <div class="toggle-group" id="personToggleGroup"></div>
         <div class="person-desc">9명 이상 단체 할인 적용 가능, <b>개별 문의</b></div>
       </div>
-      <!-- 가이드팩 -->
       <div class="section">
         <label>가이드팩 <span style="font-weight:400; color:#999; font-size:0.92em;">(단일 선택)</span></label>
         <div class="toggle-group" id="guideToggleGroup">
-          <div class="toggle-btn selected" data-guide="kr" data-price="220">한국인 가이드<br><span style="font-size:0.91em; color:#bbe6fa;">$220/팀</span></div>
+          <div class="toggle-btn selected" data-guide="kr" data-price="220">한국인 가이드<br><span style="font-size:0.91em;">$220/팀</span></div>
           <div class="toggle-btn" data-guide="local" data-price="0">현지인 가이드<br><span style="font-size:0.91em; color:#55c;">추가요금 없음</span></div>
         </div>
       </div>
-      <!-- 선택관광(방비엥) -->
       <div class="section">
         <div class="section-label-row">
           <label>선택관광 (방비엥)</label>
@@ -137,7 +121,6 @@
         </div>
         <div class="option-list" id="vangviengList"></div>
       </div>
-      <!-- 선택관광(케어팩) -->
       <div class="section">
         <div class="section-label-row">
           <label>선택관광 (케어팩)</label>
@@ -146,9 +129,7 @@
         <div class="option-list" id="careList"></div>
       </div>
     </div>
-    <!-- 오른쪽 컬럼: 숙박, 결과, 연락처, 제출 -->
     <div class="form-col right">
-      <!-- 숙박팩 -->
       <div class="section">
         <div class="section-label-row">
           <label>숙박팩</label>
@@ -159,7 +140,6 @@
         </div>
         <div class="option-list" id="roomList"></div>
       </div>
-      <!-- 결과 견적 -->
       <div class="result-section" id="resultSection">
          <div class="result-title">빠른 견적 금액</div>
           <div class="result-desc">(실제 견적과 상이할 수 있습니다.)</div>
@@ -168,7 +148,6 @@
   잔금 (현지에서 달러 지불하실 금액): 
     <span id="usdPrice" class="result-big"></span>
 </div>
-      <!-- 연락처 정보 -->
       <div class="contact-section">
         <label class="contact-label" for="contactName">대표자 성함 <span style="color:#d02b2b;">*</span></label>
         <input type="text" class="contact-input" id="contactName" placeholder="대표자 이름을 입력하세요" required>
@@ -244,7 +223,7 @@ document.querySelectorAll("#guideToggleGroup .toggle-btn").forEach(btn=>{
   }
 });
 
-// ===== 선택관광(방비엥) 버튼화(동일 구조, 스타일 개선) =====
+// 선택관광(방비엥)
 const vangviengList = document.getElementById("vangviengList");
 let vangviengChecked = Array(vangviengOptions.length).fill(false);
 let vangviengPersons = Array(vangviengOptions.length).fill(0);
@@ -254,7 +233,6 @@ function renderVangviengList() {
     const row = document.createElement("div");
     row.className = "option-row" + (vangviengChecked[idx] ? " selected" : "");
     row.style.cursor = "pointer";
-    row.style.position = "relative"; // for abs button
     row.onclick = function(){
       vangviengChecked[idx] = !vangviengChecked[idx];
       vangviengPersons[idx] = vangviengChecked[idx] ? personCount : 0;
@@ -262,24 +240,15 @@ function renderVangviengList() {
       updateTotal();
       sendHeightToParent();
     };
-    // 이름
     const title = document.createElement("div");
     title.className = "option-title";
     title.innerText = opt.name;
     row.appendChild(title);
 
-    // 가격/총액/버튼 (중앙~우측)
     const unit = document.createElement("div");
     unit.className = "option-unit";
-    unit.style.display = "flex";
-    unit.style.alignItems = "center";
-    unit.style.justifyContent = "flex-end";
-    unit.style.width = "100%";
-    unit.style.fontWeight = "bold";
-    unit.style.fontSize = "1.07em";
     if(vangviengChecked[idx]) {
-      unit.innerHTML = `<span>$${opt.price} × ${vangviengPersons[idx]}명 = $${vangviengPersons[idx]*opt.price} / ${vangviengPersons[idx]}명</span>`;
-      // -1명 버튼 (우측)
+      unit.innerHTML = `<span>$${vangviengPersons[idx]*opt.price} / ${vangviengPersons[idx]}명</span>`;
       const minusBtn = document.createElement("button");
       minusBtn.type = "button";
       minusBtn.className = "option-minus-btn";
@@ -310,7 +279,7 @@ window.resetVangvieng = function(){
   sendHeightToParent();
 }
 
-// ===== 선택관광(케어팩) 버튼화 =====
+// 선택관광(케어팩)
 const careList = document.getElementById("careList");
 let careChecked = Array(careOptions.length).fill(false);
 let carePersons = Array(careOptions.length).fill(0);
@@ -320,7 +289,6 @@ function renderCareList() {
     const row = document.createElement("div");
     row.className = "option-row" + (careChecked[idx] ? " selected" : "");
     row.style.cursor = "pointer";
-    row.style.position = "relative";
     row.onclick = function(){
       careChecked[idx] = !careChecked[idx];
       carePersons[idx] = careChecked[idx] ? personCount : 0;
@@ -328,23 +296,15 @@ function renderCareList() {
       updateTotal();
       sendHeightToParent();
     };
-    // 이름
     const title = document.createElement("div");
     title.className = "option-title";
     title.innerText = opt.name;
     row.appendChild(title);
 
-    // 가격/총액/버튼 (중앙~우측)
     const unit = document.createElement("div");
     unit.className = "option-unit";
-    unit.style.display = "flex";
-    unit.style.alignItems = "center";
-    unit.style.justifyContent = "flex-end";
-    unit.style.width = "100%";
-    unit.style.fontWeight = "bold";
-    unit.style.fontSize = "1.07em";
     if(careChecked[idx]) {
-      unit.innerHTML = `<span>$${opt.price} × ${carePersons[idx]}명 = $${carePersons[idx]*opt.price} / ${carePersons[idx]}명</span>`;
+      unit.innerHTML = `<span>$${carePersons[idx]*opt.price} / ${carePersons[idx]}명</span>`;
       const minusBtn = document.createElement("button");
       minusBtn.type = "button";
       minusBtn.className = "option-minus-btn";
@@ -375,7 +335,7 @@ window.resetCare = function(){
   sendHeightToParent();
 }
 
-// ===== 숙박팩(단일선택) 버튼화 =====
+// 숙박팩(단일선택)
 const roomList = document.getElementById("roomList");
 let selectedRoomIdx = null;
 let singleRoomAdd = 0;
@@ -397,21 +357,32 @@ function updateRoomList(){
       updateTotal();
       sendHeightToParent();
     };
-    // 이름
     const title = document.createElement("div");
     title.className = "option-title";
     title.innerText = opt.name;
     row.appendChild(title);
 
-    // 가격
     const unit = document.createElement("div");
     unit.className = "option-unit";
-    unit.style.fontWeight = "bold";
     if(selectedRoomIdx === idx) {
       if(opt.price === 0) {
         unit.innerHTML = `<span>0원</span>`;
       } else {
-        unit.innerHTML = `<span>${opt.price.toLocaleString()}원 × ${totalRooms}객실 = ${(totalRooms*opt.price).toLocaleString()}원 / ${totalRooms}객실</span>`;
+        unit.innerHTML = `<span>${(totalRooms*opt.price).toLocaleString()}원 / ${totalRooms}객실</span>`;
+        const minusBtn = document.createElement("button");
+        minusBtn.type = "button";
+        minusBtn.className = "option-minus-btn";
+        minusBtn.innerText = "-1객실";
+        minusBtn.onclick = function(e){
+          if(singleRoomAdd > 0){
+            singleRoomAdd -= 1;
+            updateRoomList();
+            updateTotal();
+            sendHeightToParent();
+          }
+          e.stopPropagation();
+        };
+        unit.appendChild(minusBtn);
       }
     } else {
       if(opt.price === 0){
@@ -478,7 +449,6 @@ function submitEstimate() {
   if(selectedRoomIdx!==null && roomOptions[selectedRoomIdx].price!==0) roomStr += ` (${totalRooms}객실)`;
   let contract = document.getElementById("contractPrice").innerText;
   let usd = document.getElementById("usdPrice").innerText;
-  // emailjs 전송
   emailjs.send('service_e6uns2x', 'template_hhk1zot', {
     travel_date: travelDate,
     name: name,
@@ -498,7 +468,6 @@ function submitEstimate() {
   });
 }
 
-// iframe 자동 높이 parent로 전달
 function sendHeightToParent() {
   if (window.parent !== window) {
     window.parent.postMessage({
@@ -514,3 +483,4 @@ observer.observe(document.body, { childList: true, subtree: true, attributes: tr
 </script>
 </body>
 </html>
+
