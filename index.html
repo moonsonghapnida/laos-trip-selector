@@ -9,151 +9,99 @@
     (function(){ emailjs.init('luKxEKdyyvY4hjYfo'); })();
   </script>
   <style>
-    html, body, * { box-sizing: border-box; }
-    html { font-size: 15px; }
-    body {
-      font-family: 'Pretendard','Noto Sans KR', Arial, sans-serif;
-      background: #f7f7fa;
-      margin: 0; padding: 0;
-      color: #222;
-      font-size: 1rem;
-      letter-spacing: -0.5px;
-    }
-    b, strong, label, h1, .option-title, .result-section, .toggle-btn, .option-unit, .option-total, .section-label-row, .contact-label { font-weight: 700 !important; }
-    .container {
-      max-width: 880px;
-      margin:32px auto;
-      padding: 24px;
-      background: #fff;
-      border-radius: 18px;
-      box-shadow: 0 2px 14px rgba(70, 85, 110, 0.12);
-    }
-    .form-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 32px;
-    }
-    .form-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 0;}
-    .form-col.left { min-width: 300px; flex-basis: 48%;}
-    .form-col.right { min-width: 300px; flex-basis: 48%;}
-    .section, .date-section, .result-section, .contact-section { margin-bottom: 24px;}
-    h1 { font-size: 1.23rem; font-weight: bold; text-align: center; margin-bottom: 24px; color: #14508e;}
-    .date-section label, .section label { font-weight: 700 !important; font-size: 1.04rem; color: #294a6b;}
-    .person-desc { color:#b04d0c; font-size:0.89em; margin-top:5px; margin-bottom:-12px;}
+    html { font-size:15px;}
+    body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; background: #f7f7fa; margin: 0; padding: 0; color: #222; font-size:1rem;}
+    .container { max-width: 880px; margin:32px auto; padding: 24px; background: #fff; border-radius: 18px; box-shadow: 0 2px 14px rgba(70, 85, 110, 0.12); }
+
+    .form-grid { display: flex; flex-wrap: wrap; gap: 32px; }
+    .form-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 0; }
+    .form-col.left { min-width: 300px; flex-basis: 48%; }
+    .form-col.right { min-width: 300px; flex-basis: 48%; }
+
+    .section, .date-section, .result-section, .contact-section { margin-bottom: 24px; }
+    h1 { font-size: 1.25rem; font-weight: bold; text-align: center; margin-bottom: 24px; color: #14508e; letter-spacing: -1px;}
+    .result-section .result-title { font-size: 1.21em; font-weight: bold; color: #17508e; margin-bottom: 2px;}
+    .result-section .result-desc { font-size: 0.95em; color: #989898; margin-bottom: 10px;}
+    .result-section .result-big { font-size: 1.5em; font-weight: 700; color: #d02b2b; margin-left: 3px;}
+
+    .section-label-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;}
+    .section label { font-weight: 700; font-size: 1.01rem; color: #294a6b;}
+    .person-desc { color:#b04d0c; font-size:0.95em; margin-top:5px; margin-bottom:-12px; font-weight:700;}
     .toggle-group { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 7px;}
-    .toggle-btn { background: #f4f7fb; border: 1.2px solid #c5d4ee; border-radius: 10px; padding: 9px 0 7px 0; font-size: 1em; flex: 1 1 0; text-align: center; cursor: pointer; margin-bottom: 6px; min-width: 42px; transition: all 0.12s; position: relative;}
+    .toggle-btn { background: #f4f7fb; border: 1.2px solid #c5d4ee; border-radius: 10px; padding: 10px 0 8px 0; font-size: 1.06em; flex: 1 1 0; text-align: center; cursor: pointer; margin-bottom: 6px; min-width: 42px; transition: all 0.12s; position: relative; font-weight:700;}
     .toggle-btn.selected { background: #296bb3; color: #fff; border-color: #14508e;}
     .option-list { margin-top: 6px;}
-    .option-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background:#f4f7fb;
-      border:1px solid #d0deeb;
-      border-radius:10px;
-      padding: 11px 14px 11px 14px;
-      margin-bottom: 7px;
-      min-height:38px;
-      font-size:1.04em;
-      cursor:pointer;
-      transition:background .18s, color .18s;
-      position: relative;
-      overflow: visible;
-    }
+    .option-row { display: flex; align-items: center; justify-content: space-between; background:#f4f7fb; border:1px solid #d0deeb; border-radius:10px; padding: 11px 14px; margin-bottom: 7px; min-height:38px; font-size:1.07em; cursor:pointer; transition:background .18s, color .18s; font-weight:700; position:relative;}
     .option-row.selected { background: #296bb3; color: #fff; border-color: #14508e;}
-    .option-title { font-size: 1.07em; flex:2; font-weight: 700;}
-    .option-unit {
-      flex: 1.4;
-      font-size: 1em;
-      color: #17508e;
-      text-align:center;
-      font-weight: 700;
-    }
+    .option-title { font-size: 1.09em; flex:2;}
+    .option-unit { flex:1.9; font-size: 1.04em; color:#17508e; text-align:right; transition:color .15s; font-weight:700; }
     .option-row.selected .option-unit { color:#fff;}
-    .option-unit.price-blue { color:#17508e; font-weight: 700;}
-    .option-total {
-      flex: unset;
-      font-size: 1.06em;
-      color: #d02b2b;
-      font-weight:bold;
-      text-align:right;
-      position: absolute;
-      bottom: 8px;
-      right: 18px;
-      background: transparent;
-      z-index: 2;
-    }
-    .option-row.selected .option-total { color: #ffe400; }
-    .option-total.room-total-red { color: #d02b2b; }
-    .option-unit.room-price-blue { color: #17508e; }
-    .option-controls {
-      display:flex;
-      align-items:center;
-      gap:7px;
-      position: relative;
-      margin-left: 8px;
-    }
-    .option-minus-btn {
-      background:#e9e7ff;
-      color:#2857a3;
-      border:1px solid #bdd2ea;
-      font-size:1.11em;
-      border-radius:7px;
-      padding:4px 11px;
-      margin-right:6px;
-      cursor:pointer;
-      position: absolute;
-      top: 0;
-      right: -13px;
-      z-index: 2;
-    }
-    .option-row.selected .option-minus-btn { background: #fff; color: #14508e; border:1px solid #fff;}
+    .option-minus-btn {background:#e9e7ff; color:#2857a3; border:1px solid #bdd2ea; font-size:1em; font-weight:700; border-radius:8px; padding:4px 12px; cursor:pointer; box-shadow: 0 1px 5px #b9cbe833;}
     .option-minus-btn:active {background:#c9e2ff;}
-    .init-btn { font-size:1em; background:#e5eefe; border:1px solid #bdd2ea; border-radius:8px; color:#347; padding:4px 10px; cursor:pointer; margin-left:7px; font-weight:700;}
-    .init-btn:hover {background:#d1e8ff;}
-    .result-section { margin: 20px 0 17px 0; padding: 13px 7px 8px 7px; background: #f4f6fa; border-radius: 12px; text-align: center; font-size: 1.1em; color: #14508e; font-weight: 700;}
-    .result-section span { display: block; margin: 6px 0; font-weight: 700; color: #0c3d5a; font-size: 1.11em;}
-    .result-section .result-title { font-size: 1.29em; font-weight: bold; color: #17508e; margin-bottom: 2px;}
-    .result-section .result-desc { font-size: 1.08em; color: #989898; margin-bottom: 10px;}
-    .result-section .result-big { font-size: 1.57em; font-weight: 700; color: #d02b2b; margin-left: 3px;}
-    .contact-section { margin-bottom: 20px; background:#f9fafb; border-radius:12px; padding: 12px 8px 7px 8px;}
-    .contact-label { display:block; margin:10px 0 5px 2px; color:#37629d; font-size:1.09em; font-weight:700;}
-    .contact-input { width:100%; padding:8px 8px; border:1px solid #bfd2e9; border-radius:8px; font-size:1.03em; margin-bottom:3px; box-sizing:border-box; background:#f7fafc; font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;}
-    textarea.contact-input { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif !important; resize: vertical;}
-    .submit-btn { display:block; width:100%; background:linear-gradient(90deg,#1466b6 88%, #25a6d1 100%); color:#fff; border:none; border-radius:12px; padding:13px 0; font-size:1.09em; font-weight:700; margin-top:22px; cursor:pointer; letter-spacing:0.5px; box-shadow:0 2px 10px #4176a72c;}
-    .submit-btn:active { background: #2a8ad1;}
-    .room-single-btn {background:#fff7e0; color:#b26c18; border:1px solid #edd59c; font-size:1em; border-radius:7px; padding:4px 12px; margin-right:7px; cursor:pointer; font-weight:700;}
+    /* 선택시 -1명 버튼, 총 가격 한줄 (같은 줄) */
+    .option-unit .option-minus-btn { margin-left:14px; margin-right:0; vertical-align:middle;}
+    /* 선택관광 미선택시 인당 파란색 진하게 */
+    .option-row:not(.selected) .option-unit span { color: #17508e !important; font-weight:700;}
+    /* 숙박팩 미선택시 파란색, 선택시 빨간색/노란색 */
+    .option-row:not(.selected) .option-unit span { color:#17508e !important; }
+    .option-row.selected .option-unit span { color: #d02b2b !important; }
+    /* 숙박팩 객실당 가격은 파란색, 총액은 빨간색 */
+    .room-total { margin-left:8px; color:#d02b2b; font-size:1em;}
+    /* 케어팩, 선택관광 총액도 노란색 */
+    .total-label { color: #ffe400; margin-left:8px; font-size:1em;}
+    .section .init-btn, .section .room-single-btn { font-weight:700;}
+    /* 블록 정렬 */
+    .option-unit, .option-title { display:inline-block;}
+    /* section label row 버튼 정렬 */
+    .section-label-row { gap:10px;}
+    /* 숙박팩 버튼(싱글룸 추가, 초기화) */
+    .room-single-btn {background:#fff7e0; color:#b26c18; border:1px solid #edd59c; font-size:1em; border-radius:7px; padding:6px 16px; margin-right:7px; cursor:pointer;}
     .room-single-btn:active {background:#ffeec4;}
+    .init-btn { font-size:1em; background:#e5eefe; border:1px solid #bdd2ea; border-radius:8px; color:#347; padding:6px 15px; cursor:pointer; margin-left:0;}
+    .init-btn:hover {background:#d1e8ff;}
+    .result-section { margin: 20px 0 17px 0; padding: 13px 7px 8px 7px; background: #f4f6fa; border-radius: 12px; text-align: center; font-size: 1.07em; color: #14508e; font-weight: 600;}
+    .contact-section { margin-bottom: 20px; background: #f9fafb; border-radius: 12px; padding: 12px 8px 7px 8px;}
+    .contact-label { display: block; margin: 10px 0 5px 2px; color: #37629d; font-size: 1.06em; font-weight: 700;}
+    .contact-input { width: 100%; padding: 8px 8px; border: 1px solid #bfd2e9; border-radius: 8px; font-size: 1.02em; margin-bottom: 3px; box-sizing: border-box; background: #f7fafc; font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; font-weight:700;}
+    textarea.contact-input { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif !important; resize: vertical;}
+    .submit-btn { display: block; width: 100%; background: linear-gradient(90deg, #1466b6 88%, #25a6d1 100%); color: #fff; border: none; border-radius: 12px; padding: 15px 0; font-size: 1.12em; font-weight: 800; margin-top: 22px; cursor: pointer; transition: background 0.15s; letter-spacing: 0.5px; box-shadow: 0 2px 10px #4176a72c;}
+    .submit-btn:active { background: #2a8ad1;}
     .date-section {margin-bottom:22px;}
-    .date-label {font-weight:700; color:#294a6b; font-size:1.07em; margin-bottom:10px; display:block;}
+    .date-label {font-weight:700; color:#294a6b; font-size:1.14em; margin-bottom:10px; display:block;}
     .date-input-wrap {display:flex; align-items:center; background:#f4f7fb; border-radius:10px; border:1.2px solid #c5d4ee; padding:12px 13px;}
-    .date-input {border:none; background:transparent; font-size:1.02em; color:#1849b9; flex:1;}
+    .date-input {border:none; background:transparent; font-size:1.07em; color:#1849b9; flex:1; font-weight:700;}
     .date-input:focus {outline:none;}
-    .date-icon {font-size:1.2em; color:#14508e; margin-right:9px;}
+    .date-icon {font-size:1.26em; color:#14508e; margin-right:9px;}
+
+    /* 모바일 (폰트+UI 2pt up, 버튼/총액 위치) */
     @media (max-width: 900px) {
       .container { max-width: 99vw; padding: 7vw 2vw;}
       .form-grid { flex-direction: column; gap: 0;}
       .form-col.left, .form-col.right { flex-basis: 100%; min-width: 0;}
-      .date-section, .section, .result-section, .contact-section { margin-bottom: 19px;}
-      h1, .date-section label, .section label, .result-section .result-title { font-size:1.22em !important; }
+      .result-section .result-title { font-size: 1.35em;}
+      .result-section .result-desc { font-size: 1.10em;}
+      .result-section .result-big { font-size: 1.8em;}
+      h1 {font-size: 1.38rem;}
+      .section label, .contact-label, .date-label { font-size:1.23em;}
+      .toggle-btn, .init-btn, .room-single-btn { font-size: 1.15em;}
+      .option-row { font-size:1.16em; min-height:34px;}
+      .contact-input { font-size:1.13em;}
     }
-    @media (max-width: 600px) {
-      html {font-size:14px;}
-      .container { max-width: 99vw; padding: 5vw 1vw;}
-      .toggle-btn { font-size: 1.09em; min-width: 30px; padding: 8px 0 6px 0;}
-      .option-row { font-size:1.13em; flex-direction:column; align-items:flex-start; gap:4px; padding: 9px 8px;}
-      .option-unit, .option-total {text-align:left;}
-      .init-btn {margin:6px 0 0 0; width:100%; text-align:center;}
-      .room-single-btn {margin-bottom:7px;}
-      .section-label-row {flex-direction:column; align-items:flex-start;gap:6px;}
-      .date-input-wrap {padding:8px 7px;}
-      .contact-section, .result-section {padding: 12px 6px;}
-      h1, .date-section label, .section label, .result-section .result-title { font-size:1.31em !important;}
-      .option-title, .option-unit, .option-total, .toggle-btn, .contact-label {font-size:1.16em !important;}
+    /* 모바일에서 선택관광 -1명 버튼 위치 & 총액 우측하단 */
+    @media (max-width: 700px) {
+      .option-row.selected .option-unit {display:flex;align-items:center;justify-content:flex-end;}
+      .option-row.selected .option-minus-btn {
+        position: absolute; right: 14px; top: 10px; font-size:1.14em; padding:5px 13px;
+        z-index:2;
+      }
+      .option-row.selected .option-unit span {
+        flex:1;
+      }
     }
   </style>
 </head>
 <body>
+<!-- =================== 견적 폼 본문 =================== -->
 <div class="container" id="cpack-quickform">
   <h1>라오스 비엔티안(1박) - 방비엥 (2박) C-Pack 빠른견적</h1>
   <div class="form-grid">
@@ -219,7 +167,7 @@
     <span id="contractPrice" class="result-big"></span><br>
   잔금 (현지에서 달러 지불하실 금액): 
     <span id="usdPrice" class="result-big"></span>
-      </div>
+</div>
       <!-- 연락처 정보 -->
       <div class="contact-section">
         <label class="contact-label" for="contactName">대표자 성함 <span style="color:#d02b2b;">*</span></label>
@@ -296,7 +244,7 @@ document.querySelectorAll("#guideToggleGroup .toggle-btn").forEach(btn=>{
   }
 });
 
-// 선택관광(방비엥) 버튼화
+// ===== 선택관광(방비엥) 버튼화(동일 구조, 스타일 개선) =====
 const vangviengList = document.getElementById("vangviengList");
 let vangviengChecked = Array(vangviengOptions.length).fill(false);
 let vangviengPersons = Array(vangviengOptions.length).fill(0);
@@ -306,6 +254,7 @@ function renderVangviengList() {
     const row = document.createElement("div");
     row.className = "option-row" + (vangviengChecked[idx] ? " selected" : "");
     row.style.cursor = "pointer";
+    row.style.position = "relative"; // for abs button
     row.onclick = function(){
       vangviengChecked[idx] = !vangviengChecked[idx];
       vangviengPersons[idx] = vangviengChecked[idx] ? personCount : 0;
@@ -318,19 +267,19 @@ function renderVangviengList() {
     title.className = "option-title";
     title.innerText = opt.name;
     row.appendChild(title);
-    // 단가 (파란)
+
+    // 가격/총액/버튼 (중앙~우측)
     const unit = document.createElement("div");
     unit.className = "option-unit";
+    unit.style.display = "flex";
+    unit.style.alignItems = "center";
+    unit.style.justifyContent = "flex-end";
+    unit.style.width = "100%";
+    unit.style.fontWeight = "bold";
+    unit.style.fontSize = "1.07em";
     if(vangviengChecked[idx]) {
-      unit.innerHTML = `$${opt.price} × ${vangviengPersons[idx]}명 = $${vangviengPersons[idx]*opt.price}`;
-    } else {
-      unit.innerHTML = `<span style="color:#14508e;font-weight:bold;">$${opt.price}/인당</span>`;
-    }
-    row.appendChild(unit);
-    // 총액, -1명
-    const controls = document.createElement("div");
-    controls.className = "option-controls";
-    if(vangviengChecked[idx]) {
+      unit.innerHTML = `<span>$${opt.price} × ${vangviengPersons[idx]}명 = $${vangviengPersons[idx]*opt.price} / ${vangviengPersons[idx]}명</span>`;
+      // -1명 버튼 (우측)
       const minusBtn = document.createElement("button");
       minusBtn.type = "button";
       minusBtn.className = "option-minus-btn";
@@ -345,14 +294,11 @@ function renderVangviengList() {
         sendHeightToParent();
         e.stopPropagation();
       };
-      controls.appendChild(minusBtn);
-      const total = document.createElement("div");
-      total.className = "option-total";
-      total.id = "vvTotal"+idx;
-      total.innerHTML = `<span style="color:#ffe400;">$${vangviengPersons[idx]*opt.price} / 총 ${vangviengPersons[idx]}명</span>`;
-      controls.appendChild(total);
+      unit.appendChild(minusBtn);
+    } else {
+      unit.innerHTML = `<span>$${opt.price}/인당</span>`;
     }
-    row.appendChild(controls);
+    row.appendChild(unit);
     vangviengList.appendChild(row);
   });
 }
@@ -364,7 +310,7 @@ window.resetVangvieng = function(){
   sendHeightToParent();
 }
 
-// 선택관광(케어팩) 버튼화
+// ===== 선택관광(케어팩) 버튼화 =====
 const careList = document.getElementById("careList");
 let careChecked = Array(careOptions.length).fill(false);
 let carePersons = Array(careOptions.length).fill(0);
@@ -374,6 +320,7 @@ function renderCareList() {
     const row = document.createElement("div");
     row.className = "option-row" + (careChecked[idx] ? " selected" : "");
     row.style.cursor = "pointer";
+    row.style.position = "relative";
     row.onclick = function(){
       careChecked[idx] = !careChecked[idx];
       carePersons[idx] = careChecked[idx] ? personCount : 0;
@@ -386,19 +333,18 @@ function renderCareList() {
     title.className = "option-title";
     title.innerText = opt.name;
     row.appendChild(title);
-    // 단가 (파란)
+
+    // 가격/총액/버튼 (중앙~우측)
     const unit = document.createElement("div");
     unit.className = "option-unit";
+    unit.style.display = "flex";
+    unit.style.alignItems = "center";
+    unit.style.justifyContent = "flex-end";
+    unit.style.width = "100%";
+    unit.style.fontWeight = "bold";
+    unit.style.fontSize = "1.07em";
     if(careChecked[idx]) {
-      unit.innerHTML = `$${opt.price} × ${carePersons[idx]}명 = $${carePersons[idx]*opt.price}`;
-    } else {
-      unit.innerHTML = `<span style="color:#14508e;font-weight:bold;">$${opt.price}/인당</span>`;
-    }
-    row.appendChild(unit);
-    // 총액, -1명
-    const controls = document.createElement("div");
-    controls.className = "option-controls";
-    if(careChecked[idx]) {
+      unit.innerHTML = `<span>$${opt.price} × ${carePersons[idx]}명 = $${carePersons[idx]*opt.price} / ${carePersons[idx]}명</span>`;
       const minusBtn = document.createElement("button");
       minusBtn.type = "button";
       minusBtn.className = "option-minus-btn";
@@ -413,14 +359,11 @@ function renderCareList() {
         sendHeightToParent();
         e.stopPropagation();
       };
-      controls.appendChild(minusBtn);
-      const total = document.createElement("div");
-      total.className = "option-total";
-      total.id = "careTotal"+idx;
-      total.innerHTML = `<span style="color:#ffe400;">$${carePersons[idx]*opt.price} / 총 ${carePersons[idx]}명</span>`;
-      controls.appendChild(total);
+      unit.appendChild(minusBtn);
+    } else {
+      unit.innerHTML = `<span>$${opt.price}/인당</span>`;
     }
-    row.appendChild(controls);
+    row.appendChild(unit);
     careList.appendChild(row);
   });
 }
@@ -432,7 +375,7 @@ window.resetCare = function(){
   sendHeightToParent();
 }
 
-// 숙박팩(버튼화, 단일선택)
+// ===== 숙박팩(단일선택) 버튼화 =====
 const roomList = document.getElementById("roomList");
 let selectedRoomIdx = null;
 let singleRoomAdd = 0;
@@ -454,28 +397,30 @@ function updateRoomList(){
       updateTotal();
       sendHeightToParent();
     };
+    // 이름
     const title = document.createElement("div");
     title.className = "option-title";
     title.innerText = opt.name;
+    row.appendChild(title);
+
+    // 가격
     const unit = document.createElement("div");
     unit.className = "option-unit";
-    unit.style.color = opt.price === 0 ? "#14508e" : "#17508e";
-    if(opt.price===0){
-      unit.innerText = "0원";
+    unit.style.fontWeight = "bold";
+    if(selectedRoomIdx === idx) {
+      if(opt.price === 0) {
+        unit.innerHTML = `<span>0원</span>`;
+      } else {
+        unit.innerHTML = `<span>${opt.price.toLocaleString()}원 × ${totalRooms}객실 = ${(totalRooms*opt.price).toLocaleString()}원 / ${totalRooms}객실</span>`;
+      }
     } else {
-      unit.innerHTML = `<span style="color:#17508e;font-weight:700;">${opt.price.toLocaleString()}원/객실</span>`;
+      if(opt.price === 0){
+        unit.innerHTML = `<span>0원</span>`;
+      } else {
+        unit.innerHTML = `<span>${opt.price.toLocaleString()}원/객실</span>`;
+      }
     }
-    const total = document.createElement("div");
-    total.className = "option-total room-total-red";
-    total.id = "roomTotal"+idx;
-    if(opt.price===0){
-      total.innerHTML = `<span style="color:#d02b2b;">0원</span>`;
-    } else {
-      total.innerHTML = `<span style="color:#d02b2b;">${(totalRooms*opt.price).toLocaleString()}원 / ${totalRooms}객실</span>`;
-    }
-    row.appendChild(title);
     row.appendChild(unit);
-    row.appendChild(total);
     roomList.appendChild(row);
   });
 }
@@ -569,4 +514,3 @@ observer.observe(document.body, { childList: true, subtree: true, attributes: tr
 </script>
 </body>
 </html>
-
