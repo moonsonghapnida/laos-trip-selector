@@ -368,11 +368,11 @@ function updateRoomList(){
       if(opt.price === 0) {
         unit.innerHTML = `<span>0원</span>`;
       } else {
-        unit.innerHTML = `<span>${(totalRooms*opt.price).toLocaleString()}원 / ${totalRooms}객실</span>`;
+        unit.innerHTML = `<span>${(totalRooms*opt.price).toLocaleString()}원 / ${totalRooms}방</span>`;
         const minusBtn = document.createElement("button");
         minusBtn.type = "button";
         minusBtn.className = "option-minus-btn";
-        minusBtn.innerText = "-1객실";
+        minusBtn.innerText = "-1방";
         minusBtn.onclick = function(e){
           if(singleRoomAdd > 0){
             singleRoomAdd -= 1;
@@ -388,7 +388,7 @@ function updateRoomList(){
       if(opt.price === 0){
         unit.innerHTML = `<span>0원</span>`;
       } else {
-        unit.innerHTML = `<span>${opt.price.toLocaleString()}원/객실</span>`;
+        unit.innerHTML = `<span>${opt.price.toLocaleString()}원/방</span>`;
       }
     }
     row.appendChild(unit);
