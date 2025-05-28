@@ -9,121 +9,157 @@
     (function(){ emailjs.init('luKxEKdyyvY4hjYfo'); })();
   </script>
   <style>
-    html { font-size:15px;}
-    body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; background: #f7f7fa; margin: 0; padding: 0; color: #222; font-size:1rem;}
-    .container { max-width: 880px; margin:32px auto; padding: 24px; background: #fff; border-radius: 18px; box-shadow: 0 2px 14px rgba(70, 85, 110, 0.12); }
-
-    /* 2단 컬럼 (PC) */
+    html, body, * { box-sizing: border-box; }
+    html { font-size: 15px; }
+    body {
+      font-family: 'Pretendard','Noto Sans KR', Arial, sans-serif;
+      background: #f7f7fa;
+      margin: 0; padding: 0;
+      color: #222;
+      font-size: 1rem;
+      letter-spacing: -0.5px;
+    }
+    b, strong, label, h1, .option-title, .result-section, .toggle-btn, .option-unit, .option-total, .section-label-row, .contact-label { font-weight: 700 !important; }
+    .container {
+      max-width: 880px;
+      margin:32px auto;
+      padding: 24px;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 2px 14px rgba(70, 85, 110, 0.12);
+    }
     .form-grid {
       display: flex;
       flex-wrap: wrap;
       gap: 32px;
     }
-    .form-col {
-      flex: 1 1 0;
-      min-width: 0;
+    .form-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 0;}
+    .form-col.left { min-width: 300px; flex-basis: 48%;}
+    .form-col.right { min-width: 300px; flex-basis: 48%;}
+    .section, .date-section, .result-section, .contact-section { margin-bottom: 24px;}
+    h1 { font-size: 1.23rem; font-weight: bold; text-align: center; margin-bottom: 24px; color: #14508e;}
+    .date-section label, .section label { font-weight: 700 !important; font-size: 1.04rem; color: #294a6b;}
+    .person-desc { color:#b04d0c; font-size:0.89em; margin-top:5px; margin-bottom:-12px;}
+    .toggle-group { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 7px;}
+    .toggle-btn { background: #f4f7fb; border: 1.2px solid #c5d4ee; border-radius: 10px; padding: 9px 0 7px 0; font-size: 1em; flex: 1 1 0; text-align: center; cursor: pointer; margin-bottom: 6px; min-width: 42px; transition: all 0.12s; position: relative;}
+    .toggle-btn.selected { background: #296bb3; color: #fff; border-color: #14508e;}
+    .option-list { margin-top: 6px;}
+    .option-row {
       display: flex;
-      flex-direction: column;
-      gap: 0;
+      align-items: center;
+      justify-content: space-between;
+      background:#f4f7fb;
+      border:1px solid #d0deeb;
+      border-radius:10px;
+      padding: 11px 14px 11px 14px;
+      margin-bottom: 7px;
+      min-height:38px;
+      font-size:1.04em;
+      cursor:pointer;
+      transition:background .18s, color .18s;
+      position: relative;
+      overflow: visible;
     }
-    .form-col.left {
-      min-width: 300px; /* 필요시 조정 */
-      flex-basis: 48%;
-    }
-    .form-col.right {
-      min-width: 300px;
-      flex-basis: 48%;
-    }
-
-    .section, .date-section, .result-section, .contact-section { margin-bottom: 24px; }
-    h1 { font-size: 1.18rem; font-weight: bold; text-align: center; margin-bottom: 24px; color: #14508e; letter-spacing: -1px;}
-    .result-section .result-title {
-      font-size: 1.21em;
-      font-weight: bold;
+    .option-row.selected { background: #296bb3; color: #fff; border-color: #14508e;}
+    .option-title { font-size: 1.07em; flex:2; font-weight: 700;}
+    .option-unit {
+      flex: 1.4;
+      font-size: 1em;
       color: #17508e;
-      margin-bottom: 2px;
-    }
-    .result-section .result-desc {
-      font-size: 0.95em;
-      color: #989898;
-      margin-bottom: 10px;
-    }
-    .result-section .result-big {
-      font-size: 1.5em;
+      text-align:center;
       font-weight: 700;
-      color: #d02b2b;
-      margin-left: 3px;
-      display: inline-block;
     }
-
-    /* 숙박팩 가격 컬러 */
-    .room-price-blue { color: #1559d4 !important; font-weight: bold;}
-    .room-total-red { color: #d02b2b !important; font-weight: bold;}
-
-    /* 선택관광 인당 가격(파랑) */
-    .price-blue { color: #1559d4 !important; font-weight: bold; }
-
-    /* 전체 볼드화 */
-    .section-label-row, .option-title, .option-unit, .option-total, .toggle-btn,
-    .contact-label, .contact-input, .person-desc, label { font-weight: bold;}
-
-    /* 숙박팩 버튼 우측 정렬 (싱글룸/초기화) */
-    .section-label-row { display: flex; justify-content: space-between; align-items: center; }
-    .option-row { position: relative; }
-
-    /* 선택관광 -1명 버튼 위치 */
-    .option-controls { position: absolute; right: 12px; top: 10px; z-index:2; }
-    .option-minus-btn { font-size: 1em; padding: 4px 10px; border-radius:7px; background:#e9e7ff; color:#2857a3; border:1px solid #bdd2ea; cursor:pointer;}
-    .option-minus-btn:active { background:#c9e2ff;}
-
+    .option-row.selected .option-unit { color:#fff;}
+    .option-unit.price-blue { color:#17508e; font-weight: 700;}
     .option-total {
-      position: absolute;
-      right: 10px;
-      bottom: 9px;
+      flex: unset;
+      font-size: 1.06em;
       color: #d02b2b;
-      font-size: 1.07em;
-      background: none; border: none; margin: 0; font-weight: bold;
+      font-weight:bold;
+      text-align:right;
+      position: absolute;
+      bottom: 8px;
+      right: 18px;
+      background: transparent;
+      z-index: 2;
     }
-    /* 선택 안된 상태 인당 가격 파랑(PC) */
-    .option-unit.price-blue { color: #1559d4 !important; font-weight: bold;}
-
-    .contact-section {
-      background: #f9fafb !important;
-      border-radius: 12px !important;
-      padding: 12px 8px 7px 8px !important;
-      font-weight: bold;
+    .option-row.selected .option-total { color: #ffe400; }
+    .option-total.room-total-red { color: #d02b2b; }
+    .option-unit.room-price-blue { color: #17508e; }
+    .option-controls {
+      display:flex;
+      align-items:center;
+      gap:7px;
+      position: relative;
+      margin-left: 8px;
     }
-
-    /* 모바일에서 1단으로 변경 */
+    .option-minus-btn {
+      background:#e9e7ff;
+      color:#2857a3;
+      border:1px solid #bdd2ea;
+      font-size:1.11em;
+      border-radius:7px;
+      padding:4px 11px;
+      margin-right:6px;
+      cursor:pointer;
+      position: absolute;
+      top: 0;
+      right: -13px;
+      z-index: 2;
+    }
+    .option-row.selected .option-minus-btn { background: #fff; color: #14508e; border:1px solid #fff;}
+    .option-minus-btn:active {background:#c9e2ff;}
+    .init-btn { font-size:1em; background:#e5eefe; border:1px solid #bdd2ea; border-radius:8px; color:#347; padding:4px 10px; cursor:pointer; margin-left:7px; font-weight:700;}
+    .init-btn:hover {background:#d1e8ff;}
+    .result-section { margin: 20px 0 17px 0; padding: 13px 7px 8px 7px; background: #f4f6fa; border-radius: 12px; text-align: center; font-size: 1.1em; color: #14508e; font-weight: 700;}
+    .result-section span { display: block; margin: 6px 0; font-weight: 700; color: #0c3d5a; font-size: 1.11em;}
+    .result-section .result-title { font-size: 1.29em; font-weight: bold; color: #17508e; margin-bottom: 2px;}
+    .result-section .result-desc { font-size: 1.08em; color: #989898; margin-bottom: 10px;}
+    .result-section .result-big { font-size: 1.57em; font-weight: 700; color: #d02b2b; margin-left: 3px;}
+    .contact-section { margin-bottom: 20px; background:#f9fafb; border-radius:12px; padding: 12px 8px 7px 8px;}
+    .contact-label { display:block; margin:10px 0 5px 2px; color:#37629d; font-size:1.09em; font-weight:700;}
+    .contact-input { width:100%; padding:8px 8px; border:1px solid #bfd2e9; border-radius:8px; font-size:1.03em; margin-bottom:3px; box-sizing:border-box; background:#f7fafc; font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;}
+    textarea.contact-input { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif !important; resize: vertical;}
+    .submit-btn { display:block; width:100%; background:linear-gradient(90deg,#1466b6 88%, #25a6d1 100%); color:#fff; border:none; border-radius:12px; padding:13px 0; font-size:1.09em; font-weight:700; margin-top:22px; cursor:pointer; letter-spacing:0.5px; box-shadow:0 2px 10px #4176a72c;}
+    .submit-btn:active { background: #2a8ad1;}
+    .room-single-btn {background:#fff7e0; color:#b26c18; border:1px solid #edd59c; font-size:1em; border-radius:7px; padding:4px 12px; margin-right:7px; cursor:pointer; font-weight:700;}
+    .room-single-btn:active {background:#ffeec4;}
+    .date-section {margin-bottom:22px;}
+    .date-label {font-weight:700; color:#294a6b; font-size:1.07em; margin-bottom:10px; display:block;}
+    .date-input-wrap {display:flex; align-items:center; background:#f4f7fb; border-radius:10px; border:1.2px solid #c5d4ee; padding:12px 13px;}
+    .date-input {border:none; background:transparent; font-size:1.02em; color:#1849b9; flex:1;}
+    .date-input:focus {outline:none;}
+    .date-icon {font-size:1.2em; color:#14508e; margin-right:9px;}
     @media (max-width: 900px) {
       .container { max-width: 99vw; padding: 7vw 2vw;}
       .form-grid { flex-direction: column; gap: 0;}
       .form-col.left, .form-col.right { flex-basis: 100%; min-width: 0;}
+      .date-section, .section, .result-section, .contact-section { margin-bottom: 19px;}
+      h1, .date-section label, .section label, .result-section .result-title { font-size:1.22em !important; }
     }
-    @media (max-width:700px) {
-      /* 소제목, 블록 등 크게 */
-      .section-label-row label, .date-label, .result-title { font-size: 1.35em !important; }
-      .option-title, .option-unit, .option-total, .toggle-btn { font-size: 1.11em !important; }
-      .section, .date-section, .result-section, .contact-section, .option-row { font-weight: bold; }
-      .option-row { min-height: 38px !important; font-size: 1em;}
-      .option-controls { right: 8px; top: 7px; }
-      .option-minus-btn { font-size: 1.16em !important; padding: 1px 11px !important;}
-      .option-total { font-size: 1.22em !important; bottom: 6px;}
-      /* 선택 전 인당 가격 폰트 */
-      .option-unit.price-blue { font-size: 1.1em !important; }
+    @media (max-width: 600px) {
+      html {font-size:14px;}
+      .container { max-width: 99vw; padding: 5vw 1vw;}
+      .toggle-btn { font-size: 1.09em; min-width: 30px; padding: 8px 0 6px 0;}
+      .option-row { font-size:1.13em; flex-direction:column; align-items:flex-start; gap:4px; padding: 9px 8px;}
+      .option-unit, .option-total {text-align:left;}
+      .init-btn {margin:6px 0 0 0; width:100%; text-align:center;}
+      .room-single-btn {margin-bottom:7px;}
+      .section-label-row {flex-direction:column; align-items:flex-start;gap:6px;}
+      .date-input-wrap {padding:8px 7px;}
+      .contact-section, .result-section {padding: 12px 6px;}
+      h1, .date-section label, .section label, .result-section .result-title { font-size:1.31em !important;}
+      .option-title, .option-unit, .option-total, .toggle-btn, .contact-label {font-size:1.16em !important;}
     }
-    /* 숙박팩 - 객실 가격(파랑), 총가격(빨강) */
-    .room-price-blue { color: #1559d4 !important; font-weight: bold;}
-    .room-total-red { color: #d02b2b !important; font-weight: bold;}
   </style>
 </head>
 <body>
-
 <div class="container" id="cpack-quickform">
   <h1>라오스 비엔티안(1박) - 방비엥 (2박) C-Pack 빠른견적</h1>
   <div class="form-grid">
     <!-- 왼쪽 컬럼: 날짜, 인원, 가이드, 방비엥, 케어팩 -->
     <div class="form-col left">
+      <!-- 여행일자 -->
       <div class="date-section">
         <label class="date-label" for="travelDate">여행일자 <span style="font-weight:400; color:#999; font-size:0.92em;">(출국일 기준, 필수)</span></label>
         <div class="date-input-wrap">
@@ -131,11 +167,13 @@
           <input type="date" id="travelDate" class="date-input" required>
         </div>
       </div>
+      <!-- 여행인원 -->
       <div class="section">
         <label>여행인원 <span style="font-weight:400; color:#999; font-size:0.92em;">(2~8명, 예약금 인당 60,000원)</span></label>
         <div class="toggle-group" id="personToggleGroup"></div>
         <div class="person-desc">9명 이상 단체 할인 적용 가능, <b>개별 문의</b></div>
       </div>
+      <!-- 가이드팩 -->
       <div class="section">
         <label>가이드팩 <span style="font-weight:400; color:#999; font-size:0.92em;">(단일 선택)</span></label>
         <div class="toggle-group" id="guideToggleGroup">
@@ -143,6 +181,7 @@
           <div class="toggle-btn" data-guide="local" data-price="0">현지인 가이드<br><span style="font-size:0.91em; color:#55c;">추가요금 없음</span></div>
         </div>
       </div>
+      <!-- 선택관광(방비엥) -->
       <div class="section">
         <div class="section-label-row">
           <label>선택관광 (방비엥)</label>
@@ -150,6 +189,7 @@
         </div>
         <div class="option-list" id="vangviengList"></div>
       </div>
+      <!-- 선택관광(케어팩) -->
       <div class="section">
         <div class="section-label-row">
           <label>선택관광 (케어팩)</label>
@@ -160,6 +200,7 @@
     </div>
     <!-- 오른쪽 컬럼: 숙박, 결과, 연락처, 제출 -->
     <div class="form-col right">
+      <!-- 숙박팩 -->
       <div class="section">
         <div class="section-label-row">
           <label>숙박팩</label>
@@ -170,14 +211,16 @@
         </div>
         <div class="option-list" id="roomList"></div>
       </div>
+      <!-- 결과 견적 -->
       <div class="result-section" id="resultSection">
-        <div class="result-title">빠른 견적 금액</div>
-        <div class="result-desc">(실제 견적과 상이할 수 있습니다.)</div>
-        계약금 (한국에서 입금하실 금액): 
-        <span id="contractPrice" class="result-big"></span><br>
-        잔금 (현지에서 달러 지불하실 금액): 
-        <span id="usdPrice" class="result-big"></span>
+         <div class="result-title">빠른 견적 금액</div>
+          <div class="result-desc">(실제 견적과 상이할 수 있습니다.)</div>
+         계약금 (한국에서 입금하실 금액): 
+    <span id="contractPrice" class="result-big"></span><br>
+  잔금 (현지에서 달러 지불하실 금액): 
+    <span id="usdPrice" class="result-big"></span>
       </div>
+      <!-- 연락처 정보 -->
       <div class="contact-section">
         <label class="contact-label" for="contactName">대표자 성함 <span style="color:#d02b2b;">*</span></label>
         <input type="text" class="contact-input" id="contactName" placeholder="대표자 이름을 입력하세요" required>
@@ -191,6 +234,7 @@
   </div>
 </div>
 <script>
+// 옵션 데이터
 const MAX_PERSON = 8;
 const extraUsdByPerson = {8:95,7:105,6:118,5:137,4:165,3:211,2:305};
 const vangviengOptions = [
@@ -214,6 +258,8 @@ const roomOptions = [
   {name: "4성급 3박", price: 159000},
   {name: "제가 예약할게요", price: 0}
 ];
+
+// 여행인원
 const personToggleGroup = document.getElementById("personToggleGroup");
 let personCount = 2;
 for(let i=2; i<=MAX_PERSON; i++) {
@@ -235,6 +281,8 @@ for(let i=2; i<=MAX_PERSON; i++) {
   }
   personToggleGroup.appendChild(btn);
 }
+
+// 가이드팩
 let guideType = "kr";
 let guidePrice = 220;
 document.querySelectorAll("#guideToggleGroup .toggle-btn").forEach(btn=>{
@@ -247,6 +295,7 @@ document.querySelectorAll("#guideToggleGroup .toggle-btn").forEach(btn=>{
     sendHeightToParent();
   }
 });
+
 // 선택관광(방비엥) 버튼화
 const vangviengList = document.getElementById("vangviengList");
 let vangviengChecked = Array(vangviengOptions.length).fill(false);
@@ -264,44 +313,46 @@ function renderVangviengList() {
       updateTotal();
       sendHeightToParent();
     };
+    // 이름
     const title = document.createElement("div");
     title.className = "option-title";
     title.innerText = opt.name;
     row.appendChild(title);
-
-    // 인당 가격(파랑, 미선택시)
+    // 단가 (파란)
     const unit = document.createElement("div");
-    unit.className = "option-unit" + (!vangviengChecked[idx] ? " price-blue" : "");
+    unit.className = "option-unit";
     if(vangviengChecked[idx]) {
-      unit.innerText = `$${opt.price} × ${vangviengPersons[idx]}명 = $${vangviengPersons[idx]*opt.price}`;
+      unit.innerHTML = `$${opt.price} × ${vangviengPersons[idx]}명 = $${vangviengPersons[idx]*opt.price}`;
     } else {
-      unit.innerText = `$${opt.price}/인당`;
+      unit.innerHTML = `<span style="color:#14508e;font-weight:bold;">$${opt.price}/인당</span>`;
     }
     row.appendChild(unit);
-
-    // -1명 버튼, 총 가격
+    // 총액, -1명
+    const controls = document.createElement("div");
+    controls.className = "option-controls";
     if(vangviengChecked[idx]) {
-      const controls = document.createElement("div");
-      controls.className = "option-controls";
       const minusBtn = document.createElement("button");
       minusBtn.type = "button";
       minusBtn.className = "option-minus-btn";
       minusBtn.innerText = "-1명";
       minusBtn.onclick = function(e){
         vangviengPersons[idx] = Math.max(0, vangviengPersons[idx]-1);
-        if(vangviengPersons[idx]===0) vangviengChecked[idx]=false;
-        renderVangviengList(); updateTotal(); sendHeightToParent();
+        if(vangviengPersons[idx]===0) {
+          vangviengChecked[idx]=false;
+        }
+        renderVangviengList();
+        updateTotal();
+        sendHeightToParent();
         e.stopPropagation();
       };
       controls.appendChild(minusBtn);
-      row.appendChild(controls);
-
       const total = document.createElement("div");
       total.className = "option-total";
       total.id = "vvTotal"+idx;
-      total.innerText = `$${vangviengPersons[idx]*opt.price} / 총 ${vangviengPersons[idx]}명`;
-      row.appendChild(total);
+      total.innerHTML = `<span style="color:#ffe400;">$${vangviengPersons[idx]*opt.price} / 총 ${vangviengPersons[idx]}명</span>`;
+      controls.appendChild(total);
     }
+    row.appendChild(controls);
     vangviengList.appendChild(row);
   });
 }
@@ -312,6 +363,7 @@ window.resetVangvieng = function(){
   updateTotal();
   sendHeightToParent();
 }
+
 // 선택관광(케어팩) 버튼화
 const careList = document.getElementById("careList");
 let careChecked = Array(careOptions.length).fill(false);
@@ -329,42 +381,46 @@ function renderCareList() {
       updateTotal();
       sendHeightToParent();
     };
+    // 이름
     const title = document.createElement("div");
     title.className = "option-title";
     title.innerText = opt.name;
     row.appendChild(title);
-
+    // 단가 (파란)
     const unit = document.createElement("div");
-    unit.className = "option-unit" + (!careChecked[idx] ? " price-blue" : "");
+    unit.className = "option-unit";
     if(careChecked[idx]) {
-      unit.innerText = `$${opt.price} × ${carePersons[idx]}명 = $${carePersons[idx]*opt.price}`;
+      unit.innerHTML = `$${opt.price} × ${carePersons[idx]}명 = $${carePersons[idx]*opt.price}`;
     } else {
-      unit.innerText = `$${opt.price}/인당`;
+      unit.innerHTML = `<span style="color:#14508e;font-weight:bold;">$${opt.price}/인당</span>`;
     }
     row.appendChild(unit);
-
+    // 총액, -1명
+    const controls = document.createElement("div");
+    controls.className = "option-controls";
     if(careChecked[idx]) {
-      const controls = document.createElement("div");
-      controls.className = "option-controls";
       const minusBtn = document.createElement("button");
       minusBtn.type = "button";
       minusBtn.className = "option-minus-btn";
       minusBtn.innerText = "-1명";
       minusBtn.onclick = function(e){
         carePersons[idx] = Math.max(0, carePersons[idx]-1);
-        if(carePersons[idx]===0) careChecked[idx]=false;
-        renderCareList(); updateTotal(); sendHeightToParent();
+        if(carePersons[idx]===0) {
+          careChecked[idx]=false;
+        }
+        renderCareList();
+        updateTotal();
+        sendHeightToParent();
         e.stopPropagation();
       };
       controls.appendChild(minusBtn);
-      row.appendChild(controls);
-
       const total = document.createElement("div");
       total.className = "option-total";
       total.id = "careTotal"+idx;
-      total.innerText = `$${carePersons[idx]*opt.price} / 총 ${carePersons[idx]}명`;
-      row.appendChild(total);
+      total.innerHTML = `<span style="color:#ffe400;">$${carePersons[idx]*opt.price} / 총 ${carePersons[idx]}명</span>`;
+      controls.appendChild(total);
     }
+    row.appendChild(controls);
     careList.appendChild(row);
   });
 }
@@ -375,6 +431,7 @@ window.resetCare = function(){
   updateTotal();
   sendHeightToParent();
 }
+
 // 숙박팩(버튼화, 단일선택)
 const roomList = document.getElementById("roomList");
 let selectedRoomIdx = null;
@@ -400,18 +457,21 @@ function updateRoomList(){
     const title = document.createElement("div");
     title.className = "option-title";
     title.innerText = opt.name;
-    // 객실당 가격 (파랑)
     const unit = document.createElement("div");
-    unit.className = "option-unit room-price-blue";
-    unit.innerText = opt.price === 0 ? "0원" : `${opt.price.toLocaleString()}원/객실`;
-    // 총 가격 (빨강)
+    unit.className = "option-unit";
+    unit.style.color = opt.price === 0 ? "#14508e" : "#17508e";
+    if(opt.price===0){
+      unit.innerText = "0원";
+    } else {
+      unit.innerHTML = `<span style="color:#17508e;font-weight:700;">${opt.price.toLocaleString()}원/객실</span>`;
+    }
     const total = document.createElement("div");
     total.className = "option-total room-total-red";
     total.id = "roomTotal"+idx;
     if(opt.price===0){
-      total.innerText = "0원";
+      total.innerHTML = `<span style="color:#d02b2b;">0원</span>`;
     } else {
-      total.innerText = `${(totalRooms*opt.price).toLocaleString()}원 / ${totalRooms}객실`;
+      total.innerHTML = `<span style="color:#d02b2b;">${(totalRooms*opt.price).toLocaleString()}원 / ${totalRooms}객실</span>`;
     }
     row.appendChild(title);
     row.appendChild(unit);
@@ -432,6 +492,8 @@ window.resetSingleRoom = function(){
   updateTotal();
   sendHeightToParent();
 }
+
+// 견적 계산
 function updateTotal(){
   let contract = personCount * 60000;
   let baseRoomCnt = Math.ceil(personCount/2);
@@ -451,7 +513,8 @@ renderVangviengList();
 renderCareList();
 updateRoomList();
 updateTotal();
-// 견적 전송 (EmailJS)
+
+// EmailJS 견적 전송
 function submitEstimate() {
   const travelDate = document.getElementById("travelDate").value.trim();
   if(!travelDate) { alert("여행일자를 선택해주세요."); document.getElementById("travelDate").focus(); return;}
@@ -470,6 +533,7 @@ function submitEstimate() {
   if(selectedRoomIdx!==null && roomOptions[selectedRoomIdx].price!==0) roomStr += ` (${totalRooms}객실)`;
   let contract = document.getElementById("contractPrice").innerText;
   let usd = document.getElementById("usdPrice").innerText;
+  // emailjs 전송
   emailjs.send('service_e6uns2x', 'template_hhk1zot', {
     travel_date: travelDate,
     name: name,
@@ -488,6 +552,7 @@ function submitEstimate() {
     alert("견적 전송에 실패했습니다. 잠시 후 다시 시도해주세요.");
   });
 }
+
 // iframe 자동 높이 parent로 전달
 function sendHeightToParent() {
   if (window.parent !== window) {
@@ -504,3 +569,4 @@ observer.observe(document.body, { childList: true, subtree: true, attributes: tr
 </script>
 </body>
 </html>
+
