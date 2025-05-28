@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>라오스 비엔티안(1박) - 방비엥 (2박) C-Pack 빠른견적</title>
-  <meta name="viewport" content="width=480,user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
     (function(){ emailjs.init('luKxEKdyyvY4hjYfo'); })();
@@ -14,63 +14,31 @@
     .container { max-width: 880px; margin:32px auto; padding: 24px; background: #fff; border-radius: 18px; box-shadow: 0 2px 14px rgba(70, 85, 110, 0.12); }
 
     /* 2단 컬럼 (PC) */
-    .form-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 32px;
-    }
-    .form-col {
-      flex: 1 1 0;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-    .form-col.left {
-      min-width: 300px; /* 필요시 조정 */
-      flex-basis: 48%;
-    }
-    .form-col.right {
-      min-width: 300px;
-      flex-basis: 48%;
-    }
+    .form-grid { display: flex; flex-wrap: wrap; gap: 32px; }
+    .form-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 0; }
+    .form-col.left { min-width: 300px; flex-basis: 48%;}
+    .form-col.right { min-width: 300px; flex-basis: 48%;}
 
-    /* 폼 구성요소 margin 조정 */
     .section, .date-section, .result-section, .contact-section { margin-bottom: 24px; }
     h1 { font-size: 1.18rem; font-weight: bold; text-align: center; margin-bottom: 24px; color: #14508e; letter-spacing: -1px;}
-.result-section .result-title {
-  font-size: 1.21em;
-  font-weight: bold;
-  color: #17508e;
-  margin-bottom: 2px;
-}
-.result-section .result-desc {
-  font-size: 0.95em;
-  color: #989898;
-  margin-bottom: 10px;
-}
-.result-section .result-big {
-  font-size: 1.5em;   /* 2pt ↑ */
-  font-weight: 700;
-  color: #d02b2b;
-  margin-left: 3px;
-}
+    .result-section .result-title { font-size: 1.21em; font-weight: bold; color: #17508e; margin-bottom: 2px; }
+    .result-section .result-desc { font-size: 0.95em; color: #989898; margin-bottom: 10px; }
+    .result-section .result-big { font-size: 1.5em; font-weight: 700; color: #d02b2b; margin-left: 3px; }
 
-    /* 모바일에서 1단으로 변경 */
-    @media (max-width: 900px) {
-      .container { max-width: 99vw; padding: 7vw 2vw;}
-      .form-grid { flex-direction: column; gap: 0;}
-      .form-col.left, .form-col.right { flex-basis: 100%; min-width: 0;}
-    }
-    /* 이하 기존 스타일 */
-    .section-label-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;}
-    .section label { font-weight: 600; font-size: 0.98rem; color: #294a6b;}
+    /* 소제목 크기(PC) */
+    .section-label-row label, .section > label, .date-label { font-size: 1.10em; font-weight: 700; }
+
+    /* 섹션 라벨/초기화 flex */
+    .section-label-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; gap:8px;}
+    .section-label-row .init-btn, .section-label-row .room-single-btn { margin-left:auto; }
+    .section-label-row .room-single-btn { margin-right:7px;}
+
     .person-desc { color:#b04d0c; font-size:0.85em; margin-top:5px; margin-bottom:-12px;}
     .toggle-group { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 7px;}
     .toggle-btn { background: #f4f7fb; border: 1.2px solid #c5d4ee; border-radius: 10px; padding: 9px 0 7px 0; font-size: 1em; flex: 1 1 0; text-align: center; cursor: pointer; margin-bottom: 6px; min-width: 42px; transition: all 0.12s; position: relative;}
     .toggle-btn.selected { background: #296bb3; color: #fff; border-color: #14508e;}
     .option-list { margin-top: 6px;}
-    .option-row { display: flex; align-items: center; justify-content: space-between; background:#f4f7fb; border:1px solid #d0deeb; border-radius:10px; padding: 11px 14px 11px 14px; margin-bottom: 7px; min-height:38px; font-size:1em; cursor:pointer; transition:background .18s, color .18s;}
+    .option-row { position:relative; display: flex; align-items: center; justify-content: space-between; background:#f4f7fb; border:1px solid #d0deeb; border-radius:10px; padding: 11px 14px 11px 14px; margin-bottom: 7px; min-height:38px; font-size:1em; cursor:pointer; transition:background .18s, color .18s;}
     .option-row.selected { background: #296bb3; color: #fff; border-color: #14508e;}
     .option-title { font-size: 1.01em; flex:2;}
     .option-unit { flex:1.4; font-size: 0.96em; color:#1849b9; text-align:center; transition:color .15s;}
@@ -80,7 +48,7 @@
     .option-controls {display:flex; align-items:center; gap:7px;}
     .option-minus-btn {background:#e9e7ff; color:#2857a3; border:1px solid #bdd2ea; font-size:0.96em; border-radius:7px; padding:3px 8px; margin-right:4px; cursor:pointer;}
     .option-minus-btn:active {background:#c9e2ff;}
-    .init-btn { font-size:0.92em; background:#e5eefe; border:1px solid #bdd2ea; border-radius:8px; color:#347; padding:4px 10px; cursor:pointer; margin-left:7px;}
+    .init-btn { font-size:0.92em; background:#e5eefe; border:1px solid #bdd2ea; border-radius:8px; color:#347; padding:4px 10px; cursor:pointer; }
     .init-btn:hover {background:#d1e8ff;}
     .result-section { margin: 20px 0 17px 0; padding: 13px 7px 8px 7px; background: #f4f6fa; border-radius: 12px; text-align: center; font-size: 1.05em; color: #14508e; font-weight: 600;}
     .result-section span { display: block; margin: 6px 0; font-weight: 500; color: #0c3d5a; font-size: 0.97em;}
@@ -98,29 +66,44 @@
     .date-input {border:none; background:transparent; font-size:1em; color:#1849b9; flex:1;}
     .date-input:focus {outline:none;}
     .date-icon {font-size:1.2em; color:#14508e; margin-right:9px;}
-    @media (max-width: 600px) {
+
+    /* 2단 → 1단 (모바일) + 소제목/옵션 더 크게 */
+    @media (max-width: 900px) {
+      .container { max-width: 99vw; padding: 7vw 2vw;}
+      .form-grid { flex-direction: column; gap: 0;}
+      .form-col.left, .form-col.right { flex-basis: 100%; min-width: 0;}
+    }
+    @media (max-width: 700px) {
       html {font-size:14px;}
       .container { max-width: 99vw; padding: 7vw 2vw;}
-      .toggle-btn { font-size: 0.95em; min-width: 30px; padding: 8px 0 6px 0;}
-      .option-row { font-size:0.93em; flex-direction:column; align-items:flex-start; gap:4px; padding: 7px 5px;}
-      .option-unit, .option-total {text-align:left;}
-      .init-btn {margin:6px 0 0 0; width:100%; text-align:center;}
-      .room-single-btn {margin-bottom:7px;}
-      .section-label-row {flex-direction:column; align-items:flex-start;gap:6px;}
-      .date-input-wrap {padding:8px 7px;}
+      .toggle-btn { font-size: 1.12em; min-width: 30px; padding: 10px 0 8px 0;}
+      .option-row { font-size:1.14em; flex-direction:column; align-items:flex-start; gap:5px; padding: 12px 9px 27px 9px; }
+      .option-unit { font-size:1.12em; }
+      .option-controls { margin-top:0; margin-left:0; flex-direction:column; gap:0;}
+      .init-btn, .room-single-btn { font-size:1.09em; padding: 6px 14px;}
+      .init-btn { margin-left: 10px;}
+      .room-single-btn { margin-left:10px; margin-right:0;}
+      .section-label-row label, .section > label, .date-label { font-size: 1.26em !important; }
+      .result-section .result-title { font-size: 1.35em;}
+      .result-section .result-desc { font-size: 1.08em;}
+      .result-section .result-big { font-size: 1.8em;}
+      /* 선택관광 옵션 우측하단 가격/총인원 */
+      .option-row .option-total {
+        position:absolute; right:14px; bottom:10px;
+        font-size:1.24em; color:#ffe400; background:transparent; width:auto; text-align:right;
+        margin:0; padding:0;
+      }
+      /* -1명 버튼 우상단 */
+      .option-row .option-minus-btn {
+        position:absolute; right:14px; top:10px;
+        font-size:1.18em; padding:7px 14px;
+        background:#cfe6fd;
+        z-index:2;
+      }
     }
-        @media (max-width: 700px) {
-  .result-section .result-title { font-size: 1.35em;}
-  .result-section .result-desc { font-size: 1.08em;}
-  .result-section .result-big { font-size: 1.8em;}
-  /* 여기에 모바일에서만 커지는 스타일, 버튼 위치 조정 등 추가 가능 */
-}
   </style>
 </head>
 <body>
-
-
-<!-- =================== 견적 폼 본문 =================== -->
 <div class="container" id="cpack-quickform">
   <h1>라오스 비엔티안(1박) - 방비엥 (2박) C-Pack 빠른견적</h1>
   <div class="form-grid">
@@ -171,22 +154,20 @@
       <div class="section">
         <div class="section-label-row">
           <label>숙박팩</label>
-          <div>
-            <button type="button" class="room-single-btn" onclick="addSingleRoom()">싱글룸 추가</button>
-            <button type="button" class="init-btn" onclick="resetSingleRoom()">초기화</button>
-          </div>
+          <button type="button" class="room-single-btn" onclick="addSingleRoom()">싱글룸 추가</button>
+          <button type="button" class="init-btn" onclick="resetSingleRoom()">초기화</button>
         </div>
         <div class="option-list" id="roomList"></div>
       </div>
       <!-- 결과 견적 -->
       <div class="result-section" id="resultSection">
-         <div class="result-title">빠른 견적 금액</div>
-          <div class="result-desc">(실제 견적과 상이할 수 있습니다.)</div>
-         계약금 (한국에서 입금하실 금액): 
-    <span id="contractPrice" class="result-big"></span><br>
-  잔금 (현지에서 달러 지불하실 금액): 
-    <span id="usdPrice" class="result-big"></span>
-</div>
+        <div class="result-title">빠른 견적 금액</div>
+        <div class="result-desc">(실제 견적과 상이할 수 있습니다.)</div>
+        계약금 (한국에서 입금하실 금액):
+        <span id="contractPrice" class="result-big"></span><br>
+        잔금 (현지에서 달러 지불하실 금액):
+        <span id="usdPrice" class="result-big"></span>
+      </div>
       <!-- 연락처 정보 -->
       <div class="contact-section">
         <label class="contact-label" for="contactName">대표자 성함 <span style="color:#d02b2b;">*</span></label>
@@ -201,7 +182,7 @@
   </div>
 </div>
 <script>
-// 옵션 데이터 (기존과 동일)
+// 옵션 데이터
 const MAX_PERSON = 8;
 const extraUsdByPerson = {8:95,7:105,6:118,5:137,4:165,3:211,2:305};
 const vangviengOptions = [
@@ -226,7 +207,6 @@ const roomOptions = [
   {name: "제가 예약할게요", price: 0}
 ];
 
-// 여행인원
 const personToggleGroup = document.getElementById("personToggleGroup");
 let personCount = 2;
 for(let i=2; i<=MAX_PERSON; i++) {
@@ -292,6 +272,8 @@ function renderVangviengList() {
       unit.innerText = `$${opt.price}/인당`;
     }
     row.appendChild(unit);
+
+    // 모바일에서만 -1명 버튼, 총인원 우상/우하 배치
     const controls = document.createElement("div");
     controls.className = "option-controls";
     if(vangviengChecked[idx]) {
@@ -307,9 +289,10 @@ function renderVangviengList() {
         renderVangviengList();
         updateTotal();
         sendHeightToParent();
-        e.stopPropagation(); // row 클릭 이벤트 방지
+        e.stopPropagation();
       };
       controls.appendChild(minusBtn);
+      // total은 모바일에서 우하단, PC에서는 오른쪽에
       const total = document.createElement("div");
       total.className = "option-total";
       total.id = "vvTotal"+idx;
@@ -357,6 +340,8 @@ function renderCareList() {
       unit.innerText = `$${opt.price}/인당`;
     }
     row.appendChild(unit);
+
+    // 모바일에서만 -1명 버튼, 총인원 우상/우하 배치
     const controls = document.createElement("div");
     controls.className = "option-controls";
     if(careChecked[idx]) {
@@ -375,6 +360,7 @@ function renderCareList() {
         e.stopPropagation();
       };
       controls.appendChild(minusBtn);
+      // total
       const total = document.createElement("div");
       total.className = "option-total";
       total.id = "careTotal"+idx;
