@@ -16,13 +16,11 @@
     .form-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 0; }
     .form-col.left { min-width: 300px; flex-basis: 48%; }
     .form-col.right { min-width: 300px; flex-basis: 48%; }
-
     .section, .date-section, .result-section, .contact-section { margin-bottom: 24px; }
     h1 { font-size: 1.25rem; font-weight: bold; text-align: center; margin-bottom: 24px; color: #14508e; letter-spacing: -1px;}
     .result-section .result-title { font-size: 1.21em; font-weight: bold; color: #17508e; margin-bottom: 2px;}
     .result-section .result-desc { font-size: 0.95em; color: #989898; margin-bottom: 10px;}
     .result-section .result-big { font-size: 1.5em; font-weight: 700; color: #d02b2b; margin-left: 3px;}
-
     .section-label-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;}
     .section label { font-weight: 700; font-size: 1.01rem; color: #294a6b;}
     .person-desc { color:#b04d0c; font-size:0.95em; margin-top:5px; margin-bottom:-12px; font-weight:700;}
@@ -108,12 +106,29 @@
           <div class="toggle-btn" data-guide="local" data-price="0">현지인 가이드<br><span style="font-size:0.91em; color:#55c;">추가요금 없음</span></div>
         </div>
       </div>
+      <!-- 비엔티안 선택관광 -->
+      <div class="section">
+        <div class="section-label-row">
+          <label>선택관광 (비엔티안)</label>
+          <button type="button" class="init-btn" onclick="resetVientiane()">초기화</button>
+        </div>
+        <div class="option-list" id="vientianeList"></div>
+      </div>
+      <!-- 골프 업그레이드 -->
       <div class="section">
         <div class="section-label-row">
           <label>선택관광 (골프 업그레이드)</label>
           <button type="button" class="init-btn" onclick="resetGolf()">초기화</button>
         </div>
         <div class="option-list" id="golfList"></div>
+      </div>
+      <!-- 케어팩 -->
+      <div class="section">
+        <div class="section-label-row">
+          <label>선택관광 (케어팩)</label>
+          <button type="button" class="init-btn" onclick="resetCare()">초기화</button>
+        </div>
+        <div class="option-list" id="careList"></div>
       </div>
     </div>
     <div class="form-col right">
@@ -152,9 +167,20 @@
 const MAX_PERSON = 6;
 const contractPerPerson = 210000;
 const extraUsdByPerson = {6:79, 5:94, 4:116, 3:153, 2:226};
+const vientianeOptions = [
+  {name: "비엔티안 씨티투어", price: 20}
+];
 const golfOptions = [
   {name: "레이크뷰CC 업그레이드", price: 70},
   {name: "롱비엔CC 업그레이드", price: 75}
+];
+const careOptions = [
+  {name: "베트남식 이발관 풀코스 (90분)", price: 30},
+  {name: "라오 허벌 테라피", price: 40},
+  {name: "라오 전통 마사지 (2시간)", price: 25},
+  {name: "라오 전통 마사지 (1시간)", price: 13},
+  {name: "라오 오일 마사지 (2시간)", price: 35},
+  {name: "라오 오일 마사지 (1시간)", price: 20}
 ];
 const roomOptions = [
   {name: "5성급 3박", price: 240000},
@@ -174,9 +200,13 @@ for(let i=2; i<=MAX_PERSON; i++) {
     document.querySelectorAll("#personToggleGroup .toggle-btn").forEach(b=>b.classList.remove("selected"));
     btn.classList.add("selected");
     personCount = i;
+    vientianePersons = vientianePersons.map((v,idx)=>vientianeChecked[idx]?personCount:0);
     golfPersons = golfPersons.map((v,idx)=>golfChecked[idx]?personCount:0);
+    carePersons = carePersons.map((v,idx)=>careChecked[idx]?personCount:0);
     updateRoomList();
+    renderVientianeList();
     renderGolfList();
+    renderCareList();
     updateTotal();
     sendHeightToParent();
   }
@@ -197,7 +227,62 @@ document.querySelectorAll("#guideToggleGroup .toggle-btn").forEach(btn=>{
   }
 });
 
-// 선택관광(골프 업그레이드)
+// 비엔티안 선택관광
+const vientianeList = document.getElementById("vientianeList");
+let vientianeChecked = Array(vientianeOptions.length).fill(false);
+let vientianePersons = Array(vientianeOptions.length).fill(0);
+function renderVientianeList() {
+  vientianeList.innerHTML = "";
+  vientianeOptions.forEach((opt, idx) => {
+    const row = document.createElement("div");
+    row.className = "option-row" + (vientianeChecked[idx] ? " selected" : "");
+    row.style.cursor = "pointer";
+    row.onclick = function(){
+      vientianeChecked[idx] = !vientianeChecked[idx];
+      vientianePersons[idx] = vientianeChecked[idx] ? personCount : 0;
+      renderVientianeList();
+      updateTotal();
+      sendHeightToParent();
+    };
+    const title = document.createElement("div");
+    title.className = "option-title";
+    title.innerText = opt.name;
+    row.appendChild(title);
+    const unit = document.createElement("div");
+    unit.className = "option-unit";
+    if(vientianeChecked[idx]) {
+      unit.innerHTML = `<span>$${vientianePersons[idx]*opt.price} / ${vientianePersons[idx]}명</span>`;
+      const minusBtn = document.createElement("button");
+      minusBtn.type = "button";
+      minusBtn.className = "option-minus-btn";
+      minusBtn.innerText = "-1명";
+      minusBtn.onclick = function(e){
+        vientianePersons[idx] = Math.max(0, vientianePersons[idx]-1);
+        if(vientianePersons[idx]===0) {
+          vientianeChecked[idx]=false;
+        }
+        renderVientianeList();
+        updateTotal();
+        sendHeightToParent();
+        e.stopPropagation();
+      };
+      unit.appendChild(minusBtn);
+    } else {
+      unit.innerHTML = `<span>$${opt.price}/인당</span>`;
+    }
+    row.appendChild(unit);
+    vientianeList.appendChild(row);
+  });
+}
+window.resetVientiane = function(){
+  vientianeChecked = vientianeChecked.map(()=>false);
+  vientianePersons = vientianePersons.map(()=>0);
+  renderVientianeList();
+  updateTotal();
+  sendHeightToParent();
+}
+
+// 골프 업그레이드
 const golfList = document.getElementById("golfList");
 let golfChecked = Array(golfOptions.length).fill(false);
 let golfPersons = Array(golfOptions.length).fill(0);
@@ -249,6 +334,62 @@ window.resetGolf = function(){
   golfChecked = golfChecked.map(()=>false);
   golfPersons = golfPersons.map(()=>0);
   renderGolfList();
+  updateTotal();
+  sendHeightToParent();
+}
+
+// 케어팩
+const careList = document.getElementById("careList");
+let careChecked = Array(careOptions.length).fill(false);
+let carePersons = Array(careOptions.length).fill(0);
+function renderCareList() {
+  careList.innerHTML = "";
+  careOptions.forEach((opt, idx) => {
+    const row = document.createElement("div");
+    row.className = "option-row" + (careChecked[idx] ? " selected" : "");
+    row.style.cursor = "pointer";
+    row.onclick = function(){
+      careChecked[idx] = !careChecked[idx];
+      carePersons[idx] = careChecked[idx] ? personCount : 0;
+      renderCareList();
+      updateTotal();
+      sendHeightToParent();
+    };
+    const title = document.createElement("div");
+    title.className = "option-title";
+    title.innerText = opt.name;
+    row.appendChild(title);
+
+    const unit = document.createElement("div");
+    unit.className = "option-unit";
+    if(careChecked[idx]) {
+      unit.innerHTML = `<span>$${carePersons[idx]*opt.price} / ${carePersons[idx]}명</span>`;
+      const minusBtn = document.createElement("button");
+      minusBtn.type = "button";
+      minusBtn.className = "option-minus-btn";
+      minusBtn.innerText = "-1명";
+      minusBtn.onclick = function(e){
+        carePersons[idx] = Math.max(0, carePersons[idx]-1);
+        if(carePersons[idx]===0) {
+          careChecked[idx]=false;
+        }
+        renderCareList();
+        updateTotal();
+        sendHeightToParent();
+        e.stopPropagation();
+      };
+      unit.appendChild(minusBtn);
+    } else {
+      unit.innerHTML = `<span>$${opt.price}/인당</span>`;
+    }
+    row.appendChild(unit);
+    careList.appendChild(row);
+  });
+}
+window.resetCare = function(){
+  careChecked = careChecked.map(()=>false);
+  carePersons = carePersons.map(()=>0);
+  renderCareList();
   updateTotal();
   sendHeightToParent();
 }
@@ -336,13 +477,17 @@ function updateTotal(){
   if(selectedRoomIdx !== null && roomPrice>0) contract += totalRooms*roomPrice;
   let usd = 0;
   if(guideType==="kr") usd += 200;
+  vientianeOptions.forEach((opt, idx) => { usd += vientianePersons[idx]*opt.price; });
   golfOptions.forEach((opt, idx) => { usd += golfPersons[idx]*opt.price; });
+  careOptions.forEach((opt, idx) => { usd += carePersons[idx]*opt.price; });
   let extraUsd = extraUsdByPerson[personCount] ? extraUsdByPerson[personCount] : 0;
   usd += extraUsd;
   document.getElementById("contractPrice").innerText = contract.toLocaleString()+"원";
   document.getElementById("usdPrice").innerText = "$"+usd.toLocaleString();
 }
+renderVientianeList();
 renderGolfList();
+renderCareList();
 updateRoomList();
 updateTotal();
 
@@ -357,14 +502,15 @@ function submitEstimate() {
   if(!phone) { alert("연락 가능한 번호 또는 카카오톡 ID를 입력해주세요."); document.getElementById("contactPhone").focus(); return;}
   let persons = personCount + "명";
   let guide = guideType === "kr" ? "한국인 가이드 ($200/팀)" : "현지인 가이드 (추가요금 없음)";
+  let vientianeStr = vientianeOptions.map((opt, i)=> vientianePersons[i]>0? `${opt.name} (${vientianePersons[i]}명)`:'').filter(Boolean).join(', ') || '없음';
   let golfStr = golfOptions.map((opt, i)=> golfPersons[i]>0? `${opt.name} (${golfPersons[i]}명)`:'').filter(Boolean).join(', ') || '없음';
+  let careStr = careOptions.map((opt, i)=> carePersons[i]>0? `${opt.name} (${carePersons[i]}명)`:'').filter(Boolean).join(', ') || '없음';
   let baseRoomCnt = Math.ceil(personCount/2);
   let totalRooms = baseRoomCnt + singleRoomAdd;
   let roomStr = selectedRoomIdx!==null ? roomOptions[selectedRoomIdx].name : "미선택";
   if(selectedRoomIdx!==null && roomOptions[selectedRoomIdx].price!==0) roomStr += ` (${totalRooms}방)`;
   let contract = document.getElementById("contractPrice").innerText;
   let usd = document.getElementById("usdPrice").innerText;
-  // 상품명
   let product_title = document.querySelector("h1")?.innerText || document.title;
   emailjs.send('service_e6uns2x', 'template_hhk1zot', {
     product_title: product_title,
@@ -373,7 +519,9 @@ function submitEstimate() {
     phone: phone,
     persons: persons,
     guide: guide,
+    vientiane: vientianeStr,
     golf: golfStr,
+    care: careStr,
     room: roomStr,
     contract: contract,
     usd: usd,
