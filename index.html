@@ -40,21 +40,21 @@
     .option-row.selected .option-unit { color:#fff;}
     .option-row:not(.selected) .option-unit span { color: #17508e !important; font-weight:700;}
     .option-row.selected .option-unit span { color: #fff !important; }
-     .option-minus-btn {
+    .option-minus-btn {
       background: #e9e7ff;
       color: #2857a3;
       border: 1px solid #bdd2ea;
       font-size: 1em;
       font-weight: 700;
       border-radius: 8px;
-      padding: 4px 22px;     /* 패딩 넉넉히 */
-      margin-left: 10px;
-      cursor: pointer;
+      padding: 4px 22px;   /* ← 패딩 넉넉, 한줄 고정 */
+      margin-left:10px;
+      cursor:pointer;
       box-shadow: 0 1px 5px #b9cbe833;
-      white-space: nowrap;   /* 한줄 고정 */
-      min-width: 54px;       /* 버튼 최소 너비 */
+      white-space: nowrap;
+      min-width: 54px;
       line-height: 1.5;
-}
+    }
     .option-row.selected .option-minus-btn { margin-left: 18px; }
     .option-minus-btn:active {background:#c9e2ff;}
     .room-total { margin-left:8px; color:#d02b2b; font-size:1em;}
@@ -261,7 +261,7 @@ function renderVangviengList() {
     const unit = document.createElement("div");
     unit.className = "option-unit";
     if(vangviengChecked[idx]) {
-      unit.innerHTML = <span>$${vangviengPersons[idx]*opt.price} / ${vangviengPersons[idx]}명</span>;
+      unit.innerHTML = `<span>$${vangviengPersons[idx]*opt.price} / ${vangviengPersons[idx]}명</span>`;
       const minusBtn = document.createElement("button");
       minusBtn.type = "button";
       minusBtn.className = "option-minus-btn";
@@ -278,7 +278,7 @@ function renderVangviengList() {
       };
       unit.appendChild(minusBtn);
     } else {
-      unit.innerHTML = <span>$${opt.price}/인당</span>;
+      unit.innerHTML = `<span>$${opt.price}/인당</span>`;
     }
     row.appendChild(unit);
     vangviengList.appendChild(row);
@@ -317,7 +317,7 @@ function renderCareList() {
     const unit = document.createElement("div");
     unit.className = "option-unit";
     if(careChecked[idx]) {
-      unit.innerHTML = <span>$${carePersons[idx]*opt.price} / ${carePersons[idx]}명</span>;
+      unit.innerHTML = `<span>$${carePersons[idx]*opt.price} / ${carePersons[idx]}명</span>`;
       const minusBtn = document.createElement("button");
       minusBtn.type = "button";
       minusBtn.className = "option-minus-btn";
@@ -334,7 +334,7 @@ function renderCareList() {
       };
       unit.appendChild(minusBtn);
     } else {
-      unit.innerHTML = <span>$${opt.price}/인당</span>;
+      unit.innerHTML = `<span>$${opt.price}/인당</span>`;
     }
     row.appendChild(unit);
     careList.appendChild(row);
@@ -379,9 +379,9 @@ function updateRoomList(){
     unit.className = "option-unit";
     if(selectedRoomIdx === idx) {
       if(opt.price === 0) {
-        unit.innerHTML = <span>0원</span>;
+        unit.innerHTML = `<span>0원</span>`;
       } else {
-        unit.innerHTML = <span>${(totalRooms*opt.price).toLocaleString()}원 / ${totalRooms}방</span>;
+        unit.innerHTML = `<span>${(totalRooms*opt.price).toLocaleString()}원 / ${totalRooms}방</span>`;
         const minusBtn = document.createElement("button");
         minusBtn.type = "button";
         minusBtn.className = "option-minus-btn";
@@ -399,9 +399,9 @@ function updateRoomList(){
       }
     } else {
       if(opt.price === 0){
-        unit.innerHTML = <span>0원</span>;
+        unit.innerHTML = `<span>0원</span>`;
       } else {
-        unit.innerHTML = <span>${opt.price.toLocaleString()}원/방</span>;
+        unit.innerHTML = `<span>${opt.price.toLocaleString()}원/방</span>`;
       }
     }
     row.appendChild(unit);
@@ -454,12 +454,12 @@ function submitEstimate() {
   if(!phone) { alert("연락 가능한 번호 또는 카카오톡 ID를 입력해주세요."); document.getElementById("contactPhone").focus(); return;}
   let persons = personCount + "명";
   let guide = guideType === "kr" ? "한국인 가이드 ($220/팀)" : "현지인 가이드 (추가요금 없음)";
-  let vangStr = vangviengOptions.map((opt, i)=> vangviengPersons[i]>0? ${opt.name} (${vangviengPersons[i]}명):'').filter(Boolean).join(', ') || '없음';
-  let careStr = careOptions.map((opt, i)=> carePersons[i]>0? ${opt.name} (${carePersons[i]}명):'').filter(Boolean).join(', ') || '없음';
+  let vangStr = vangviengOptions.map((opt, i)=> vangviengPersons[i]>0? `${opt.name} (${vangviengPersons[i]}명)`:'').filter(Boolean).join(', ') || '없음';
+  let careStr = careOptions.map((opt, i)=> carePersons[i]>0? `${opt.name} (${carePersons[i]}명)`:'').filter(Boolean).join(', ') || '없음';
   let baseRoomCnt = Math.ceil(personCount/2);
   let totalRooms = baseRoomCnt + singleRoomAdd;
   let roomStr = selectedRoomIdx!==null ? roomOptions[selectedRoomIdx].name : "미선택";
-  if(selectedRoomIdx!==null && roomOptions[selectedRoomIdx].price!==0) roomStr +=  (${totalRooms}방);
+  if(selectedRoomIdx!==null && roomOptions[selectedRoomIdx].price!==0) roomStr += ` (${totalRooms}방)`;
   let contract = document.getElementById("contractPrice").innerText;
   let usd = document.getElementById("usdPrice").innerText;
   emailjs.send('service_e6uns2x', 'template_hhk1zot', {
@@ -481,6 +481,7 @@ function submitEstimate() {
   });
 }
 
+// iframe 자동 높이 parent로 전달
 function sendHeightToParent() {
   if (window.parent !== window) {
     window.parent.postMessage({
