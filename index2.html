@@ -446,7 +446,7 @@ updateTotal();
 
 // EmailJS 견적 전송
 function submitEstimate() {
-  const travelDate = document.getElementById("travelDate").value.trim();
+  const travelDate = document.querySelector("h1").getElementById("travelDate").value.trim();
   if(!travelDate) { alert("여행일자를 선택해주세요."); document.getElementById("travelDate").focus(); return;}
   const name = document.getElementById("contactName").value.trim();
   const phone = document.getElementById("contactPhone").value.trim();
@@ -464,6 +464,7 @@ function submitEstimate() {
   let contract = document.getElementById("contractPrice").innerText;
   let usd = document.getElementById("usdPrice").innerText;
   emailjs.send('service_e6uns2x', 'template_hhk1zot', {
+    product_title: productTitle,  // 반드시 이 코드!
     travel_date: travelDate,
     name: name,
     phone: phone,
