@@ -8,7 +8,6 @@
   <style>
     body { margin:0; background:#f8fbff; font-family:'Noto Sans KR', Arial,sans-serif; color:#232323;}
     .container { max-width:850px; margin:0 auto; background:#fff; box-shadow:0 0 18px #0001; border-radius:18px; overflow:hidden; }
-    /* ...상세페이지 스타일 생략 가능 (상단 참조)... */
     .form-grid { display: flex; flex-wrap: wrap; gap: 32px; }
     .form-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 0; }
     .form-col.left { min-width: 300px; flex-basis: 48%; }
@@ -37,6 +36,44 @@
       vertical-align: middle;
     }
     .option-minus-btn:active { background: #c9e2ff; }
+    /* 플로팅 버튼 */
+    .floating-buttons {
+      position: fixed;
+      right: 40px;
+      bottom: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      z-index: 2000;
+    }
+    .float-btn {
+      min-width: 260px;
+      padding: 23px 0 18px 0;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.25em;
+      font-weight: 700;
+      text-align: center;
+      box-shadow: 0 3px 18px #296bb337;
+      cursor: pointer;
+      transition: filter 0.17s;
+      display: block;
+      text-decoration: none;
+    }
+    .estimate-btn {
+      background: linear-gradient(90deg, #1766b7 70%, #23a0e3 100%);
+      color: #fff;
+    }
+    .kakao-btn {
+      background: #ffe500;
+      color: #222;
+    }
+    .float-btn:hover { filter: brightness(0.92);}
+    @media (max-width:700px){
+      .container { padding:8px;}
+      .floating-buttons { right: 12px; bottom: 15px;}
+      .float-btn { min-width: 150px; font-size: 1.02em; padding: 14px 0 10px 0;}
+    }
   </style>
 </head>
 <body>
@@ -105,6 +142,12 @@
       </div>
     </div>
   </div>
+  <!-- 플로팅 버튼 시작 -->
+  <div class="floating-buttons">
+    <a href="#cpack-quickform" class="float-btn estimate-btn">즉시 견적</a>
+    <a href="https://pf.kakao.com/_XXXXXX" target="_blank" class="float-btn kakao-btn">카카오 채널 즉시 상담</a>
+  </div>
+  <!-- 플로팅 버튼 끝 -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
     (function(){ emailjs.init('luKxEKdyyvY4hjYfo'); })();
