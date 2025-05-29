@@ -1,9 +1,8 @@
-비루방 3박5일
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>라오스 비엔티안(1박) - 루앙프라방(1박) 방비엥(1박) C-Pack 빠른견적</title>
+  <title>비엔티안1박, 루앙프라방1박, 방비엥1박 C-Pack 빠른견적</title>
   <meta name="viewport" content="width=480,user-scalable=no">
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
@@ -37,7 +36,7 @@
     .option-row { display: flex; align-items: center; justify-content: space-between; background:#f4f7fb; border:1px solid #d0deeb; border-radius:10px; padding: 11px 14px; margin-bottom: 7px; min-height:38px; font-size:1.07em; cursor:pointer; transition:background .18s, color .18s; font-weight:700; position:relative;}
     .option-row.selected { background: #296bb3; color: #fff; border-color: #14508e;}
     .option-title { font-size: 1.09em; flex:2;}
-    .option-unit { flex:2; font-size: 1.04em; text-align:right; transition:color .15s; font-weight:700; display: flex; align-items: center; justify-content: flex-end; }
+    .option-unit { flex:2; font-size: 1.04em; text-align:right; transition:color .15s; font-weight:700; display: flex; align-items: center; justify-content: flex-end; white-space: nowrap;}
     .option-row.selected .option-unit { color:#fff;}
     .option-row:not(.selected) .option-unit span { color: #17508e !important; font-weight:700;}
     .option-row.selected .option-unit span { color: #fff !important; }
@@ -48,7 +47,7 @@
       font-size: 1em;
       font-weight: 700;
       border-radius: 8px;
-      padding: 4px 22px;   /* ← 패딩 넉넉, 한줄 고정 */
+      padding: 4px 22px;
       margin-left:10px;
       cursor:pointer;
       box-shadow: 0 1px 5px #b9cbe833;
@@ -106,8 +105,9 @@
 </head>
 <body>
 <div class="container" id="cpack-quickform">
-  <h1>라오스 비엔티안(2박) - 방비엥 (2박) C-Pack 빠른견적</h1>
+  <h1>비엔티안1박, 루앙프라방1박, 방비엥1박 C-Pack 빠른견적</h1>
   <div class="form-grid">
+    <!-- 왼쪽 컬럼: 날짜, 인원, 가이드, 방비엥, 케어팩 -->
     <div class="form-col left">
       <div class="date-section">
         <label class="date-label" for="travelDate">여행일자 <span style="font-weight:400; color:#999; font-size:0.92em;">(출국일 기준, 필수)</span></label>
@@ -117,7 +117,7 @@
         </div>
       </div>
       <div class="section">
-        <label>여행인원 <span style="font-weight:400; color:#999; font-size:0.92em;">(2~8명, 예약금 인당 80,000원)</span></label>
+        <label>여행인원 <span style="font-weight:400; color:#999; font-size:0.92em;">(2~8명, 예약금 인당 60,000원)</span></label>
         <div class="toggle-group" id="personToggleGroup"></div>
         <div class="person-desc">9명 이상 단체 할인 적용 가능, <b>개별 문의</b></div>
       </div>
@@ -143,6 +143,7 @@
         <div class="option-list" id="careList"></div>
       </div>
     </div>
+    <!-- 오른쪽 컬럼: 숙박, 결과, 루앙프라방 선택관광, 연락처, 제출 -->
     <div class="form-col right">
       <div class="section">
         <div class="section-label-row">
@@ -154,14 +155,22 @@
         </div>
         <div class="option-list" id="roomList"></div>
       </div>
+      <!-- 루앙프라방 선택관광 (신규) -->
+      <div class="section">
+        <div class="section-label-row">
+          <label>선택관광 (루앙프라방)</label>
+          <button type="button" class="init-btn" onclick="resetLuang()">초기화</button>
+        </div>
+        <div class="option-list" id="luangList"></div>
+      </div>
       <div class="result-section" id="resultSection">
          <div class="result-title">빠른 견적 금액</div>
           <div class="result-desc">(실제 견적과 상이할 수 있습니다.)</div>
-         계약금+호텔 (한국에서 입금하실 금액): 
+         계약금 (한국에서 입금하실 금액): 
     <span id="contractPrice" class="result-big"></span><br>
-  잔금 (현지에서 지불하실 금액): 
+  잔금 (현지에서 달러 지불하실 금액): 
     <span id="usdPrice" class="result-big"></span>
-</div>
+      </div>
       <div class="contact-section">
         <label class="contact-label" for="contactName">대표자 성함 <span style="color:#d02b2b;">*</span></label>
         <input type="text" class="contact-input" id="contactName" placeholder="대표자 이름을 입력하세요" required>
@@ -177,7 +186,7 @@
 <script>
 // 옵션 데이터
 const MAX_PERSON = 8;
-const extraUsdByPerson = {8:124,7:137,6:154,5:179,4:216,3:278,2:401};
+const extraUsdByPerson = {8:123,7:136,6:152,5:175,4:210,3:267,2:383};
 const vangviengOptions = [
   {name: "열기구", price: 100},
   {name: "페러모터", price: 85},
@@ -193,6 +202,11 @@ const careOptions = [
   {name: "라오 전통 마사지 (1시간)", price: 13},
   {name: "라오 오일 마사지 (2시간)", price: 35},
   {name: "라오 오일 마사지 (1시간)", price: 20}
+];
+// 신규 추가: 루앙프라방 선택관광
+const luangOptions = [
+  {name: "루앙프라방 선셋크루즈", price: 20},
+  {name: "루앙프라방 이른새벽 투어", price: 10}
 ];
 const roomOptions = [
   {name: "5성급 3박", price: 278000},
@@ -214,9 +228,11 @@ for(let i=2; i<=MAX_PERSON; i++) {
     personCount = i;
     vangviengPersons = vangviengPersons.map((v,idx)=>vangviengChecked[idx]?personCount:0);
     carePersons = carePersons.map((v,idx)=>careChecked[idx]?personCount:0);
+    luangPersons = luangPersons.map((v,idx)=>luangChecked[idx]?personCount:0);
     updateRoomList();
     renderVangviengList();
     renderCareList();
+    renderLuangList();
     updateTotal();
     sendHeightToParent();
   }
@@ -237,7 +253,7 @@ document.querySelectorAll("#guideToggleGroup .toggle-btn").forEach(btn=>{
   }
 });
 
-// 선택관광(방비엥)
+// ===== 선택관광(방비엥) =====
 const vangviengList = document.getElementById("vangviengList");
 let vangviengChecked = Array(vangviengOptions.length).fill(false);
 let vangviengPersons = Array(vangviengOptions.length).fill(0);
@@ -293,7 +309,7 @@ window.resetVangvieng = function(){
   sendHeightToParent();
 }
 
-// 선택관광(케어팩)
+// ===== 선택관광(케어팩) =====
 const careList = document.getElementById("careList");
 let careChecked = Array(careOptions.length).fill(false);
 let carePersons = Array(careOptions.length).fill(0);
@@ -349,7 +365,63 @@ window.resetCare = function(){
   sendHeightToParent();
 }
 
-// 숙박팩(단일선택)
+// ===== 선택관광(루앙프라방) =====
+const luangList = document.getElementById("luangList");
+let luangChecked = Array(luangOptions.length).fill(false);
+let luangPersons = Array(luangOptions.length).fill(0);
+function renderLuangList() {
+  luangList.innerHTML = "";
+  luangOptions.forEach((opt, idx) => {
+    const row = document.createElement("div");
+    row.className = "option-row" + (luangChecked[idx] ? " selected" : "");
+    row.style.cursor = "pointer";
+    row.onclick = function(){
+      luangChecked[idx] = !luangChecked[idx];
+      luangPersons[idx] = luangChecked[idx] ? personCount : 0;
+      renderLuangList();
+      updateTotal();
+      sendHeightToParent();
+    };
+    const title = document.createElement("div");
+    title.className = "option-title";
+    title.innerText = opt.name;
+    row.appendChild(title);
+
+    const unit = document.createElement("div");
+    unit.className = "option-unit";
+    if(luangChecked[idx]) {
+      unit.innerHTML = `<span>$${luangPersons[idx]*opt.price} / ${luangPersons[idx]}명</span>`;
+      const minusBtn = document.createElement("button");
+      minusBtn.type = "button";
+      minusBtn.className = "option-minus-btn";
+      minusBtn.innerText = "-1명";
+      minusBtn.onclick = function(e){
+        luangPersons[idx] = Math.max(0, luangPersons[idx]-1);
+        if(luangPersons[idx]===0) {
+          luangChecked[idx]=false;
+        }
+        renderLuangList();
+        updateTotal();
+        sendHeightToParent();
+        e.stopPropagation();
+      };
+      unit.appendChild(minusBtn);
+    } else {
+      unit.innerHTML = `<span>$${opt.price}/인당</span>`;
+    }
+    row.appendChild(unit);
+    luangList.appendChild(row);
+  });
+}
+window.resetLuang = function(){
+  luangChecked = luangChecked.map(()=>false);
+  luangPersons = luangPersons.map(()=>0);
+  renderLuangList();
+  updateTotal();
+  sendHeightToParent();
+}
+
+// ===== 숙박팩 =====
 const roomList = document.getElementById("roomList");
 let selectedRoomIdx = null;
 let singleRoomAdd = 0;
@@ -425,7 +497,7 @@ window.resetSingleRoom = function(){
 
 // 견적 계산
 function updateTotal(){
-  let contract = personCount * 80000;
+  let contract = personCount * 60000;
   let baseRoomCnt = Math.ceil(personCount/2);
   let totalRooms = baseRoomCnt + singleRoomAdd;
   let roomPrice = (selectedRoomIdx !== null) ? roomOptions[selectedRoomIdx].price : 0;
@@ -434,6 +506,7 @@ function updateTotal(){
   if(guideType==="kr") usd += 220;
   vangviengOptions.forEach((opt, idx) => { usd += vangviengPersons[idx]*opt.price; });
   careOptions.forEach((opt, idx) => { usd += carePersons[idx]*opt.price; });
+  luangOptions.forEach((opt, idx) => { usd += luangPersons[idx]*opt.price; });
   let extraUsd = extraUsdByPerson[personCount] ? extraUsdByPerson[personCount] * personCount : 0;
   usd += extraUsd;
   document.getElementById("contractPrice").innerText = contract.toLocaleString()+"원";
@@ -441,12 +514,14 @@ function updateTotal(){
 }
 renderVangviengList();
 renderCareList();
+renderLuangList();
 updateRoomList();
 updateTotal();
 
 // EmailJS 견적 전송
 function submitEstimate() {
-  const travelDate = document.querySelector("h1").getElementById("travelDate").value.trim();
+  const productTitle = document.querySelector("h1").innerText.trim();
+  const travelDate = document.getElementById("travelDate").value.trim();
   if(!travelDate) { alert("여행일자를 선택해주세요."); document.getElementById("travelDate").focus(); return;}
   const name = document.getElementById("contactName").value.trim();
   const phone = document.getElementById("contactPhone").value.trim();
@@ -457,6 +532,7 @@ function submitEstimate() {
   let guide = guideType === "kr" ? "한국인 가이드 ($220/팀)" : "현지인 가이드 (추가요금 없음)";
   let vangStr = vangviengOptions.map((opt, i)=> vangviengPersons[i]>0? `${opt.name} (${vangviengPersons[i]}명)`:'').filter(Boolean).join(', ') || '없음';
   let careStr = careOptions.map((opt, i)=> carePersons[i]>0? `${opt.name} (${carePersons[i]}명)`:'').filter(Boolean).join(', ') || '없음';
+  let luangStr = luangOptions.map((opt, i)=> luangPersons[i]>0? `${opt.name} (${luangPersons[i]}명)`:'').filter(Boolean).join(', ') || '없음';
   let baseRoomCnt = Math.ceil(personCount/2);
   let totalRooms = baseRoomCnt + singleRoomAdd;
   let roomStr = selectedRoomIdx!==null ? roomOptions[selectedRoomIdx].name : "미선택";
@@ -464,7 +540,7 @@ function submitEstimate() {
   let contract = document.getElementById("contractPrice").innerText;
   let usd = document.getElementById("usdPrice").innerText;
   emailjs.send('service_e6uns2x', 'template_hhk1zot', {
-    product_title: productTitle,  // 반드시 이 코드!
+    product_title: productTitle,
     travel_date: travelDate,
     name: name,
     phone: phone,
@@ -472,6 +548,7 @@ function submitEstimate() {
     guide: guide,
     vangvieng: vangStr,
     care: careStr,
+    luang: luangStr,
     room: roomStr,
     contract: contract,
     usd: usd,
