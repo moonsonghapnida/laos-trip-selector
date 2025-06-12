@@ -3,16 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <title>비엔티안(1박) 루앙프라방(2박) C-Pack 빠른견적</title>
-  <meta name="viewport" content="width=480,user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
     (function(){ emailjs.init('luKxEKdyyvY4hjYfo'); })();
   </script>
   <style>
     html { font-size:15px;}
-    body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; background: #f7f7fa; margin: 0; padding: 0; color: #222; font-size:1rem;}
-    .container { max-width: 880px; margin:32px auto; padding: 24px; background: #fff; border-radius: 18px; box-shadow: 0 2px 14px rgba(70, 85, 110, 0.12); }
-
+    body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; background: #f7f7fa; margin: 0; padding: 0; color: #222; font-size:1rem; overflow-x:hidden;}
+    .container {
+      width: 100%;
+      max-width: 480px;
+      margin:32px auto;
+      padding: 16px 5px;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 2px 14px rgba(70, 85, 110, 0.12);
+      box-sizing: border-box;
+      overflow-x: hidden;
+    }
     .form-grid { display: flex; flex-wrap: wrap; gap: 32px; }
     .form-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 0; }
     .form-col.left { min-width: 300px; flex-basis: 48%; }
@@ -78,10 +87,12 @@
     .date-input {border:none; background:transparent; font-size:1.07em; color:#1849b9; flex:1; font-weight:700;}
     .date-input:focus {outline:none;}
     .date-icon {font-size:1.26em; color:#14508e; margin-right:9px;}
-    @media (max-width: 900px) {
-      .container { max-width: 99vw; padding: 7vw 2vw;}
+    @media (max-width: 520px) {
+      .container { max-width: 100vw; width:100vw; padding: 10px 2vw; margin: 0 auto; border-radius: 0;}
       .form-grid { flex-direction: column; gap: 0;}
       .form-col.left, .form-col.right { flex-basis: 100%; min-width: 0;}
+    }
+    @media (max-width: 900px) {
       .result-section .result-title { font-size: 1.35em;}
       .result-section .result-desc { font-size: 1.10em;}
       .result-section .result-big { font-size: 1.8em;}
@@ -128,15 +139,6 @@
         </div>
       </div>
       <div class="section">
-       <label>숙박팩</label>
-          <div>
-            <button type="button" class="room-single-btn" onclick="addSingleRoom()">싱글룸 추가</button>
-            <button type="button" class="init-btn" onclick="resetSingleRoom()">초기화</button>
-          </div>
-        </div>
-        <div class="option-list" id="roomList"></div>
-      </div>
-      <div class="section">
         <div class="section-label-row">
           <label>선택관광 (케어팩)</label>
           <button type="button" class="init-btn" onclick="resetCare()">초기화</button>
@@ -147,7 +149,14 @@
     <div class="form-col right">
       <div class="section">
         <div class="section-label-row">
-         
+          <label>숙박팩</label>
+          <div>
+            <button type="button" class="room-single-btn" onclick="addSingleRoom()">싱글룸 추가</button>
+            <button type="button" class="init-btn" onclick="resetSingleRoom()">초기화</button>
+          </div>
+        </div>
+        <div class="option-list" id="roomList"></div>
+      </div>
       <div class="section">
         <div class="section-label-row">
           <label>선택관광 (루앙프라방)</label>
@@ -212,9 +221,9 @@ for(let i=2; i<=MAX_PERSON; i++) {
   btn.onclick = function() {
     document.querySelectorAll("#personToggleGroup .toggle-btn").forEach(b=>b.classList.remove("selected"));
     btn.classList.add("selected");
+    personCount = i;
     carePersons = carePersons.map((v,idx)=>careChecked[idx]?personCount:0);
     luangPersons = luangPersons.map((v,idx)=>luangChecked[idx]?personCount:0);
-    personCount = i;
     updateRoomList();
     renderCareList();
     renderLuangList();
