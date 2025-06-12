@@ -13,9 +13,9 @@
     body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; background: #f7f7fa; margin: 0; padding: 0; color: #222; font-size:1rem; overflow-x:hidden;}
     .container {
       width: 100%;
-      max-width: 480px;
+      max-width: 880px;
       margin:32px auto;
-      padding: 16px 5px;
+      padding: 24px 16px;
       background: #fff;
       border-radius: 18px;
       box-shadow: 0 2px 14px rgba(70, 85, 110, 0.12);
@@ -24,11 +24,11 @@
     }
     .form-grid { display: flex; flex-wrap: wrap; gap: 32px; }
     .form-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 0; }
-    .form-col.left { min-width: 300px; flex-basis: 48%; }
-    .form-col.right { min-width: 300px; flex-basis: 48%; }
+    .form-col.left { min-width: 320px; flex-basis: 48%; }
+    .form-col.right { min-width: 320px; flex-basis: 48%; }
 
     .section, .date-section, .result-section, .contact-section { margin-bottom: 24px; }
-    h1 { font-size: 1.25rem; font-weight: bold; text-align: center; margin-bottom: 24px; color: #14508e; letter-spacing: -1px;}
+    h1 { font-size: 1.38rem; font-weight: bold; text-align: center; margin-bottom: 24px; color: #14508e; letter-spacing: -1px;}
     .result-section .result-title { font-size: 1.21em; font-weight: bold; color: #17508e; margin-bottom: 2px;}
     .result-section .result-desc { font-size: 0.95em; color: #989898; margin-bottom: 10px;}
     .result-section .result-big { font-size: 1.5em; font-weight: 700; color: #d02b2b; margin-left: 3px;}
@@ -87,20 +87,11 @@
     .date-input {border:none; background:transparent; font-size:1.07em; color:#1849b9; flex:1; font-weight:700;}
     .date-input:focus {outline:none;}
     .date-icon {font-size:1.26em; color:#14508e; margin-right:9px;}
-    @media (max-width: 520px) {
-      .container { max-width: 100vw; width:100vw; padding: 10px 2vw; margin: 0 auto; border-radius: 0;}
+    @media (max-width: 900px) {
+      .container { max-width: 99vw; padding: 7vw 2vw;}
       .form-grid { flex-direction: column; gap: 0;}
       .form-col.left, .form-col.right { flex-basis: 100%; min-width: 0;}
-    }
-    @media (max-width: 900px) {
-      .result-section .result-title { font-size: 1.35em;}
-      .result-section .result-desc { font-size: 1.10em;}
-      .result-section .result-big { font-size: 1.8em;}
-      h1 {font-size: 1.38rem;}
-      .section label, .contact-label, .date-label { font-size:1.23em;}
-      .toggle-btn, .init-btn, .room-single-btn { font-size: 1.15em;}
-      .option-row { font-size:1.16em; min-height:34px;}
-      .contact-input { font-size:1.13em;}
+      h1 {font-size: 1.18rem;}
     }
     @media (max-width: 700px) {
       .option-row.selected .option-unit {display:flex;align-items:center;justify-content:flex-end;}
