@@ -2,44 +2,28 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>비엔티안(1박) 루앙프라방(2박) C-Pack 빠른견적</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>비루방방 (비엔티안1박 루앙프라방1박 방비엥2박) C-Pack 빠른견적</title>
+  <meta name="viewport" content="width=480,user-scalable=no">
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
     (function(){ emailjs.init('luKxEKdyyvY4hjYfo'); })();
   </script>
   <style>
     html { font-size:15px;}
-    body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; background: #f7f7fa; margin: 0; padding: 0; color: #222;}
-    .container {
-      max-width: 880px;
-      margin:32px auto;
-      padding: 24px 16px;
-      background: #fff;
-      border-radius: 18px;
-      box-shadow: 0 2px 14px rgba(70, 85, 110, 0.12);
-      box-sizing: border-box;
-      overflow: visible;
-    }
-    .form-grid {
-      display: flex;
-      gap: 32px;
-    }
-    .form-col {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      min-width: 0;
-    }
-    .form-col.left, .form-col.right {
-      flex: 0 0 48%;
-      min-width: 320px;
-    }
+    body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; background: #f7f7fa; margin: 0; padding: 0; color: #222; font-size:1rem;}
+    .container { max-width: 880px; margin:32px auto; padding: 24px; background: #fff; border-radius: 18px; box-shadow: 0 2px 14px rgba(70, 85, 110, 0.12); }
+
+    .form-grid { display: flex; flex-wrap: wrap; gap: 32px; }
+    .form-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 0; }
+    .form-col.left { min-width: 300px; flex-basis: 48%; }
+    .form-col.right { min-width: 300px; flex-basis: 48%; }
+
     .section, .date-section, .result-section, .contact-section { margin-bottom: 24px; }
-    h1 { font-size: 1.38rem; font-weight: bold; text-align: center; margin-bottom: 24px; color: #14508e;}
+    h1 { font-size: 1.25rem; font-weight: bold; text-align: center; margin-bottom: 24px; color: #14508e; letter-spacing: -1px;}
     .result-section .result-title { font-size: 1.21em; font-weight: bold; color: #17508e; margin-bottom: 2px;}
     .result-section .result-desc { font-size: 0.95em; color: #989898; margin-bottom: 10px;}
     .result-section .result-big { font-size: 1.5em; font-weight: 700; color: #d02b2b; margin-left: 3px;}
+
     .section-label-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;}
     .section label { font-weight: 700; font-size: 1.01rem; color: #294a6b;}
     .person-desc { color:#b04d0c; font-size:0.95em; margin-top:5px; margin-bottom:-12px; font-weight:700;}
@@ -73,7 +57,10 @@
     }
     .option-row.selected .option-minus-btn { margin-left: 18px; }
     .option-minus-btn:active {background:#c9e2ff;}
-    .room-single-btn, .init-btn, .submit-btn, .contact-input { width: 100%; box-sizing: border-box;}
+    .room-total { margin-left:8px; color:#d02b2b; font-size:1em;}
+    .total-label { color: #ffe400; margin-left:8px; font-size:1em;}
+    .section .init-btn, .section .room-single-btn { font-weight:700;}
+    .section-label-row { gap:10px;}
     .room-single-btn {background:#fff7e0; color:#b26c18; border:1px solid #edd59c; font-size:1em; border-radius:7px; padding:6px 16px; margin-right:7px; cursor:pointer;}
     .room-single-btn:active {background:#ffeec4;}
     .init-btn { font-size:1em; background:#e5eefe; border:1px solid #bdd2ea; border-radius:8px; color:#347; padding:6px 15px; cursor:pointer; margin-left:0;}
@@ -81,9 +68,9 @@
     .result-section { margin: 20px 0 17px 0; padding: 13px 7px 8px 7px; background: #f4f6fa; border-radius: 12px; text-align: center; font-size: 1.07em; color: #14508e; font-weight: 600;}
     .contact-section { margin-bottom: 20px; background: #f9fafb; border-radius: 12px; padding: 12px 8px 7px 8px;}
     .contact-label { display: block; margin: 10px 0 5px 2px; color: #37629d; font-size: 1.06em; font-weight: 700;}
-    .contact-input { padding: 8px 8px; border: 1px solid #bfd2e9; border-radius: 8px; font-size: 1.02em; margin-bottom: 3px; background: #f7fafc; font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; font-weight:700;}
+    .contact-input { width: 100%; padding: 8px 8px; border: 1px solid #bfd2e9; border-radius: 8px; font-size: 1.02em; margin-bottom: 3px; box-sizing: border-box; background: #f7fafc; font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; font-weight:700;}
     textarea.contact-input { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif !important; resize: vertical;}
-    .submit-btn { display: block; background: linear-gradient(90deg, #1466b6 88%, #25a6d1 100%); color: #fff; border: none; border-radius: 12px; padding: 15px 0; font-size: 1.12em; font-weight: 800; margin-top: 22px; cursor: pointer; transition: background 0.15s; letter-spacing: 0.5px; box-shadow: 0 2px 10px #4176a72c;}
+    .submit-btn { display: block; width: 100%; background: linear-gradient(90deg, #1466b6 88%, #25a6d1 100%); color: #fff; border: none; border-radius: 12px; padding: 15px 0; font-size: 1.12em; font-weight: 800; margin-top: 22px; cursor: pointer; transition: background 0.15s; letter-spacing: 0.5px; box-shadow: 0 2px 10px #4176a72c;}
     .submit-btn:active { background: #2a8ad1;}
     .date-section {margin-bottom:22px;}
     .date-label {font-weight:700; color:#294a6b; font-size:1.14em; margin-bottom:10px; display:block;}
@@ -95,7 +82,14 @@
       .container { max-width: 99vw; padding: 7vw 2vw;}
       .form-grid { flex-direction: column; gap: 0;}
       .form-col.left, .form-col.right { flex-basis: 100%; min-width: 0;}
-      h1 {font-size: 1.18rem;}
+      .result-section .result-title { font-size: 1.35em;}
+      .result-section .result-desc { font-size: 1.10em;}
+      .result-section .result-big { font-size: 1.8em;}
+      h1 {font-size: 1.38rem;}
+      .section label, .contact-label, .date-label { font-size:1.23em;}
+      .toggle-btn, .init-btn, .room-single-btn { font-size: 1.15em;}
+      .option-row { font-size:1.16em; min-height:34px;}
+      .contact-input { font-size:1.13em;}
     }
     @media (max-width: 700px) {
       .option-row.selected .option-unit {display:flex;align-items:center;justify-content:flex-end;}
@@ -111,7 +105,7 @@
 </head>
 <body>
 <div class="container" id="cpack-quickform">
-  <h1>비엔티안(1박) - 루앙프라방(2박) C-Pack 빠른견적</h1>
+  <h1>비루방방 (비엔티안1박 루앙프라방1박 방비엥2박) C-Pack 빠른견적</h1>
   <div class="form-grid">
     <div class="form-col left">
       <div class="date-section">
@@ -122,16 +116,23 @@
         </div>
       </div>
       <div class="section">
-        <label>여행인원 <span style="font-weight:400; color:#999; font-size:0.92em;">(2~8명, 예약금 인당 60,000원)</span></label>
+        <label>여행인원 <span style="font-weight:400; color:#999; font-size:0.92em;">(2~8명, 예약금 인당 80,000원)</span></label>
         <div class="toggle-group" id="personToggleGroup"></div>
         <div class="person-desc">9명 이상 단체 할인 적용 가능, <b>개별 문의</b></div>
       </div>
       <div class="section">
         <label>가이드팩 <span style="font-weight:400; color:#999; font-size:0.92em;">(단일 선택)</span></label>
         <div class="toggle-group" id="guideToggleGroup">
-          <div class="toggle-btn selected" data-guide="kr" data-price="220">한국인 가이드<br><span style="font-size:0.91em;">$220/팀</span></div>
+          <div class="toggle-btn selected" data-guide="kr" data-price="280">한국인 가이드<br><span style="font-size:0.91em;">$280/팀</span></div>
           <div class="toggle-btn" data-guide="local" data-price="0">현지인 가이드<br><span style="font-size:0.91em; color:#55c;">추가요금 없음</span></div>
         </div>
+      </div>
+      <div class="section">
+        <div class="section-label-row">
+          <label>선택관광 (방비엥)</label>
+          <button type="button" class="init-btn" onclick="resetVangvieng()">초기화</button>
+        </div>
+        <div class="option-list" id="vangviengList"></div>
       </div>
       <div class="section">
         <div class="section-label-row">
@@ -152,6 +153,7 @@
         </div>
         <div class="option-list" id="roomList"></div>
       </div>
+      <!-- 루앙프라방 선택관광 -->
       <div class="section">
         <div class="section-label-row">
           <label>선택관광 (루앙프라방)</label>
@@ -182,8 +184,16 @@
 <script>
 // 옵션 데이터
 const MAX_PERSON = 8;
-const contractPerPerson = 60000;
-const extraUsdByPerson = {8:145,7:156,6:170,5:190,4:221,3:271,2:371};
+const contractPerPerson = 80000;
+const extraUsdByPerson = {8:135,7:149,6:167,5:193,4:232,3:297,2:428};
+const vangviengOptions = [
+  {name: "열기구", price: 100},
+  {name: "페러모터", price: 85},
+  {name: "버기카", price: 18},
+  {name: "짚라인", price: 20},
+  {name: "롱테일보트", price: 10},
+  {name: "시크릿라군", price: 10}
+];
 const careOptions = [
   {name: "베트남식 이발관 풀코스 (90분)", price: 30},
   {name: "라오 허벌 테라피", price: 40},
@@ -193,15 +203,12 @@ const careOptions = [
   {name: "라오 오일 마사지 (1시간)", price: 20}
 ];
 const luangOptions = [
-  {name: "루앙 골목 자전거 투어", price: 20},
-  {name: "루앙프라방 쿠킹클래스(런치)", price: 40},
-  {name: "루앙프라방 쿠킹클래스 (디너)", price: 35},
-  {name: "뽕나무 전통 종이 공예 체험", price: 15},
-  {name: "빡우 마을 투어 (빡우 동굴 포함)", price: 20}
+  {name: "루앙프라방 선셋크루즈", price: 20},
+  {name: "루앙프라방 이른새벽 투어", price: 10}
 ];
 const roomOptions = [
-  {name: "5성급 3박", price: 300000},
-  {name: "4성급 3박", price: 248000},
+  {name: "5성급 4박", price: 375000},
+  {name: "4성급 4박", price: 249000},
   {name: "제가 예약할게요", price: 0}
 ];
 
@@ -217,9 +224,11 @@ for(let i=2; i<=MAX_PERSON; i++) {
     document.querySelectorAll("#personToggleGroup .toggle-btn").forEach(b=>b.classList.remove("selected"));
     btn.classList.add("selected");
     personCount = i;
+    vangviengPersons = vangviengPersons.map((v,idx)=>vangviengChecked[idx]?personCount:0);
     carePersons = carePersons.map((v,idx)=>careChecked[idx]?personCount:0);
     luangPersons = luangPersons.map((v,idx)=>luangChecked[idx]?personCount:0);
     updateRoomList();
+    renderVangviengList();
     renderCareList();
     renderLuangList();
     updateTotal();
@@ -230,7 +239,7 @@ for(let i=2; i<=MAX_PERSON; i++) {
 
 // 가이드팩
 let guideType = "kr";
-let guidePrice = 220;
+let guidePrice = 280;
 document.querySelectorAll("#guideToggleGroup .toggle-btn").forEach(btn=>{
   btn.onclick = function(){
     document.querySelectorAll("#guideToggleGroup .toggle-btn").forEach(b=>b.classList.remove("selected"));
@@ -241,6 +250,62 @@ document.querySelectorAll("#guideToggleGroup .toggle-btn").forEach(btn=>{
     sendHeightToParent();
   }
 });
+
+// ===== 선택관광(방비엥) =====
+const vangviengList = document.getElementById("vangviengList");
+let vangviengChecked = Array(vangviengOptions.length).fill(false);
+let vangviengPersons = Array(vangviengOptions.length).fill(0);
+function renderVangviengList() {
+  vangviengList.innerHTML = "";
+  vangviengOptions.forEach((opt, idx) => {
+    const row = document.createElement("div");
+    row.className = "option-row" + (vangviengChecked[idx] ? " selected" : "");
+    row.style.cursor = "pointer";
+    row.onclick = function(){
+      vangviengChecked[idx] = !vangviengChecked[idx];
+      vangviengPersons[idx] = vangviengChecked[idx] ? personCount : 0;
+      renderVangviengList();
+      updateTotal();
+      sendHeightToParent();
+    };
+    const title = document.createElement("div");
+    title.className = "option-title";
+    title.innerText = opt.name;
+    row.appendChild(title);
+
+    const unit = document.createElement("div");
+    unit.className = "option-unit";
+    if(vangviengChecked[idx]) {
+      unit.innerHTML = `<span>$${vangviengPersons[idx]*opt.price} / ${vangviengPersons[idx]}명</span>`;
+      const minusBtn = document.createElement("button");
+      minusBtn.type = "button";
+      minusBtn.className = "option-minus-btn";
+      minusBtn.innerText = "-1명";
+      minusBtn.onclick = function(e){
+        vangviengPersons[idx] = Math.max(0, vangviengPersons[idx]-1);
+        if(vangviengPersons[idx]===0) {
+          vangviengChecked[idx]=false;
+        }
+        renderVangviengList();
+        updateTotal();
+        sendHeightToParent();
+        e.stopPropagation();
+      };
+      unit.appendChild(minusBtn);
+    } else {
+      unit.innerHTML = `<span>$${opt.price}/인당</span>`;
+    }
+    row.appendChild(unit);
+    vangviengList.appendChild(row);
+  });
+}
+window.resetVangvieng = function(){
+  vangviengChecked = vangviengChecked.map(()=>false);
+  vangviengPersons = vangviengPersons.map(()=>0);
+  renderVangviengList();
+  updateTotal();
+  sendHeightToParent();
+}
 
 // ===== 선택관광(케어팩) =====
 const careList = document.getElementById("careList");
@@ -436,17 +501,16 @@ function updateTotal(){
   let roomPrice = (selectedRoomIdx !== null) ? roomOptions[selectedRoomIdx].price : 0;
   if(selectedRoomIdx !== null && roomPrice>0) contract += totalRooms*roomPrice;
   let usd = 0;
-  if(guideType==="kr") usd += 220;
+  if(guideType==="kr") usd += 280;
+  vangviengOptions.forEach((opt, idx) => { usd += vangviengPersons[idx]*opt.price; });
   careOptions.forEach((opt, idx) => { usd += carePersons[idx]*opt.price; });
   luangOptions.forEach((opt, idx) => { usd += luangPersons[idx]*opt.price; });
   let extraUsd = extraUsdByPerson[personCount] ? extraUsdByPerson[personCount] * personCount : 0;
-  usd = extraUsd;
-  careOptions.forEach((opt, idx) => { usd += carePersons[idx]*opt.price; });
-  luangOptions.forEach((opt, idx) => { usd += luangPersons[idx]*opt.price; });
-  if(guideType==="kr") usd += 220;
+  usd += extraUsd;
   document.getElementById("contractPrice").innerText = contract.toLocaleString()+"원";
   document.getElementById("usdPrice").innerText = "$"+usd.toLocaleString();
 }
+renderVangviengList();
 renderCareList();
 renderLuangList();
 updateRoomList();
@@ -463,7 +527,8 @@ function submitEstimate() {
   if(!name) { alert("대표자 성함을 입력해주세요."); document.getElementById("contactName").focus(); return;}
   if(!phone) { alert("연락 가능한 번호 또는 카카오톡 ID를 입력해주세요."); document.getElementById("contactPhone").focus(); return;}
   let persons = personCount + "명";
-  let guide = guideType === "kr" ? "한국인 가이드 ($220/팀)" : "현지인 가이드 (추가요금 없음)";
+  let guide = guideType === "kr" ? "한국인 가이드 ($280/팀)" : "현지인 가이드 (추가요금 없음)";
+  let vangStr = vangviengOptions.map((opt, i)=> vangviengPersons[i]>0? `${opt.name} (${vangviengPersons[i]}명)`:'').filter(Boolean).join(', ') || '없음';
   let careStr = careOptions.map((opt, i)=> carePersons[i]>0? `${opt.name} (${carePersons[i]}명)`:'').filter(Boolean).join(', ') || '없음';
   let luangStr = luangOptions.map((opt, i)=> luangPersons[i]>0? `${opt.name} (${luangPersons[i]}명)`:'').filter(Boolean).join(', ') || '없음';
   let baseRoomCnt = Math.ceil(personCount/2);
@@ -479,6 +544,7 @@ function submitEstimate() {
     phone: phone,
     persons: persons,
     guide: guide,
+    vangvieng: vangStr,
     care: careStr,
     luang: luangStr,
     room: roomStr,
